@@ -16,14 +16,16 @@ module Buzzle
       @door.update(frame_time)
 
       @door.toggle_lock! if Keys.pressed?(LibRay::KEY_SPACE)
+
+      @player.update(frame_time)
     end
 
     def draw
       draw_room_border
       draw_floor_grid
 
-      @door.draw
       @player.draw
+      @door.draw
     end
 
     def draw_room_border

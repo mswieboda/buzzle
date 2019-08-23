@@ -12,6 +12,10 @@ module Buzzle
     end
 
     def update(frame_time)
+      @y -= WIDTH if Keys.pressed?([LibRay::KEY_W, LibRay::KEY_UP])
+      @x -= WIDTH if Keys.pressed?([LibRay::KEY_A, LibRay::KEY_LEFT])
+      @y += WIDTH if Keys.pressed?([LibRay::KEY_S, LibRay::KEY_DOWN])
+      @x += WIDTH if Keys.pressed?([LibRay::KEY_D, LibRay::KEY_RIGHT])
     end
 
     def draw
