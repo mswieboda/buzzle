@@ -8,23 +8,67 @@ module Buzzle
 
     DRAW_SIZE_PADDING = 12
 
-    def initialize(@x, @y)
+    def initialize(@x, @y, @direction = Direction::Up)
     end
 
     def update(frame_time)
-      @y -= WIDTH if Keys.pressed?([LibRay::KEY_W, LibRay::KEY_UP])
-      @x -= WIDTH if Keys.pressed?([LibRay::KEY_A, LibRay::KEY_LEFT])
-      @y += WIDTH if Keys.pressed?([LibRay::KEY_S, LibRay::KEY_DOWN])
-      @x += WIDTH if Keys.pressed?([LibRay::KEY_D, LibRay::KEY_RIGHT])
+      if Keys.pressed?([LibRay::KEY_W, LibRay::KEY_UP])
+        @y -= WIDTH
+        @direction = Direction::Up
+      end
+
+      if Keys.pressed?([LibRay::KEY_A, LibRay::KEY_LEFT])
+        @x -= WIDTH
+        @direction = Direction::Left
+      end
+
+      if Keys.pressed?([LibRay::KEY_S, LibRay::KEY_DOWN])
+        @y += WIDTH
+        @direction = Direction::Down
+      end
+
+      if Keys.pressed?([LibRay::KEY_D, LibRay::KEY_RIGHT])
+        @x += WIDTH
+        @direction = Direction::Right
+      end
     end
 
     def draw
-      LibRay.draw_rectangle(
-        pos_x: x + DRAW_SIZE_PADDING,
-        pos_y: y + DRAW_SIZE_PADDING,
-        width: WIDTH - DRAW_SIZE_PADDING * 2,
-        height: HEIGHT - DRAW_SIZE_PADDING * 2,
+      LibRay.draw_rectangle_v(
+        position: LibRay::Vector2.new(
+          x: x + DRAW_SIZE_PADDING,
+          y: y + DRAW_SIZE_PADDING
+        ),
+        size: LibRay::Vector2.new(
+          x: WIDTH - DRAW_SIZE_PADDING * 2,
+          y: HEIGHT - DRAW_SIZE_PADDING * 2,
+        ),
         color: LibRay::MAGENTA
+      )
+
+      # eyes, for direction
+      LibRay.draw_rectangle_v(
+        position: LibRay::Vector2.new(
+          x: x + WIDTH / 2 - DRAW_SIZE_PADDING / 1.5,
+          y: y + DRAW_SIZE_PADDING * 1.5
+        ),
+        size: LibRay::Vector2.new(
+          x: DRAW_SIZE_PADDING / 2,
+          y: DRAW_SIZE_PADDING / 2,
+        ),
+        color: LibRay::BLACK
+      )
+
+      LibRay.draw_rectangle_v(
+        position: LibRay::Vector2.new(
+          x: x + WIDTH / 2 + DRAW_SIZE_PADDING / 1.5,
+          y: y + DRAW_SIZE_PADDING * 1.5
+        ),
+        size: LibRay::Vector2.new(
+          x: DRAW_SIZE_PADDING / 2,
+          y: DRAW_SIZE_PADDING / 2,
+        ),
+        color: LibRay::BLACK
       )
     end
   end
