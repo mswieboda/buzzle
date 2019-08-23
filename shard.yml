@@ -1,0 +1,17 @@
+name: buzzle
+version: 0.1.0
+
+authors:
+  - Matt Swieboda <matts@topsteptrader.com>
+
+targets:
+  buzzle:
+    main: src/buzzle.cr
+
+crystal: 0.30.1
+
+license: MIT
+
+dependencies:
+  cray:
+    gitlab: zatherz/cray
