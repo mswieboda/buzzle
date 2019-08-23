@@ -11,6 +11,13 @@ module Buzzle
     def initialize
       LibRay.init_window(SCREEN_WIDTH, SCREEN_HEIGHT, "Buzzle")
       LibRay.set_target_fps(TARGET_FPS)
+
+      @room = Room.new(
+        x: 0,
+        y: 0,
+        width: SCREEN_WIDTH / 2,
+        height: SCREEN_HEIGHT / 2
+      )
     end
 
     def run
@@ -24,9 +31,11 @@ module Buzzle
     end
 
     def update(frame_time)
+      @room.update(frame_time)
     end
 
     def draw
+      @room.draw
     end
 
     def draw_init
