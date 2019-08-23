@@ -10,6 +10,9 @@ module Buzzle
     def initialize(@x, @y, @width, @height)
       @door = Door.new(64, 0)
       @player = Player.new(64, 64)
+      @blocks = [] of Block
+      @blocks << Block.new(128, 64)
+      @blocks << Block.new(192, 128)
     end
 
     def update(frame_time)
@@ -17,12 +20,16 @@ module Buzzle
 
       @door.toggle_lock! if Keys.pressed?(LibRay::KEY_SPACE)
 
+      @blocks.each(&.update(frame_time))
+
       @player.update(frame_time)
     end
 
     def draw
       draw_room_border
       draw_floor_grid
+
+      @blocks.each(&.draw)
 
       @player.draw
       @door.draw
