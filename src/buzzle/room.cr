@@ -5,8 +5,11 @@ module Buzzle
     getter width : Int32
     getter height : Int32
 
+    GRID_SIZE = 64
+
     def initialize(@x, @y, @width, @height)
-      @door = Door.new(32, 0)
+      @door = Door.new(64, 0)
+      @player = Player.new(64, 64)
     end
 
     def update(frame_time)
@@ -17,8 +20,10 @@ module Buzzle
 
     def draw
       draw_room_border
+      draw_floor_grid
 
       @door.draw
+      @player.draw
     end
 
     def draw_room_border
@@ -29,6 +34,20 @@ module Buzzle
         height: @height,
         color: LibRay::GRAY
       )
+    end
+
+    def draw_floor_grid
+      (width / GRID_SIZE).times do |x|
+        (height / GRID_SIZE).times do |y|
+          LibRay.draw_rectangle_lines(
+            pos_x: @x + x * GRID_SIZE,
+            pos_y: @y + y * GRID_SIZE,
+            width: GRID_SIZE,
+            height: GRID_SIZE,
+            color: LibRay::GRAY
+          )
+        end
+      end
     end
   end
 end

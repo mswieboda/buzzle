@@ -15,8 +15,8 @@ module Buzzle
       @room = Room.new(
         x: 0,
         y: 0,
-        width: SCREEN_WIDTH / 2,
-        height: SCREEN_HEIGHT / 2
+        width: SCREEN_WIDTH,
+        height: SCREEN_HEIGHT
       )
     end
 
