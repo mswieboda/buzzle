@@ -4,8 +4,8 @@ module Buzzle
     getter y : Int32
     getter? locked
 
-    WIDTH  = 64
-    HEIGHT = 16
+    WIDTH  = Game::GRID_SIZE
+    HEIGHT = Game::GRID_SIZE / 4
 
     def initialize(@x, @y, @locked = true)
     end
@@ -28,24 +28,24 @@ module Buzzle
     def draw
       if locked?
         LibRay.draw_rectangle(
-          pos_x: x,
-          pos_y: y,
+          pos_x: x * WIDTH,
+          pos_y: y * HEIGHT,
           width: WIDTH,
           height: HEIGHT,
           color: LibRay::BROWN
         )
       else
         LibRay.draw_rectangle(
-          pos_x: x,
-          pos_y: y,
+          pos_x: x * WIDTH,
+          pos_y: y * HEIGHT,
           width: WIDTH / 8,
           height: HEIGHT,
           color: LibRay::BROWN
         )
 
         LibRay.draw_rectangle(
-          pos_x: x + WIDTH - WIDTH / 8,
-          pos_y: y,
+          pos_x: x * WIDTH + WIDTH - WIDTH / 8,
+          pos_y: y * HEIGHT,
           width: WIDTH / 8,
           height: HEIGHT,
           color: LibRay::BROWN

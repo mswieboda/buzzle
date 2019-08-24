@@ -2,25 +2,25 @@ module Buzzle
   class Block
     getter x : Int32
     getter y : Int32
+    getter sprite : Sprite
 
-    WIDTH  = 64
-    HEIGHT = 64
+    WIDTH  = Game::GRID_SIZE
+    HEIGHT = Game::GRID_SIZE
 
     DRAW_SIZE_PADDING = 4
 
     def initialize(@x, @y)
+      @sprite = Sprite.get("block")
     end
 
     def update(frame_time)
     end
 
     def draw
-      LibRay.draw_rectangle(
-        pos_x: x + DRAW_SIZE_PADDING,
-        pos_y: y + DRAW_SIZE_PADDING,
-        width: WIDTH - DRAW_SIZE_PADDING * 2,
-        height: HEIGHT - DRAW_SIZE_PADDING * 2,
-        color: LibRay::BLUE
+      sprite.draw(
+        x: x * WIDTH + WIDTH / 2,
+        y: y * HEIGHT + HEIGHT / 2,
+        tint: LibRay::BLUE
       )
     end
   end

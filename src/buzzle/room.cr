@@ -5,14 +5,14 @@ module Buzzle
     getter width : Int32
     getter height : Int32
 
-    GRID_SIZE = 64
+    GRID_SIZE = Game::GRID_SIZE
 
     def initialize(@x, @y, @width, @height)
-      @door = Door.new(64, 0)
-      @player = Player.new(64, 64)
+      @door = Door.new(2, 0)
+      @player = Player.new(2, 2)
       @blocks = [] of Block
-      @blocks << Block.new(128, 64)
-      @blocks << Block.new(192, 128)
+      @blocks << Block.new(4, 2)
+      @blocks << Block.new(5, 4)
     end
 
     def update(frame_time)
@@ -26,8 +26,8 @@ module Buzzle
     end
 
     def draw
-      draw_room_border
-      draw_floor_grid
+      draw_room_border if Game::DEBUG
+      draw_floor_grid if Game::DEBUG
 
       @blocks.each(&.draw)
 

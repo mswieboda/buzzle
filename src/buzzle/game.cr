@@ -8,6 +8,8 @@ module Buzzle
     TARGET_FPS = 60
     DRAW_FPS   = DEBUG
 
+    GRID_SIZE = 32
+
     def initialize
       LibRay.init_window(SCREEN_WIDTH, SCREEN_HEIGHT, "Buzzle")
       LibRay.set_target_fps(TARGET_FPS)
@@ -28,6 +30,7 @@ module Buzzle
       Sprite.load(
         [
           {asset_file: "player", frames: 1, rows: 4},
+          {asset_file: "block", frames: 1, rows: 1},
         ]
       )
     end

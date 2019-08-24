@@ -5,8 +5,8 @@ module Buzzle
     getter sprite : Sprite
     getter direction : Direction
 
-    WIDTH  = 64
-    HEIGHT = 64
+    WIDTH  = Game::GRID_SIZE
+    HEIGHT = Game::GRID_SIZE
 
     DRAW_SIZE_PADDING = 12
 
@@ -16,30 +16,30 @@ module Buzzle
 
     def update(frame_time)
       if Keys.pressed?([LibRay::KEY_W, LibRay::KEY_UP])
-        @y -= WIDTH
+        @y -= 1
         @direction = Direction::Up
       end
 
       if Keys.pressed?([LibRay::KEY_A, LibRay::KEY_LEFT])
-        @x -= WIDTH
+        @x -= 1
         @direction = Direction::Left
       end
 
       if Keys.pressed?([LibRay::KEY_S, LibRay::KEY_DOWN])
-        @y += WIDTH
+        @y += 1
         @direction = Direction::Down
       end
 
       if Keys.pressed?([LibRay::KEY_D, LibRay::KEY_RIGHT])
-        @x += WIDTH
+        @x += 1
         @direction = Direction::Right
       end
     end
 
     def draw
       sprite.draw(
-        x: x + WIDTH / 2,
-        y: y + HEIGHT / 2,
+        x: x * WIDTH + WIDTH / 2,
+        y: y * HEIGHT + HEIGHT / 2,
         row: direction.to_i
       )
     end
