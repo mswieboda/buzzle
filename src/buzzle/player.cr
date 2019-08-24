@@ -2,13 +2,10 @@ module Buzzle
   class Player < SpriteEntity
     getter direction : Direction
 
-    WIDTH  = Game::GRID_SIZE
-    HEIGHT = Game::GRID_SIZE
-
     DRAW_SIZE_PADDING = 12
 
     def initialize(x, y, @direction = Direction::Up)
-      super("player", x, y, WIDTH, HEIGHT)
+      super("player", x, y)
     end
 
     def update(frame_time, entities : Array(Entity))
@@ -16,27 +13,35 @@ module Buzzle
     end
 
     def move(frame_time, entities)
+      dx = dy = 0
+
       if Keys.pressed?([LibRay::KEY_W, LibRay::KEY_UP])
-        @y -= 1
+        dy = -1
         @direction = Direction::Up
       end
 
       if Keys.pressed?([LibRay::KEY_A, LibRay::KEY_LEFT])
-        @x -= 1
+        dx = -1
         @direction = Direction::Left
       end
 
       if Keys.pressed?([LibRay::KEY_S, LibRay::KEY_DOWN])
-        @y += 1
+        dy = 1
         @direction = Direction::Down
       end
 
       if Keys.pressed?([LibRay::KEY_D, LibRay::KEY_RIGHT])
-        @x += 1
+        dx = 1
         @direction = Direction::Right
       end
 
-      # TODO: collisions with entities
+      @x += dx
+      @y += dy
+
+      if collisions?(entities)
+        @x -= dx
+        @y -= dy
+      end
     end
 
     def draw
