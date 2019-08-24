@@ -12,5 +12,9 @@ module Buzzle
     def draw
       draw(tint: LibRay::BLUE)
     end
+
+    def movable?
+      true
+    end
   end
 end
