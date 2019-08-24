@@ -1,8 +1,8 @@
 module Buzzle
   enum Direction
     Up
-    Down
     Left
+    Down
     Right
   end
 end
