@@ -1,16 +1,12 @@
 module Buzzle
-  class Door
-    getter x : Int32
-    getter y : Int32
+  class Door < Entity
     getter? locked
 
     WIDTH  = Game::GRID_SIZE
     HEIGHT = Game::GRID_SIZE / 4
 
-    def initialize(@x, @y, @locked = true)
-    end
-
-    def update(frame_time)
+    def initialize(x, y, @locked = true)
+      super(x, y, WIDTH, HEIGHT)
     end
 
     def toggle_lock!

@@ -26,7 +26,7 @@ module Buzzle
       @height = @texture.height / @rows
     end
 
-    def draw(x, y, frame = 1, row = 1, tint = LibRay::WHITE, rotation = 0)
+    def draw(x, y, frame = 1, row = 1, rotation = 0, tint = LibRay::WHITE)
       LibRay.draw_texture_pro(
         texture: texture,
         source_rec: LibRay::Rectangle.new(

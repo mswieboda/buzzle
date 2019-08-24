@@ -3,7 +3,7 @@ module Buzzle
     SCREEN_WIDTH  = 1280
     SCREEN_HEIGHT =  768
 
-    DEBUG = false
+    DEBUG = true
 
     TARGET_FPS = 60
     DRAW_FPS   = DEBUG

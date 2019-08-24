@@ -8,28 +8,28 @@ module Buzzle
     GRID_SIZE = Game::GRID_SIZE
 
     def initialize(@x, @y, @width, @height)
-      @door = Door.new(2, 0)
       @player = Player.new(2, 2)
-      @blocks = [] of Block
-      @blocks << Block.new(4, 2)
-      @blocks << Block.new(5, 4)
+      @door = Door.new(2, 0)
+
+      @entities = [] of Entity
+      @entities << @door
+      @entities << Block.new(4, 2)
+      @entities << Block.new(5, 4)
     end
 
     def update(frame_time)
-      @door.update(frame_time)
+      @player.update(frame_time, @entities)
 
       @door.toggle_lock! if Keys.pressed?(LibRay::KEY_SPACE)
 
-      @blocks.each(&.update(frame_time))
-
-      @player.update(frame_time)
+      @entities.each(&.update(frame_time))
     end
 
     def draw
       draw_room_border if Game::DEBUG
       draw_floor_grid if Game::DEBUG
 
-      @blocks.each(&.draw)
+      @entities.each(&.draw)
 
       @player.draw
       @door.draw
