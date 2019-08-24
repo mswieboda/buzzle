@@ -2,6 +2,8 @@ module Buzzle
   class Player
     getter x : Int32
     getter y : Int32
+    getter sprite : Sprite
+    getter direction : Direction
 
     WIDTH  = 64
     HEIGHT = 64
@@ -9,6 +11,7 @@ module Buzzle
     DRAW_SIZE_PADDING = 12
 
     def initialize(@x, @y, @direction = Direction::Up)
+      @sprite = Sprite.get("player")
     end
 
     def update(frame_time)
@@ -34,41 +37,10 @@ module Buzzle
     end
 
     def draw
-      LibRay.draw_rectangle_v(
-        position: LibRay::Vector2.new(
-          x: x + DRAW_SIZE_PADDING,
-          y: y + DRAW_SIZE_PADDING
-        ),
-        size: LibRay::Vector2.new(
-          x: WIDTH - DRAW_SIZE_PADDING * 2,
-          y: HEIGHT - DRAW_SIZE_PADDING * 2,
-        ),
-        color: LibRay::MAGENTA
-      )
-
-      # eyes, for direction
-      LibRay.draw_rectangle_v(
-        position: LibRay::Vector2.new(
-          x: x + WIDTH / 2 - DRAW_SIZE_PADDING / 1.5,
-          y: y + DRAW_SIZE_PADDING * 1.5
-        ),
-        size: LibRay::Vector2.new(
-          x: DRAW_SIZE_PADDING / 2,
-          y: DRAW_SIZE_PADDING / 2,
-        ),
-        color: LibRay::BLACK
-      )
-
-      LibRay.draw_rectangle_v(
-        position: LibRay::Vector2.new(
-          x: x + WIDTH / 2 + DRAW_SIZE_PADDING / 1.5,
-          y: y + DRAW_SIZE_PADDING * 1.5
-        ),
-        size: LibRay::Vector2.new(
-          x: DRAW_SIZE_PADDING / 2,
-          y: DRAW_SIZE_PADDING / 2,
-        ),
-        color: LibRay::BLACK
+      sprite.draw(
+        x: x + WIDTH / 2,
+        y: y + HEIGHT / 2,
+        row: direction.to_i
       )
     end
   end

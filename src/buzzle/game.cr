@@ -12,11 +12,23 @@ module Buzzle
       LibRay.init_window(SCREEN_WIDTH, SCREEN_HEIGHT, "Buzzle")
       LibRay.set_target_fps(TARGET_FPS)
 
+      load_sprites
+
       @room = Room.new(
         x: 0,
         y: 0,
         width: SCREEN_WIDTH,
         height: SCREEN_HEIGHT
+      )
+    end
+
+    def load_sprites
+      # attempt to load all sprites before loading any levels or intializing
+      # any classes that use a sprite internally
+      Sprite.load(
+        [
+          {asset_file: "player", frames: 1, rows: 4},
+        ]
       )
     end
 
