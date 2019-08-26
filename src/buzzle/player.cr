@@ -20,24 +20,18 @@ module Buzzle
       if Keys.pressed?([LibRay::KEY_W, LibRay::KEY_UP])
         dy = -1
         @direction = Direction::Up
-      end
-
-      if Keys.pressed?([LibRay::KEY_A, LibRay::KEY_LEFT])
+      elsif Keys.pressed?([LibRay::KEY_A, LibRay::KEY_LEFT])
         dx = -1
         @direction = Direction::Left
-      end
-
-      if Keys.pressed?([LibRay::KEY_S, LibRay::KEY_DOWN])
+      elsif Keys.pressed?([LibRay::KEY_S, LibRay::KEY_DOWN])
         dy = 1
         @direction = Direction::Down
-      end
-
-      if Keys.pressed?([LibRay::KEY_D, LibRay::KEY_RIGHT])
+      elsif Keys.pressed?([LibRay::KEY_D, LibRay::KEY_RIGHT])
         dx = 1
         @direction = Direction::Right
       end
 
-      if action && (dx.abs > 0 || dy.abs > 0)
+      if action && (dx != 0 || dy != 0)
         action_cell_x, action_cell_y = action_cell
         actionable_entity = entities.select(&.movable?).find(&.at?(action_cell_x, action_cell_y))
         actionable_entity.try(&.move(direction))
