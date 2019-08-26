@@ -14,6 +14,9 @@ module Buzzle
 
     def move(frame_time, entities)
       dx = dy = 0
+      original_direction = direction
+      action_cell_x, action_cell_y = action_cell
+      actionable_entity = entities.select(&.movable?).find(&.at?(action_cell_x, action_cell_y))
 
       action = Keys.down?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
 
@@ -31,10 +34,14 @@ module Buzzle
         @direction = Direction::Right
       end
 
-      if action && (dx != 0 || dy != 0)
-        action_cell_x, action_cell_y = action_cell
-        actionable_entity = entities.select(&.movable?).find(&.at?(action_cell_x, action_cell_y))
-        actionable_entity.try(&.move(direction))
+      if action && actionable_entity
+        if (dx != 0 || dy != 0) && direction == original_direction || direction.opposite?(original_direction)
+          actionable_entity.try(&.move(direction))
+          @direction = original_direction
+        else
+          @direction = original_direction
+          return
+        end
       end
 
       @x += dx
