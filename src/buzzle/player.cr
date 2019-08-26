@@ -9,16 +9,18 @@ module Buzzle
     end
 
     def update(frame_time, entities : Array(Entity))
-      move(frame_time, entities)
+      movement(frame_time, entities)
     end
 
-    def move(frame_time, entities)
+    def movement(frame_time, entities)
       dx = dy = 0
       original_direction = direction
       action_cell_x, action_cell_y = action_cell
-      actionable_entity = entities.select(&.movable?).find(&.at?(action_cell_x, action_cell_y))
 
-      action = Keys.down?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
+      held_blocks = entities.select { |e| e.is_a?(Block) }
+      held_block = held_blocks.find(&.at?(action_cell_x, action_cell_y)).as(Block | Nil)
+
+      holding = Keys.down?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
 
       if Keys.pressed?([LibRay::KEY_W, LibRay::KEY_UP])
         dy = -1
@@ -34,11 +36,11 @@ module Buzzle
         @direction = Direction::Right
       end
 
-      if action && actionable_entity
-        if (dx != 0 || dy != 0) && direction == original_direction || direction.opposite?(original_direction)
-          actionable_entity.try(&.move(direction))
-          @direction = original_direction
-        else
+      if holding && held_block && (dx != 0 || dy != 0)
+        if direction == original_direction
+          # push
+          held_block.move(entities, direction)
+        elsif !direction.opposite?(original_direction)
           @direction = original_direction
           return
         end
@@ -50,6 +52,14 @@ module Buzzle
       if collisions?(entities)
         @x -= dx
         @y -= dy
+      end
+
+      if holding && held_block && (dx != 0 || dy != 0)
+        if direction.opposite?(original_direction)
+          # pull
+          held_block.move(entities, direction)
+          @direction = original_direction
+        end
       end
     end
 

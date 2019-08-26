@@ -6,17 +6,21 @@ module Buzzle
     Right
 
     def opposite?(other_direction)
+      self.opposite == other_direction
+    end
+
+    def opposite
       case self
       when Up
-        other_direction == Down
+        Down
       when Left
-        other_direction == Right
+        Right
       when Down
-        other_direction == Up
+        Up
       when Right
-        other_direction == Left
+        Left
       else
-        false
+        Up
       end
     end
   end

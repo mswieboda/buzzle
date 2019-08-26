@@ -12,6 +12,7 @@ module Buzzle
       @door = Door.new(3, 0)
 
       @entities = [] of Entity
+      @entities << @player
       @entities << @door
       @entities << Block.new(5, 3)
       @entities << Block.new(7, 5)

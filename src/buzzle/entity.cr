@@ -22,30 +22,12 @@ module Buzzle
       true
     end
 
-    def movable?
-      false
-    end
-
-    def move(direction : Direction, times = 1)
-      case direction
-      when Direction::Up
-        @y -= times
-      when Direction::Left
-        @x -= times
-      when Direction::Down
-        @y += times
-      when Direction::Right
-        @x += times
-      end
-    end
-
     def to_s_coords
       "(#{x}, #{y})"
     end
 
     def collisions?(entities : Array(Entity))
-      # puts entities.map(&.to_s_coords).join(", ")
-      entities.any? { |entity| collision?(entity) }
+      entities.reject { |e| e == self }.any? { |entity| collision?(entity) }
     end
 
     def collision?(entity : Entity)
