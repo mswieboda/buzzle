@@ -52,7 +52,7 @@ module Buzzle
       LibRay.key_down?(key)
     end
 
-    def self.down?(key : Array(Int32))
+    def self.down?(keys : Array(Int32))
       keys.any? { |key| down?(key) }
     end
 
