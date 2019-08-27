@@ -9,15 +9,15 @@ module Buzzle
       super(x, y)
     end
 
-    def toggle_lock!
+    def toggle_lock
       @locked = !@locked
     end
 
-    def unlock!
+    def unlock
       @locked = false
     end
 
-    def lock!
+    def lock
       @locked = true
     end
 

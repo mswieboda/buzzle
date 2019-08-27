@@ -3,8 +3,6 @@ module Buzzle
     WIDTH  = Game::GRID_SIZE
     HEIGHT = Game::GRID_SIZE
 
-    DRAW_SIZE_PADDING = 4
-
     def initialize(x, y)
       super("block", x, y)
     end

@@ -10,18 +10,23 @@ module Buzzle
     def initialize(@x, @y, @width, @height)
       @player = Player.new(3, 3)
       @door = Door.new(3, 0)
+      @switch = Switch.new(10, 3)
 
       @entities = [] of Entity
       @entities << @door
       @entities << Block.new(5, 3)
       @entities << Block.new(7, 5)
       @entities << @player
+      @entities << @switch
     end
 
     def update(frame_time)
       @player.update(frame_time, @entities)
 
-      @door.toggle_lock! if Keys.pressed?(LibRay::KEY_SPACE)
+      if Keys.pressed?(LibRay::KEY_SPACE)
+        @door.toggle_lock
+        @switch.switch
+      end
 
       @entities.each(&.update(frame_time))
 
