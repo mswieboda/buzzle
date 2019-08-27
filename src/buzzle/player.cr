@@ -5,7 +5,7 @@ module Buzzle
     @actionable : Entity | Nil
     @held_block : Block | Nil
 
-    MOVING_AMOUNT = 2
+    MOVING_AMOUNT = 150
 
     def initialize(x, y, @direction = Direction::Up)
       super("player", x, y)
@@ -17,8 +17,7 @@ module Buzzle
       original_direction = direction
 
       actionable(entities)
-      movement(frame_time, entities) unless moving?
-      moving_transition(frame_time) if moving?
+      movement(frame_time, entities)
     end
 
     def actionable(entities)
@@ -39,29 +38,29 @@ module Buzzle
     end
 
     def movement(frame_time, entities)
-      dx = dy = 0
+      dx = dy = 0_f32
       new_direction = direction
+      pushing = false
 
       if Keys.down?([LibRay::KEY_W, LibRay::KEY_UP])
-        dy = -1
+        dy = -MOVING_AMOUNT * frame_time
         new_direction = Direction::Up
       elsif Keys.down?([LibRay::KEY_A, LibRay::KEY_LEFT])
-        dx = -1
+        dx = -MOVING_AMOUNT * frame_time
         new_direction = Direction::Left
       elsif Keys.down?([LibRay::KEY_S, LibRay::KEY_DOWN])
-        dy = 1
+        dy = MOVING_AMOUNT * frame_time
         new_direction = Direction::Down
       elsif Keys.down?([LibRay::KEY_D, LibRay::KEY_RIGHT])
-        dx = 1
+        dx = MOVING_AMOUNT * frame_time
         new_direction = Direction::Right
       end
 
       # if attempting to move (delta != 0)
-      if dx != 0 || dy != 0
+      if dx != 0_f32 || dy != 0_f32
         if @held_block
           if new_direction == direction
-            # push
-            @held_block.try(&.move(entities, direction))
+            @held_block.try(&.move(dx, dy, entities))
           elsif !new_direction.opposite?(direction)
             # trying to push/pull sideways, don't move!
             return
@@ -71,55 +70,22 @@ module Buzzle
         @x += dx
         @y += dy
 
-        if !collisions?(entities)
-          @moving_x = dx * frame_time * MOVING_AMOUNT
-          @moving_y = dy * frame_time * MOVING_AMOUNT
-          puts "init move! (#{dx}, #{dy}): (#{@moving_x}, #{@moving_y})"
+        if collisions?(entities)
+          @x -= dx
+          @y -= dy
         end
-
-        @x -= dx
-        @y -= dy
 
         if @held_block && new_direction.opposite?(direction)
           # pull
-          @held_block.try(&.move(entities, new_direction))
+          @held_block.try(&.move(dx, dy, entities.reject { |e| e == self }))
         end
       end
 
       @direction = new_direction unless @held_block
     end
 
-    def moving_transition(frame_time)
-      if @moving_x > 0
-        @moving_x += frame_time * MOVING_AMOUNT
-      elsif @moving_x < 0
-        @moving_x -= frame_time * MOVING_AMOUNT
-      end
-
-      if @moving_y > 0
-        @moving_y += frame_time * MOVING_AMOUNT
-      elsif @moving_y < 0
-        @moving_y -= frame_time * MOVING_AMOUNT
-      end
-
-      puts "moving! (#{@moving_x}, #{@moving_y})"
-
-      # stop moving
-      if @moving_x.abs >= 1 || @moving_y.abs >= 1
-        @x += @moving_x.to_i if @moving_x.abs >= 1
-        @y += @moving_y.to_i if @moving_y.abs >= 1
-
-        @moving_x = 0
-        @moving_y = 0
-      end
-    end
-
-    def moving?
-      @moving_x.abs > 0 || @moving_y.abs > 0
-    end
-
     def draw
-      draw(x: x + @moving_x, y: y + @moving_y, row: direction.to_i)
+      draw(row: direction.to_i)
     end
 
     def action_cell

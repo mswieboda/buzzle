@@ -6,7 +6,7 @@ module Buzzle
     HEIGHT = Game::GRID_SIZE / 4
 
     def initialize(x, y, @locked = true)
-      super(x, y)
+      super(x, y, WIDTH, HEIGHT)
     end
 
     def toggle_lock
