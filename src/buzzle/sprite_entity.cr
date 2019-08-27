@@ -7,7 +7,7 @@ module Buzzle
       super(x, y, width, height)
     end
 
-    def draw(frame = 1, row = 1, rotation = 0, tint = LibRay::WHITE)
+    def draw(x = x, y = y, frame = 1, row = 1, rotation = 0, tint = LibRay::WHITE)
       sprite.draw(
         x: x * width * Game::GRID_SIZE + width * Game::GRID_SIZE / 2,
         y: y * height * Game::GRID_SIZE + height * Game::GRID_SIZE / 2,

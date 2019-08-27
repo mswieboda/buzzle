@@ -5,8 +5,12 @@ module Buzzle
     @actionable : Entity | Nil
     @held_block : Block | Nil
 
+    MOVING_AMOUNT = 2
+
     def initialize(x, y, @direction = Direction::Up)
       super("player", x, y)
+
+      @moving_x = @moving_y = 0_f32
     end
 
     def update(frame_time, entities : Array(Entity))
@@ -38,17 +42,23 @@ module Buzzle
       new_direction = direction
 
       if Keys.pressed?([LibRay::KEY_W, LibRay::KEY_UP])
-        dy = -1
         new_direction = Direction::Up
       elsif Keys.pressed?([LibRay::KEY_A, LibRay::KEY_LEFT])
-        dx = -1
         new_direction = Direction::Left
       elsif Keys.pressed?([LibRay::KEY_S, LibRay::KEY_DOWN])
-        dy = 1
         new_direction = Direction::Down
       elsif Keys.pressed?([LibRay::KEY_D, LibRay::KEY_RIGHT])
-        dx = 1
         new_direction = Direction::Right
+      end
+
+      if Keys.down?([LibRay::KEY_W, LibRay::KEY_UP])
+        dy = -1
+      elsif Keys.down?([LibRay::KEY_A, LibRay::KEY_LEFT])
+        dx = -1
+      elsif Keys.down?([LibRay::KEY_S, LibRay::KEY_DOWN])
+        dy = 1
+      elsif Keys.down?([LibRay::KEY_D, LibRay::KEY_RIGHT])
+        dx = 1
       end
 
       if @held_block && (dx != 0 || dy != 0)
@@ -67,6 +77,39 @@ module Buzzle
       if collisions?(entities)
         @x -= dx
         @y -= dy
+      else
+        @x -= dx
+        @y -= dy
+
+        # TODO: set @movable here from dx and dy
+        if !moving? && (dx != 0 || dy != 0)
+          @moving_x = dx * frame_time * MOVING_AMOUNT
+          @moving_y = dy * frame_time * MOVING_AMOUNT
+          puts "init move! (#{dx}, #{dy}): (#{@moving_x}, #{@moving_y})"
+        elsif moving?
+          if @moving_x > 0
+            @moving_x += frame_time * MOVING_AMOUNT
+          elsif @moving_x < 0
+            @moving_x -= frame_time * MOVING_AMOUNT
+          end
+
+          if @moving_y > 0
+            @moving_y += frame_time * MOVING_AMOUNT
+          elsif @moving_y < 0
+            @moving_y -= frame_time * MOVING_AMOUNT
+          end
+
+          puts "moving! (#{@moving_x}, #{@moving_y})"
+
+          # stop moving
+          if @moving_x.abs >= 1 || @moving_y.abs >= 1
+            @x += @moving_x.to_i if @moving_x.abs >= 1
+            @y += @moving_y.to_i if @moving_y.abs >= 1
+
+            @moving_x = 0
+            @moving_y = 0
+          end
+        end
       end
 
       if @held_block && (dx != 0 || dy != 0) && new_direction.opposite?(direction)
@@ -77,8 +120,12 @@ module Buzzle
       @direction = new_direction unless @held_block
     end
 
+    def moving?
+      @moving_x.abs > 0 || @moving_y.abs > 0
+    end
+
     def draw
-      draw(row: direction.to_i)
+      draw(x: x + @moving_x, y: y + @moving_y, row: direction.to_i)
     end
 
     def action_cell
