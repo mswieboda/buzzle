@@ -24,9 +24,11 @@ module Buzzle
       @player.update(frame_time, @entities)
 
       if Keys.pressed?(LibRay::KEY_SPACE)
-        @door.toggle_lock
         @switch.switch
       end
+
+      @door.unlock if @switch.on?
+      @door.lock if @switch.off?
 
       @entities.each(&.update(frame_time))
 
