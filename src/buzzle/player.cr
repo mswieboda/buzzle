@@ -17,7 +17,8 @@ module Buzzle
       original_direction = direction
 
       actionable(entities)
-      movement(frame_time, entities)
+      movement(frame_time, entities) unless moving?
+      moving_transition(frame_time) if moving?
     end
 
     def actionable(entities)
@@ -41,83 +42,76 @@ module Buzzle
       dx = dy = 0
       new_direction = direction
 
-      if Keys.pressed?([LibRay::KEY_W, LibRay::KEY_UP])
+      if Keys.down?([LibRay::KEY_W, LibRay::KEY_UP])
+        dy = -1
         new_direction = Direction::Up
-      elsif Keys.pressed?([LibRay::KEY_A, LibRay::KEY_LEFT])
+      elsif Keys.down?([LibRay::KEY_A, LibRay::KEY_LEFT])
+        dx = -1
         new_direction = Direction::Left
-      elsif Keys.pressed?([LibRay::KEY_S, LibRay::KEY_DOWN])
+      elsif Keys.down?([LibRay::KEY_S, LibRay::KEY_DOWN])
+        dy = 1
         new_direction = Direction::Down
-      elsif Keys.pressed?([LibRay::KEY_D, LibRay::KEY_RIGHT])
+      elsif Keys.down?([LibRay::KEY_D, LibRay::KEY_RIGHT])
+        dx = 1
         new_direction = Direction::Right
       end
 
-      if Keys.down?([LibRay::KEY_W, LibRay::KEY_UP])
-        dy = -1
-      elsif Keys.down?([LibRay::KEY_A, LibRay::KEY_LEFT])
-        dx = -1
-      elsif Keys.down?([LibRay::KEY_S, LibRay::KEY_DOWN])
-        dy = 1
-      elsif Keys.down?([LibRay::KEY_D, LibRay::KEY_RIGHT])
-        dx = 1
-      end
-
-      if @held_block && (dx != 0 || dy != 0)
-        if new_direction == direction
-          # push
-          @held_block.try(&.move(entities, direction))
-        elsif !new_direction.opposite?(direction)
-          # trying to push/pull sideways, don't move!
-          return
+      # if attempting to move (delta != 0)
+      if dx != 0 || dy != 0
+        if @held_block
+          if new_direction == direction
+            # push
+            @held_block.try(&.move(entities, direction))
+          elsif !new_direction.opposite?(direction)
+            # trying to push/pull sideways, don't move!
+            return
+          end
         end
-      end
 
-      @x += dx
-      @y += dy
+        @x += dx
+        @y += dy
 
-      if collisions?(entities)
-        @x -= dx
-        @y -= dy
-      else
-        @x -= dx
-        @y -= dy
-
-        # TODO: set @movable here from dx and dy
-        if !moving? && (dx != 0 || dy != 0)
+        if !collisions?(entities)
           @moving_x = dx * frame_time * MOVING_AMOUNT
           @moving_y = dy * frame_time * MOVING_AMOUNT
           puts "init move! (#{dx}, #{dy}): (#{@moving_x}, #{@moving_y})"
-        elsif moving?
-          if @moving_x > 0
-            @moving_x += frame_time * MOVING_AMOUNT
-          elsif @moving_x < 0
-            @moving_x -= frame_time * MOVING_AMOUNT
-          end
+        end
 
-          if @moving_y > 0
-            @moving_y += frame_time * MOVING_AMOUNT
-          elsif @moving_y < 0
-            @moving_y -= frame_time * MOVING_AMOUNT
-          end
+        @x -= dx
+        @y -= dy
 
-          puts "moving! (#{@moving_x}, #{@moving_y})"
-
-          # stop moving
-          if @moving_x.abs >= 1 || @moving_y.abs >= 1
-            @x += @moving_x.to_i if @moving_x.abs >= 1
-            @y += @moving_y.to_i if @moving_y.abs >= 1
-
-            @moving_x = 0
-            @moving_y = 0
-          end
+        if @held_block && new_direction.opposite?(direction)
+          # pull
+          @held_block.try(&.move(entities, new_direction))
         end
       end
 
-      if @held_block && (dx != 0 || dy != 0) && new_direction.opposite?(direction)
-        # pull
-        @held_block.try(&.move(entities, new_direction))
+      @direction = new_direction unless @held_block
+    end
+
+    def moving_transition(frame_time)
+      if @moving_x > 0
+        @moving_x += frame_time * MOVING_AMOUNT
+      elsif @moving_x < 0
+        @moving_x -= frame_time * MOVING_AMOUNT
       end
 
-      @direction = new_direction unless @held_block
+      if @moving_y > 0
+        @moving_y += frame_time * MOVING_AMOUNT
+      elsif @moving_y < 0
+        @moving_y -= frame_time * MOVING_AMOUNT
+      end
+
+      puts "moving! (#{@moving_x}, #{@moving_y})"
+
+      # stop moving
+      if @moving_x.abs >= 1 || @moving_y.abs >= 1
+        @x += @moving_x.to_i if @moving_x.abs >= 1
+        @y += @moving_y.to_i if @moving_y.abs >= 1
+
+        @moving_x = 0
+        @moving_y = 0
+      end
     end
 
     def moving?
