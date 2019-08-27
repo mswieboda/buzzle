@@ -15,11 +15,13 @@ module Buzzle
       original_direction = direction
 
       actionable = nil
+      held_block = nil
 
-      if Keys.down?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
-        action_cell_x, action_cell_y = action_cell
-        actionable = entities.select(&.actionable?).find(&.at?(action_cell_x, action_cell_y))
-        action = true
+      action_cell_x, action_cell_y = action_cell
+      actionable = entities.select(&.actionable?).find(&.at?(action_cell_x, action_cell_y))
+
+      if actionable && Keys.down?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
+        held_block = actionable.as(Block) if actionable.is_a?(Block)
       end
 
       if Keys.pressed?([LibRay::KEY_W, LibRay::KEY_UP])
@@ -34,21 +36,17 @@ module Buzzle
       elsif Keys.pressed?([LibRay::KEY_D, LibRay::KEY_RIGHT])
         dx = 1
         @direction = Direction::Right
+      elsif actionable && Keys.pressed?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
+        actionable.try(&.action)
       end
 
-      if action
-        if actionable.is_a?(Block) && (dx != 0 || dy != 0)
-          held_block = actionable.as(Block)
-
-          if direction == original_direction
-            # push
-            held_block.move(entities, direction)
-          elsif !direction.opposite?(original_direction)
-            @direction = original_direction
-            return
-          end
-        elsif actionable
-          actionable.action
+      if held_block && (dx != 0 || dy != 0)
+        if direction == original_direction
+          # push
+          held_block.move(entities, direction)
+        elsif !direction.opposite?(original_direction)
+          @direction = original_direction
+          return
         end
       end
 
@@ -60,15 +58,10 @@ module Buzzle
         @y -= dy
       end
 
-      if action
-        if actionable.is_a?(Block) && (dx != 0 || dy != 0)
-          held_block = actionable.as(Block)
-          if direction.opposite?(original_direction)
-            # pull
-            held_block.try(&.move(entities, direction))
-            @direction = original_direction
-          end
-        end
+      if held_block && (dx != 0 || dy != 0) && direction.opposite?(original_direction)
+        # pull
+        held_block.try(&.move(entities, direction))
+        @direction = original_direction
       end
     end
 
