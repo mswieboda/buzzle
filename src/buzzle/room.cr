@@ -12,10 +12,10 @@ module Buzzle
       @door = Door.new(3, 0)
 
       @entities = [] of Entity
-      @entities << @player
       @entities << @door
       @entities << Block.new(5, 3)
       @entities << Block.new(7, 5)
+      @entities << @player
     end
 
     def update(frame_time)
@@ -24,6 +24,9 @@ module Buzzle
       @door.toggle_lock! if Keys.pressed?(LibRay::KEY_SPACE)
 
       @entities.each(&.update(frame_time))
+
+      # sort entities by y
+      @entities.sort! { |e1, e2| e1.y <=> e2.y }
     end
 
     def draw
@@ -31,9 +34,6 @@ module Buzzle
       draw_floor_grid if Game::DEBUG
 
       @entities.each(&.draw)
-
-      @player.draw
-      @door.draw
     end
 
     def draw_room_border
