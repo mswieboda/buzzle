@@ -17,7 +17,11 @@ module Buzzle
       original_direction = direction
 
       actionable(entities)
+      # push
+      # rename to movement_input
       movement(frame_time, entities)
+      # move via @moving_x/y
+      # pull
     end
 
     def actionable(entities)
@@ -55,7 +59,8 @@ module Buzzle
         dx = MOVING_AMOUNT * frame_time
         new_direction = Direction::Right
       end
-
+      
+      # move to #push
       # if attempting to move (delta != 0)
       if dx != 0_f32 || dy != 0_f32
         if @held_block
@@ -73,8 +78,11 @@ module Buzzle
         if collisions?(entities)
           @x -= dx
           @y -= dy
+        else
+          # set @movable_x/y
         end
 
+        # move to #pull
         if @held_block && new_direction.opposite?(direction)
           # pull
           @held_block.try(&.move(dx, dy, entities.reject { |e| e == self }))
