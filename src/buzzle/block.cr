@@ -11,6 +11,10 @@ module Buzzle
       draw(tint: LibRay::BLUE)
     end
 
+    def actionable?
+      true
+    end
+
     def move(entities : Array(Entity), direction : Direction, times = 1)
       dx = dy = 0
 

@@ -40,6 +40,14 @@ module Buzzle
       end
     end
 
+    def actionable?
+      true
+    end
+
+    def action
+      switch
+    end
+
     def frame
       (@frame_t * FPS).to_i
     end

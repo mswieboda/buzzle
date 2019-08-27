@@ -2,8 +2,6 @@ module Buzzle
   class Player < SpriteEntity
     getter direction : Direction
 
-    DRAW_SIZE_PADDING = 12
-
     def initialize(x, y, @direction = Direction::Up)
       super("player", x, y)
     end
@@ -15,12 +13,14 @@ module Buzzle
     def movement(frame_time, entities)
       dx = dy = 0
       original_direction = direction
-      action_cell_x, action_cell_y = action_cell
 
-      held_blocks = entities.select { |e| e.is_a?(Block) }
-      held_block = held_blocks.find(&.at?(action_cell_x, action_cell_y)).as(Block | Nil)
+      actionable = nil
 
-      holding = Keys.down?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
+      if Keys.down?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
+        action_cell_x, action_cell_y = action_cell
+        actionable = entities.select(&.actionable?).find(&.at?(action_cell_x, action_cell_y))
+        action = true
+      end
 
       if Keys.pressed?([LibRay::KEY_W, LibRay::KEY_UP])
         dy = -1
@@ -36,13 +36,19 @@ module Buzzle
         @direction = Direction::Right
       end
 
-      if holding && held_block && (dx != 0 || dy != 0)
-        if direction == original_direction
-          # push
-          held_block.move(entities, direction)
-        elsif !direction.opposite?(original_direction)
-          @direction = original_direction
-          return
+      if action
+        if actionable.is_a?(Block) && (dx != 0 || dy != 0)
+          held_block = actionable.as(Block)
+
+          if direction == original_direction
+            # push
+            held_block.move(entities, direction)
+          elsif !direction.opposite?(original_direction)
+            @direction = original_direction
+            return
+          end
+        elsif actionable
+          actionable.action
         end
       end
 
@@ -54,11 +60,14 @@ module Buzzle
         @y -= dy
       end
 
-      if holding && held_block && (dx != 0 || dy != 0)
-        if direction.opposite?(original_direction)
-          # pull
-          held_block.move(entities, direction)
-          @direction = original_direction
+      if action
+        if actionable.is_a?(Block) && (dx != 0 || dy != 0)
+          held_block = actionable.as(Block)
+          if direction.opposite?(original_direction)
+            # pull
+            held_block.try(&.move(entities, direction))
+            @direction = original_direction
+          end
         end
       end
     end

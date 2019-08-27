@@ -23,10 +23,6 @@ module Buzzle
     def update(frame_time)
       @player.update(frame_time, @entities)
 
-      if Keys.pressed?(LibRay::KEY_SPACE)
-        @switch.switch
-      end
-
       @door.unlock if @switch.on?
       @door.lock if @switch.off?
 

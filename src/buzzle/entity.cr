@@ -18,8 +18,11 @@ module Buzzle
       x == other_x && y == other_y
     end
 
-    def collidable?
-      true
+    def actionable?
+      false
+    end
+
+    def action
     end
 
     def to_s_coords
