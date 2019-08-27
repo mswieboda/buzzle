@@ -2,50 +2,61 @@ module Buzzle
   class Player < SpriteEntity
     getter direction : Direction
 
+    @actionable : Entity | Nil
+    @held_block : Block | Nil
+
     def initialize(x, y, @direction = Direction::Up)
       super("player", x, y)
     end
 
     def update(frame_time, entities : Array(Entity))
+      original_direction = direction
+
+      actionable(entities)
       movement(frame_time, entities)
+    end
+
+    def actionable(entities)
+      pressed = Keys.pressed?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
+      down = Keys.down?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
+
+      if pressed
+        action_cell_x, action_cell_y = action_cell
+        @actionable = entities.select(&.actionable?).find(&.at?(action_cell_x, action_cell_y))
+
+        # action
+        @actionable.try(&.action) if @actionable
+      elsif down && @actionable && @actionable.is_a?(Block)
+        @held_block = @actionable.as(Block)
+      elsif Keys.released?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
+        @actionable = @held_block = nil
+      end
     end
 
     def movement(frame_time, entities)
       dx = dy = 0
-      original_direction = direction
-
-      actionable = nil
-      held_block = nil
-
-      action_cell_x, action_cell_y = action_cell
-      actionable = entities.select(&.actionable?).find(&.at?(action_cell_x, action_cell_y))
-
-      if actionable && Keys.down?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
-        held_block = actionable.as(Block) if actionable.is_a?(Block)
-      end
+      new_direction = direction
 
       if Keys.pressed?([LibRay::KEY_W, LibRay::KEY_UP])
         dy = -1
-        @direction = Direction::Up
+        new_direction = Direction::Up
       elsif Keys.pressed?([LibRay::KEY_A, LibRay::KEY_LEFT])
         dx = -1
-        @direction = Direction::Left
+        new_direction = Direction::Left
       elsif Keys.pressed?([LibRay::KEY_S, LibRay::KEY_DOWN])
         dy = 1
-        @direction = Direction::Down
+        new_direction = Direction::Down
       elsif Keys.pressed?([LibRay::KEY_D, LibRay::KEY_RIGHT])
         dx = 1
-        @direction = Direction::Right
-      elsif actionable && Keys.pressed?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
-        actionable.try(&.action)
+        new_direction = Direction::Right
       end
 
-      if held_block && (dx != 0 || dy != 0)
-        if direction == original_direction
+      if @held_block && (dx != 0 || dy != 0)
+        if new_direction == direction
           # push
-          held_block.move(entities, direction)
-        elsif !direction.opposite?(original_direction)
-          @direction = original_direction
+          @held_block.try(&.move(entities, direction))
+        elsif !new_direction.opposite?(direction)
+          # trying to push/pull sideways, don't move!
           return
         end
       end
@@ -58,11 +69,12 @@ module Buzzle
         @y -= dy
       end
 
-      if held_block && (dx != 0 || dy != 0) && direction.opposite?(original_direction)
+      if @held_block && (dx != 0 || dy != 0) && new_direction.opposite?(direction)
         # pull
-        held_block.try(&.move(entities, direction))
-        @direction = original_direction
+        @held_block.try(&.move(entities, new_direction))
       end
+
+      @direction = new_direction unless @held_block
     end
 
     def draw

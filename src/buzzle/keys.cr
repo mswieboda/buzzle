@@ -60,7 +60,7 @@ module Buzzle
       LibRay.key_released?(key)
     end
 
-    def self.released?(key : Array(Int32))
+    def self.released?(keys : Array(Int32))
       keys.any? { |key| released?(key) }
     end
 
