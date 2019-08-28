@@ -23,8 +23,8 @@ module Buzzle
     def update(frame_time)
       @player.update(frame_time, @entities)
 
-      @door.unlock if @switch.on?
-      @door.lock if @switch.off?
+      @door.open if @switch.on?
+      @door.close if @switch.off?
 
       @entities.each(&.update(frame_time))
 
