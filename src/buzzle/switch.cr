@@ -5,12 +5,13 @@ module Buzzle
 
     FPS = 12
 
-    def initialize(x, y)
+    def initialize(x, y, @on = false)
       super("switch", x, y, Game::GRID_SIZE, Game::GRID_SIZE)
 
       @frame_t = 0_f32
-      @on = true
       @switching = false
+
+      self.frame = @sprite.frames - 1 if off?
     end
 
     def draw
@@ -50,7 +51,7 @@ module Buzzle
     end
 
     def frame=(frame)
-      @frame = (frame * FPS).to_i
+      @frame_t = frame.to_f32 / FPS
     end
 
     def switch

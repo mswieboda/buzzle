@@ -24,24 +24,24 @@ module Buzzle
     def draw
       if locked?
         LibRay.draw_rectangle(
-          pos_x: x * WIDTH,
-          pos_y: y * HEIGHT,
+          pos_x: x,
+          pos_y: y,
           width: WIDTH,
           height: HEIGHT,
           color: LibRay::BROWN
         )
       else
         LibRay.draw_rectangle(
-          pos_x: x * WIDTH,
-          pos_y: y * HEIGHT,
+          pos_x: x,
+          pos_y: y,
           width: WIDTH / 8,
           height: HEIGHT,
           color: LibRay::BROWN
         )
 
         LibRay.draw_rectangle(
-          pos_x: x * WIDTH + WIDTH - WIDTH / 8,
-          pos_y: y * HEIGHT,
+          pos_x: x + WIDTH - WIDTH / 8,
+          pos_y: y,
           width: WIDTH / 8,
           height: HEIGHT,
           color: LibRay::BROWN
