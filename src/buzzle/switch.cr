@@ -55,8 +55,16 @@ module Buzzle
       @frame_t = frame.to_f32 / FPS
     end
 
-    def switch
-      @switching = true
+    def switch(instant = false)
+      if instant
+        @on = !@on
+
+        @frame_t = 0_f32
+
+        self.frame = @sprite.frames - 1 if on?
+      else
+        @switching = true
+      end
     end
 
     def off?

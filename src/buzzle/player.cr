@@ -151,21 +151,21 @@ module Buzzle
       [dx.sign, dy.sign] == direction.opposite.to_delta
     end
 
-    def enter(to : Door, from : Door)
+    def enter(door : Door, instant = false)
       stop
 
-      return if to.switching?
+      return if door.switching?
 
-      if to.closed?
-        to.open
-      else
-        to.exit
+      door.open(instant: instant) if door.closed?
 
-        @x = to.x
-        @y = to.y
+      return unless instant
 
-        exit(to)
-      end
+      door.exit
+
+      @x = door.x
+      @y = door.y
+
+      exit(door)
     end
 
     def exit(door : Door)

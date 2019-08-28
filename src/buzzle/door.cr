@@ -15,8 +15,8 @@ module Buzzle
       !@exiting && open? && super(entity)
     end
 
-    def toggle
-      switch
+    def toggle(instant = false)
+      switch(instant)
     end
 
     def closed?
@@ -27,12 +27,12 @@ module Buzzle
       on?
     end
 
-    def open
-      toggle if closed?
+    def open(instant = false)
+      toggle(instant) if closed?
     end
 
-    def close
-      toggle if open?
+    def close(instant = false)
+      toggle(instant) if open?
     end
 
     def collidable?

@@ -1,6 +1,6 @@
 module Buzzle::Rooms
   class Playground < Room
-    def initialize(@player, entities = [] of Entity, @x = 0, @y = 0, @width = 0, @height = 0)
+    def initialize(@player, entities = [] of Entity, @x = 0, @y = 0, @width = Game::SCREEN_WIDTH, @height = Game::SCREEN_HEIGHT)
       @entities = [] of Entity
       @entities += entities
       @entities << @player

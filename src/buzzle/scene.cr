@@ -16,5 +16,14 @@ module Buzzle
     def draw
       @room.draw
     end
+
+    def change_room(room : Room)
+      @room = room
+    end
+
+    def change_room(room : Room, door : Door)
+      change_room(room: room)
+      @player.enter(door, instant: true)
+    end
   end
 end
