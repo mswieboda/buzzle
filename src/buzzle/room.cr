@@ -8,8 +8,7 @@ module Buzzle
 
     GRID_SIZE = Game::GRID_SIZE
 
-    def initialize(@player, @x = 0, @y = 0, @width = 0, @height = 0)
-      @entities = [] of Entity
+    def initialize(@player, @entities = [] of Entity, @x = 0, @y = 0, @width = 0, @height = 0)
     end
 
     def update(frame_time)

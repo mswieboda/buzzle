@@ -3,7 +3,7 @@ module Buzzle
     getter player : Player
 
     def initialize(@player)
-      @room = Rooms::Playground.new(@player, 0, 0, Game::SCREEN_WIDTH, Game::SCREEN_HEIGHT)
+      @room = Room.new(@player)
 
       @rooms = [] of Room
       @rooms << @room

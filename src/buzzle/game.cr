@@ -17,7 +17,7 @@ module Buzzle
       load_sprites
 
       @player = Player.new(3 * Game::GRID_SIZE, 3 * Game::GRID_SIZE)
-      @scene = Scene.new(@player)
+      @scene = Scenes::Playground.new(@player)
 
       @scenes = [] of Scene
       @scenes << @scene
