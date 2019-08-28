@@ -20,6 +20,10 @@ module Buzzle
       x == other_x && y == other_y
     end
 
+    def collidable?
+      true
+    end
+
     def actionable?
       false
     end

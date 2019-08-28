@@ -14,7 +14,7 @@ module Buzzle
     end
 
     def update(frame_time, entities : Array(Entity))
-      actionable(entities)
+      actionable(entities) unless moving?
       movement_input(frame_time, entities) unless moving?
       moving_transition(frame_time, entities) if moving?
     end
@@ -59,12 +59,24 @@ module Buzzle
         @x += dx * Game::GRID_SIZE
         @y += dy * Game::GRID_SIZE
 
-        if collisions?(entities.reject { |e| e == @held_block })
+        if pushing_block?(dx, dy)
+          @held_block.try(&.move(dx * Game::GRID_SIZE, dy * Game::GRID_SIZE, entities))
+        end
+
+        if collisions?(entities.select(&.collidable?))
           @x -= dx * Game::GRID_SIZE
           @y -= dy * Game::GRID_SIZE
+
+          if pushing_block?(dx, dy)
+            @held_block.try(&.move(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, entities))
+          end
         else
           @x -= dx * Game::GRID_SIZE
           @y -= dy * Game::GRID_SIZE
+
+          if pushing_block?(dx, dy)
+            @held_block.try(&.move(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, entities))
+          end
 
           @moving_x = dx.to_f32 * MOVING_AMOUNT
           @moving_y = dy.to_f32 * MOVING_AMOUNT
@@ -87,8 +99,7 @@ module Buzzle
         @held_block.try(&.move(dx, dy, entities))
       elsif @held_block && !pulling_block?(dx, dy)
         # trying to strafe while holding block, stop moving!
-        @moving_x = 0_f32
-        @moving_y = 0_f32
+        stop
         return
       end
 
@@ -104,10 +115,13 @@ module Buzzle
       end
 
       # stop moving at next grid cell
-      if @moving_x.abs > Game::GRID_SIZE || @moving_y.abs > Game::GRID_SIZE
-        @moving_x = 0_f32
-        @moving_y = 0_f32
-      end
+      stop if @moving_x.abs > Game::GRID_SIZE || @moving_y.abs > Game::GRID_SIZE
+    end
+
+    def stop
+      @moving_x = 0_f32
+      @moving_y = 0_f32
+      @held_block = nil
     end
 
     def draw

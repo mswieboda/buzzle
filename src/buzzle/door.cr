@@ -6,7 +6,7 @@ module Buzzle
     HEIGHT = Game::GRID_SIZE / 4
 
     def initialize(x, y, @locked = true)
-      super(x, y, WIDTH, HEIGHT)
+      super(x, y, Game::GRID_SIZE, Game::GRID_SIZE)
     end
 
     def toggle_lock
@@ -19,6 +19,10 @@ module Buzzle
 
     def lock
       @locked = true
+    end
+
+    def collidable?
+      locked?
     end
 
     def draw
