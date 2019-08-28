@@ -5,12 +5,15 @@ module Buzzle
 
     FPS = 12
 
+    @sound : LibRay::Sound
+
     def initialize(x, y, asset_name = "switch", @on = false, width = Game::GRID_SIZE, height = Game::GRID_SIZE)
       super(asset_name, x, y, width, height)
 
       @frame_t = 0_f32
       @switching = false
       @trigger = Trigger.new(x, y, -width / 2, -width / 2, width * 2, height * 2)
+      @sound = Sound.get("switch")
 
       self.frame = @sprite.frames - 1 if on?
     end
@@ -26,17 +29,36 @@ module Buzzle
 
           if frame >= sprite.frames - 1
             @switching = false
-            @on = true
+            on
           end
         elsif on? && frame >= 1
           @frame_t -= frame_time
 
           if frame <= 0
             @switching = false
-            @on = false
+            off
           end
         end
       end
+    end
+
+    def on(sound = true)
+      play_sound if sound
+      @on = true
+    end
+
+    def off(sound = true)
+      play_sound if sound
+      @on = false
+    end
+
+    def flip(sound = true)
+      play_sound if sound
+      @on = !@on
+    end
+
+    def play_sound
+      Sound.play(@sound)
     end
 
     def actionable?
@@ -57,7 +79,7 @@ module Buzzle
 
     def switch(instant = false)
       if instant
-        @on = !@on
+        flip(!instant)
 
         @frame_t = 0_f32
 

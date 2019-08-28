@@ -2,19 +2,26 @@ module Buzzle
   class Sound
     @@sounds = Hash(String, LibRay::Sound).new
 
-    def self.load(asset_files : Array(String))
-      asset_files.each { |asset_file| load(asset_file) }
+    def self.load(sounds : Array(NamedTuple(name: String, asset_file: String, volume: Float32 | Nil, pitch: Float32 | Nil)))
+      sounds.each { |sound| load(sound[:name], sound[:asset_file], sound[:volume], sound[:pitch]) }
     end
 
-    def self.load(asset_file : String)
-      @@sounds[asset_file] ||= LibRay.load_sound(File.join(__DIR__, "../../assets/sounds/#{asset_file}.wav"))
+    def self.load(name : String, asset_file : String, volume : Float32 | Nil, pitch : Float32 | Nil)
+      return if @@sounds.has_key?(name)
+
+      sound = LibRay.load_sound(File.join(__DIR__, "../../assets/sounds/#{asset_file}.wav"))
+
+      LibRay.set_sound_volume(sound, volume) if volume
+      LibRay.set_sound_pitch(sound, pitch) if pitch
+
+      @@sounds[name] = sound
     end
 
-    def self.get(asset_file)
-      sound = @@sounds[asset_file]
+    def self.get(name)
+      sound = @@sounds[name]
 
       unless sound
-        raise "sound: #{asset_file} not found, make sure to load first with Sound.load before using"
+        raise "sound: #{name} not found, make sure to load first with Sound.load before using"
       end
 
       sound
@@ -24,6 +31,16 @@ module Buzzle
       @@sounds.each do |(asset_file, sound)|
         LibRay.unload_sound(sound)
       end
+    end
+
+    def self.play(sound)
+      LibRay.play_sound(sound)
+    end
+
+    def self.play_random_pitch(sound, min = 0.5_f32)
+      pitch = (min + rand(1.0)).to_f32
+      LibRay.set_sound_pitch(sound, pitch)
+      play(sound)
     end
   end
 end

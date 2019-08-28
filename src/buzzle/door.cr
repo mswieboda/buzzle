@@ -35,6 +35,9 @@ module Buzzle
       toggle(instant) if open?
     end
 
+    def play_sound
+    end
+
     def collidable?
       closed?
     end

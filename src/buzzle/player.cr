@@ -16,10 +16,10 @@ module Buzzle
       @moving_left_foot = false
 
       @sounds = [
-        Sound.get("footsteps-1"),
-        Sound.get("footsteps-2"),
-        Sound.get("footsteps-3"),
-        Sound.get("footsteps-4"),
+        Sound.get("footstep-1"),
+        Sound.get("footstep-2"),
+        Sound.get("footstep-3"),
+        Sound.get("footstep-4"),
       ]
     end
 
@@ -124,14 +124,11 @@ module Buzzle
         @held_block.try(&.move(dx, dy, entities))
       end
 
-      if @moving_x.abs > Game::GRID_SIZE / 2 || @moving_y.abs > Game::GRID_SIZE / 2
-        sound = @sounds.sample
-        puts "play sound! #{sound}"
-        LibRay.play_sound(sound)
-      end
-
       # stop moving at next grid cell
-      stop if @moving_x.abs > Game::GRID_SIZE || @moving_y.abs > Game::GRID_SIZE
+      if @moving_x.abs > Game::GRID_SIZE || @moving_y.abs > Game::GRID_SIZE
+        stop
+        Sound.play_random_pitch(@sounds.sample)
+      end
     end
 
     def stop
