@@ -6,10 +6,13 @@ module Buzzle
     getter height : Int32
     getter? removed
 
+    @trigger : Trigger | Nil
+
     def initialize(x : Int32 | Float32, y : Int32 | Float32, @width, @height)
       @x = x.to_f32
       @y = y.to_f32
       @removed = false
+      @trigger = nil
     end
 
     def update(frame_time, _entities)
@@ -22,7 +25,8 @@ module Buzzle
     def draw
     end
 
-    def trigger?(_entity : Entity)
+    def trigger?(entity : Entity)
+      @trigger.try(&.trigger?(self, entity))
     end
 
     def at?(other_x, other_y)

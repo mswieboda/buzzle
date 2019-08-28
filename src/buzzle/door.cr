@@ -8,11 +8,11 @@ module Buzzle
       super(x, y, "door", !closed, Game::GRID_SIZE, Game::GRID_SIZE)
 
       @exiting = false
-      @trigger = Trigger.new(x, y, Game::GRID_SIZE)
+      @trigger = Trigger.new(x, y, 0, 0, Game::GRID_SIZE)
     end
 
     def trigger?(entity : Entity)
-      !@exiting && open? && @trigger.collision?(entity)
+      !@exiting && open? && super(entity)
     end
 
     def toggle

@@ -10,13 +10,9 @@ module Buzzle
 
       @frame_t = 0_f32
       @switching = false
-      @trigger = Trigger.new(x - width / 2, y - width / 2, width * 2, height * 2)
+      @trigger = Trigger.new(x, y, -width / 2, -width / 2, width * 2, height * 2)
 
       self.frame = @sprite.frames - 1 if on?
-    end
-
-    def trigger?(entity : Entity)
-      @trigger.collision?(entity)
     end
 
     def draw
