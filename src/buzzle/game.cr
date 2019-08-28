@@ -16,12 +16,11 @@ module Buzzle
 
       load_sprites
 
-      @room = Room.new(
-        x: 0,
-        y: 0,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT
-      )
+      @player = Player.new(3 * Game::GRID_SIZE, 3 * Game::GRID_SIZE)
+      @scene = Scene.new(@player)
+
+      @scenes = [] of Scene
+      @scenes << @scene
     end
 
     def load_sprites
@@ -48,11 +47,11 @@ module Buzzle
     end
 
     def update(frame_time)
-      @room.update(frame_time)
+      @scene.update(frame_time)
     end
 
     def draw
-      @room.draw
+      @scene.draw
     end
 
     def draw_init
