@@ -2,17 +2,17 @@ require "./switch"
 
 module Buzzle
   class Door < Switch
-    getter players_entered
+    getter direction : Direction
 
-    def initialize(x, y, closed = true)
+    def initialize(x, y, closed = true, @direction = Direction::Down)
       super(x, y, "door", !closed, Game::GRID_SIZE, Game::GRID_SIZE)
 
-      @players_entered = [] of Player
+      @exiting = false
       @trigger = Trigger.new(x, y, Game::GRID_SIZE)
     end
 
     def trigger?(entity : Entity)
-      open? && @trigger.collision?(entity)
+      !@exiting && open? && @trigger.collision?(entity)
     end
 
     def toggle
@@ -39,8 +39,12 @@ module Buzzle
       closed?
     end
 
-    def player_left(player : Player)
-      @players_entered.delete(player)
+    def exit
+      @exiting = true
+    end
+
+    def done_exiting
+      @exiting = false
     end
   end
 end

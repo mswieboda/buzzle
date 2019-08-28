@@ -4,6 +4,7 @@ module Buzzle
 
     @actionable : Entity | Nil
     @held_block : Block | Nil
+    @exit_door : Door | Nil
 
     MOVING_AMOUNT = 2
 
@@ -121,6 +122,11 @@ module Buzzle
       @moving_x = 0_f32
       @moving_y = 0_f32
       @held_block = nil
+
+      if @exit_door
+        @exit_door.try(&.done_exiting)
+        @exit_door = nil
+      end
     end
 
     def draw
@@ -137,13 +143,32 @@ module Buzzle
       [dx.sign, dy.sign] == direction.opposite.to_delta
     end
 
-    def enter(door : Door)
+    def enter(to : Door, from : Door)
       stop
 
-      door.open
+      return if to.switching?
 
-      @x = door.x
-      @y = door.y
+      if to.closed?
+        to.open
+      else
+        to.exit
+
+        @x = to.x
+        @y = to.y
+
+        exit(to)
+      end
+    end
+
+    def exit(door : Door)
+      @direction = door.direction
+
+      dx, dy = @direction.to_delta
+
+      @moving_x = dx.to_f32 * MOVING_AMOUNT
+      @moving_y = dy.to_f32 * MOVING_AMOUNT
+
+      @exit_door = door
     end
   end
 end
