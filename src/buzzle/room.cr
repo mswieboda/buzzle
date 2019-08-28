@@ -10,10 +10,12 @@ module Buzzle
     def initialize(@x, @y, @width, @height)
       @player = Player.new(3 * Game::GRID_SIZE, 3 * Game::GRID_SIZE)
       @door = Door.new(3 * Game::GRID_SIZE, 0)
+      @door2 = Door.new(13 * Game::GRID_SIZE, 0)
       @switch = Switch.new(10 * Game::GRID_SIZE, 3 * Game::GRID_SIZE)
 
       @entities = [] of Entity
       @entities << @door
+      @entities << @door2
       @entities << Block.new(5 * Game::GRID_SIZE, 3 * Game::GRID_SIZE)
       @entities << Block.new(7 * Game::GRID_SIZE, 5 * Game::GRID_SIZE)
       @entities << @player
@@ -21,15 +23,20 @@ module Buzzle
     end
 
     def update(frame_time)
-      @player.update(frame_time, @entities)
-
       @door.open if @switch.on?
       @door.close if @switch.off?
 
-      @entities.each(&.update(frame_time))
+      @door.players_entered.each do |player|
+        @door.player_left(@player)
+        player.enter(@door2)
+      end
+
+      @entities.each(&.update(frame_time, @entities))
 
       # sort entities by y
       @entities.sort! { |e1, e2| e1.y <=> e2.y }
+
+      @entities.reject!(&.removed?)
     end
 
     def draw

@@ -63,7 +63,7 @@ module Buzzle
           @held_block.try(&.move(dx * Game::GRID_SIZE, dy * Game::GRID_SIZE, entities))
         end
 
-        if collisions?(entities.select(&.collidable?))
+        if collision?(entities.select(&.collidable?))
           @x -= dx * Game::GRID_SIZE
           @y -= dy * Game::GRID_SIZE
 
@@ -151,6 +151,15 @@ module Buzzle
     def pulling_block?(dx, dy)
       return false unless @held_block
       [dx.sign, dy.sign] == direction.opposite.to_delta
+    end
+
+    def enter(door : Door)
+      stop
+
+      door.open
+
+      @x = door.x
+      @y = door.y
     end
   end
 end

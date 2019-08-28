@@ -21,7 +21,7 @@ module Buzzle
       @x += dx
       @y += dy
 
-      if collisions?(entities.select(&.collidable?))
+      if collision?(entities.select(&.collidable?))
         @x -= dx
         @y -= dy
       end
