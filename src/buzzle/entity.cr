@@ -28,7 +28,7 @@ module Buzzle
     end
 
     def to_s(io)
-      io << "(#{x}, #{y}) (#{width}x#{height})"
+      io << "#{super.to_s(io)} (#{x}, #{y}) (#{width}x#{height})"
     end
 
     def collisions?(entities : Array(Entity))
@@ -36,10 +36,10 @@ module Buzzle
     end
 
     def collision?(entity : Entity)
-      x + width >= entity.x &&
-        x <= entity.x + entity.width &&
-        y + height >= entity.y &&
-        y <= entity.y + entity.height
+      x + width > entity.x &&
+        x < entity.x + entity.width &&
+        y + height > entity.y &&
+        y < entity.y + entity.height
     end
   end
 end

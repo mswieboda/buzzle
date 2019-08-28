@@ -23,5 +23,20 @@ module Buzzle
         Up
       end
     end
+
+    def to_delta
+      case self
+      when Up
+        [0, -1]
+      when Left
+        [-1, 0]
+      when Down
+        [0, 1]
+      when Right
+        [1, 0]
+      else
+        [0, 0]
+      end
+    end
   end
 end

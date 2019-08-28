@@ -4,7 +4,7 @@ module Buzzle
     HEIGHT = Game::GRID_SIZE
 
     def initialize(x, y)
-      super("block", x, y)
+      super("block", x, y, WIDTH, HEIGHT)
 
       @moving_x = @moving_y = 0_f32
     end

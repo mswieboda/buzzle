@@ -5,23 +5,18 @@ module Buzzle
     @actionable : Entity | Nil
     @held_block : Block | Nil
 
-    MOVING_AMOUNT = 150
+    MOVING_AMOUNT = 2
 
     def initialize(x, y, @direction = Direction::Up)
-      super("player", x, y)
+      super("player", x, y, Game::GRID_SIZE, Game::GRID_SIZE)
 
       @moving_x = @moving_y = 0_f32
     end
 
     def update(frame_time, entities : Array(Entity))
-      original_direction = direction
-
       actionable(entities)
-      # push
-      # rename to movement_input
-      movement(frame_time, entities)
-      # move via @moving_x/y
-      # pull
+      movement_input(frame_time, entities) unless moving?
+      moving_transition(frame_time, entities) if moving?
     end
 
     def actionable(entities)
@@ -41,55 +36,78 @@ module Buzzle
       end
     end
 
-    def movement(frame_time, entities)
-      dx = dy = 0_f32
+    def movement_input(frame_time, entities)
+      dx = dy = 0
       new_direction = direction
-      pushing = false
 
       if Keys.down?([LibRay::KEY_W, LibRay::KEY_UP])
-        dy = -MOVING_AMOUNT * frame_time
+        dy = -1
         new_direction = Direction::Up
       elsif Keys.down?([LibRay::KEY_A, LibRay::KEY_LEFT])
-        dx = -MOVING_AMOUNT * frame_time
+        dx = -1
         new_direction = Direction::Left
       elsif Keys.down?([LibRay::KEY_S, LibRay::KEY_DOWN])
-        dy = MOVING_AMOUNT * frame_time
+        dy = 1
         new_direction = Direction::Down
       elsif Keys.down?([LibRay::KEY_D, LibRay::KEY_RIGHT])
-        dx = MOVING_AMOUNT * frame_time
+        dx = 1
         new_direction = Direction::Right
       end
-      
-      # move to #push
+
       # if attempting to move (delta != 0)
-      if dx != 0_f32 || dy != 0_f32
-        if @held_block
-          if new_direction == direction
-            @held_block.try(&.move(dx, dy, entities))
-          elsif !new_direction.opposite?(direction)
-            # trying to push/pull sideways, don't move!
-            return
-          end
-        end
+      if dx != 0 || dy != 0
+        @x += dx * Game::GRID_SIZE
+        @y += dy * Game::GRID_SIZE
 
-        @x += dx
-        @y += dy
-
-        if collisions?(entities)
-          @x -= dx
-          @y -= dy
+        if collisions?(entities.reject { |e| e == @held_block })
+          @x -= dx * Game::GRID_SIZE
+          @y -= dy * Game::GRID_SIZE
         else
-          # set @movable_x/y
-        end
+          @x -= dx * Game::GRID_SIZE
+          @y -= dy * Game::GRID_SIZE
 
-        # move to #pull
-        if @held_block && new_direction.opposite?(direction)
-          # pull
-          @held_block.try(&.move(dx, dy, entities.reject { |e| e == self }))
+          @moving_x = dx.to_f32 * MOVING_AMOUNT
+          @moving_y = dy.to_f32 * MOVING_AMOUNT
         end
       end
 
       @direction = new_direction unless @held_block
+    end
+
+    def moving?
+      @moving_x.abs > 0 || @moving_y.abs > 0
+    end
+
+    def moving_transition(frame_time, entities)
+      dx = @moving_x.sign * MOVING_AMOUNT
+      dy = @moving_y.sign * MOVING_AMOUNT
+
+      if pushing_block?(dx, dy)
+        # push block
+        @held_block.try(&.move(dx, dy, entities))
+      elsif @held_block && !pulling_block?(dx, dy)
+        # trying to strafe while holding block, stop moving!
+        @moving_x = 0_f32
+        @moving_y = 0_f32
+        return
+      end
+
+      @moving_x += dx
+      @x += dx
+
+      @moving_y += dy
+      @y += dy
+
+      if pulling_block?(dx, dy)
+        # pull block
+        @held_block.try(&.move(dx, dy, entities))
+      end
+
+      # stop moving at next grid cell
+      if @moving_x.abs > Game::GRID_SIZE || @moving_y.abs > Game::GRID_SIZE
+        @moving_x = 0_f32
+        @moving_y = 0_f32
+      end
     end
 
     def draw
@@ -99,16 +117,26 @@ module Buzzle
     def action_cell
       case direction
       when Direction::Up
-        [x, y - 1]
+        [x, y - Game::GRID_SIZE]
       when Direction::Left
-        [x - 1, y]
+        [x - Game::GRID_SIZE, y]
       when Direction::Down
-        [x, y + 1]
+        [x, y + Game::GRID_SIZE]
       when Direction::Right
-        [x + 1, y]
+        [x + Game::GRID_SIZE, y]
       else
         [x, y]
       end
+    end
+
+    def pushing_block?(dx, dy)
+      return false unless @held_block
+      [dx.sign, dy.sign] == direction.to_delta
+    end
+
+    def pulling_block?(dx, dy)
+      return false unless @held_block
+      [dx.sign, dy.sign] == direction.opposite.to_delta
     end
   end
 end

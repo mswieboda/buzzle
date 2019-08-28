@@ -3,13 +3,10 @@ module Buzzle
     getter? on : Bool
     getter? switching : Bool
 
-    WIDTH  = Game::GRID_SIZE
-    HEIGHT = Game::GRID_SIZE
-
     FPS = 12
 
     def initialize(x, y)
-      super("switch", x, y)
+      super("switch", x, y, Game::GRID_SIZE, Game::GRID_SIZE)
 
       @frame_t = 0_f32
       @on = true
