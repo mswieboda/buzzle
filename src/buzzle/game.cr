@@ -12,9 +12,11 @@ module Buzzle
 
     def initialize
       LibRay.init_window(SCREEN_WIDTH, SCREEN_HEIGHT, "Buzzle")
+      LibRay.init_audio_device
       LibRay.set_target_fps(TARGET_FPS)
 
       load_sprites
+      load_sounds
 
       @player = Player.new(3 * Game::GRID_SIZE, 3 * Game::GRID_SIZE)
       @scene = Scenes::Playground.new(@player)
@@ -34,6 +36,15 @@ module Buzzle
           {asset_file: "switch", frames: 7, rows: 1},
         ]
       )
+    end
+
+    def load_sounds
+      Sound.load([
+        "footsteps-1",
+        "footsteps-2",
+        "footsteps-3",
+        "footsteps-4",
+      ])
     end
 
     def run
@@ -65,6 +76,10 @@ module Buzzle
     end
 
     def close
+      Sound.unload_all
+
+      LibRay.close_audio_device
+
       LibRay.close_window
     end
   end

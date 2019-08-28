@@ -5,6 +5,7 @@ module Buzzle
     @actionable : Entity | Nil
     @held_block : Block | Nil
     @exit_door : Door | Nil
+    @sounds : Array(LibRay::Sound)
 
     MOVING_AMOUNT = 2
 
@@ -13,6 +14,13 @@ module Buzzle
 
       @moving_x = @moving_y = 0_f32
       @moving_left_foot = false
+
+      @sounds = [
+        Sound.get("footsteps-1"),
+        Sound.get("footsteps-2"),
+        Sound.get("footsteps-3"),
+        Sound.get("footsteps-4"),
+      ]
     end
 
     def update(frame_time, entities : Array(Entity))
@@ -114,6 +122,12 @@ module Buzzle
       if pulling_block?(dx, dy)
         # pull block
         @held_block.try(&.move(dx, dy, entities))
+      end
+
+      if @moving_x.abs > Game::GRID_SIZE / 2 || @moving_y.abs > Game::GRID_SIZE / 2
+        sound = @sounds.sample
+        puts "play sound! #{sound}"
+        LibRay.play_sound(sound)
       end
 
       # stop moving at next grid cell
