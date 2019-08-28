@@ -12,6 +12,7 @@ module Buzzle
       super("player", x, y, Game::GRID_SIZE, Game::GRID_SIZE)
 
       @moving_x = @moving_y = 0_f32
+      @moving_left_foot = false
     end
 
     def update(frame_time, entities : Array(Entity))
@@ -80,6 +81,7 @@ module Buzzle
 
           @moving_x = dx.to_f32 * MOVING_AMOUNT
           @moving_y = dy.to_f32 * MOVING_AMOUNT
+          @moving_left_foot = !@moving_left_foot
         end
       end
 
@@ -129,8 +131,14 @@ module Buzzle
       end
     end
 
+    def frame
+      return 0 unless moving?
+
+      @moving_left_foot ? 1 : 2
+    end
+
     def draw
-      draw(row: direction.to_i)
+      draw(frame: frame, row: direction.to_i)
     end
 
     def pushing_block?(dx, dy)
