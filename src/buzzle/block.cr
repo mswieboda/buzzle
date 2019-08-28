@@ -7,10 +7,15 @@ module Buzzle
       super("block", x, y, WIDTH, HEIGHT)
 
       @moving_x = @moving_y = 0_f32
+      @trigger = Trigger.new(x - width / 2, y - width / 2, width * 2, height * 2)
     end
 
     def draw
       draw(x: x + @moving_x, y: y + @moving_y, tint: LibRay::BLUE)
+    end
+
+    def trigger?(entity : Entity)
+      @trigger.collision?(entity)
     end
 
     def actionable?

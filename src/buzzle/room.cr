@@ -26,9 +26,9 @@ module Buzzle
       @door.open if @switch.on?
       @door.close if @switch.off?
 
-      @door.players_entered.each do |player|
+      if @door.trigger?(@player)
         @door.player_left(@player)
-        player.enter(@door2)
+        @player.enter(@door2)
       end
 
       @entities.each(&.update(frame_time, @entities))

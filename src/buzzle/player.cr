@@ -24,8 +24,7 @@ module Buzzle
       down = Keys.down?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
 
       if pressed
-        action_cell_x, action_cell_y = action_cell
-        @actionable = entities.select(&.actionable?).find(&.at?(action_cell_x, action_cell_y))
+        @actionable = entities.select(&.actionable?).find(&.trigger?(self))
 
         # action
         @actionable.try(&.action) if @actionable
@@ -126,21 +125,6 @@ module Buzzle
 
     def draw
       draw(row: direction.to_i)
-    end
-
-    def action_cell
-      case direction
-      when Direction::Up
-        [x, y - Game::GRID_SIZE]
-      when Direction::Left
-        [x - Game::GRID_SIZE, y]
-      when Direction::Down
-        [x, y + Game::GRID_SIZE]
-      when Direction::Right
-        [x + Game::GRID_SIZE, y]
-      else
-        [x, y]
-      end
     end
 
     def pushing_block?(dx, dy)

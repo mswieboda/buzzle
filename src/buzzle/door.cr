@@ -8,18 +8,11 @@ module Buzzle
       super(x, y, "door", !closed, Game::GRID_SIZE, Game::GRID_SIZE)
 
       @players_entered = [] of Player
+      @trigger = Trigger.new(x, y, Game::GRID_SIZE)
     end
 
-    def update(frame_time, entities)
-      # update from Switch
-      update(frame_time)
-
-      return unless open?
-
-      collisions(entities.select(&.is_a?(Player))).each do |entity|
-        player = entity.as(Player)
-        @players_entered << player unless @players_entered.includes?(player)
-      end
+    def trigger?(entity : Entity)
+      open? && @trigger.collision?(entity)
     end
 
     def toggle

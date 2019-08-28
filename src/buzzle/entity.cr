@@ -22,6 +22,9 @@ module Buzzle
     def draw
     end
 
+    def trigger?(_entity : Entity)
+    end
+
     def at?(other_x, other_y)
       x == other_x && y == other_y
     end
