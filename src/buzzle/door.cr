@@ -1,33 +1,33 @@
-module Buzzle
-  class Door < SpriteEntity
-    getter? closed
+require "./switch"
 
-    def initialize(x, y, @closed = true)
-      super("door", x, y, Game::GRID_SIZE, Game::GRID_SIZE)
+module Buzzle
+  class Door < Switch
+    def initialize(x, y, closed = true)
+      super(x, y, "door", !closed, Game::GRID_SIZE, Game::GRID_SIZE)
     end
 
     def toggle
-      @closed = !@closed
+      switch
+    end
+
+    def closed?
+      off?
+    end
+
+    def open?
+      on?
     end
 
     def open
-      @closed = false
+      toggle if closed?
     end
 
     def close
-      @closed = true
+      toggle if open?
     end
 
     def collidable?
       closed?
-    end
-
-    def frame
-      closed? ? 0 : 3
-    end
-
-    def draw
-      draw(frame: frame)
     end
   end
 end
