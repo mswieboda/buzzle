@@ -9,21 +9,26 @@ module Buzzle::Rooms
 
       (0..width - 1).each do |x|
         (0..height - 1).each do |y|
-          next if x == 5 && y == 5
-          @entities << Floor.new(x, y)
+          if x == 5 && y == 8
+            @entities << Floors::Pit.new(x, y)
+          else
+            @entities << Floor.new(x, y)
+          end
         end
       end
 
-      @entities << Floors::Pit.new(5, 5)
-
+      @entities << Wall.new(5, 7)
+      @entities << Floor.new(5, 6, 1)
+      @entities << Wall.new(6, 7)
       @entities << Floor.new(6, 6, 1)
-      @entities << Floor.new(7, 6, 1)
-      @entities << Floor.new(8, 6, 1)
-      @entities << Ladder.new(7, 7)
+      @entities << WallLadder.new(7, 7)
       @entities << Ladder.new(7, 7, 1, ascend: false)
+      @entities << Floor.new(7, 6, 1)
+      @entities << Wall.new(8, 7)
+      @entities << Floor.new(8, 6, 1)
 
       ((0..2).to_a + [4] + (6..width - 1).to_a).each do |x|
-        @entities << Wall.new(x, y, design: rand > 0.5 ? 0 : rand(6))
+        @entities << Wall.new(x, 0, design: rand > 0.5 ? 0 : rand(6))
       end
 
       super(

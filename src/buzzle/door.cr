@@ -8,7 +8,7 @@ module Buzzle
       super(
         name: "door",
         x: x,
-        y: y,
+        y: y - 1,
         z: z,
         on: open,
         width: Game::GRID_SIZE,
@@ -18,7 +18,7 @@ module Buzzle
       @exiting = false
       @trigger = Trigger.new(
         x: x,
-        y: y,
+        y: y - 1,
         z: z,
         origin_x: 0,
         origin_y: 0,
@@ -67,6 +67,15 @@ module Buzzle
 
     def done_exiting
       @exiting = false
+    end
+
+    def draw(screen_x, screen_y)
+      draw(
+        y: y + height,
+        screen_x: screen_x,
+        screen_y: screen_y,
+        frame: frame
+      )
     end
   end
 end

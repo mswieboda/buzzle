@@ -5,6 +5,9 @@ module Buzzle::Rooms
       @entities += entities
       @entities << player
 
+      @entities << Floor.new(0, 0)
+      @entities << Floor.new(width - 1, 0)
+
       (1..width - 2).each do |x|
         (0..height - 2).each do |y|
           @entities << Floor.new(x, y)
@@ -12,7 +15,7 @@ module Buzzle::Rooms
       end
 
       [0, width - 1].each do |x|
-        (0..height - 1).each do |y|
+        (1..height - 1).each do |y|
           @entities << Floors::Pit.new(x, y)
         end
       end
@@ -22,7 +25,7 @@ module Buzzle::Rooms
       end
 
       ((0..4).to_a + (6..width - 1).to_a).each do |x|
-        @entities << Wall.new(x, y, design: rand > 0.5 ? 0 : rand(6))
+        @entities << Wall.new(x, 0, design: rand > 0.5 ? 0 : rand(6))
       end
 
       super(
