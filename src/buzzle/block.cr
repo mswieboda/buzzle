@@ -27,9 +27,7 @@ module Buzzle
         screen_x: screen_x,
         screen_y: screen_y,
         x: x + @moving_x,
-        y: y + @moving_y,
-        center_y: false,
-        tint: LibRay::BLUE
+        y: y + @moving_y
       )
     end
 
