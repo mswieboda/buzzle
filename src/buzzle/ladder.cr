@@ -11,7 +11,7 @@ module Buzzle
       @trigger = Trigger.new(
         z: @ascend ? 0 : 1,
         origin_x: 0,
-        origin_y: @ascend ? -1 : 0,
+        origin_y: @ascend ? -1 : height - 1,
         width: width,
         height: 1
       )
@@ -21,11 +21,16 @@ module Buzzle
       1
     end
 
+    def draw(_screen_x, _screen_y)
+      return unless @ascend
+      super
+    end
+
     def update(_frame_time, entities)
       super
 
-      players = entities.select(&.is_a?(Player)).map(&.as(Player)).reject(&.moving?)
-      players.select { |p| trigger_facing?(p, opposite: true) }.each do |player|
+      players = entities.select(&.is_a?(Player)).map(&.as(Player))
+      players.select { |p| trigger_facing?(p, opposite: @ascend) }.each do |player|
         @ascend ? player.ascend : player.descend
       end
     end

@@ -9,7 +9,7 @@ module Buzzle::Rooms
 
       (0..width - 1).each do |x|
         (0..height - 1).each do |y|
-          next if (x == 5 && y == 5) || (x == 7 && y == 7)
+          next if x == 5 && y == 5
           @entities << Floor.new(x, y)
         end
       end

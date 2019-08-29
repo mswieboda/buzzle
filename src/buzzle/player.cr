@@ -135,6 +135,7 @@ module Buzzle
     end
 
     def moving?
+      return false if falling?
       @moving_x.abs > 0 || @moving_y.abs > 0
     end
 
