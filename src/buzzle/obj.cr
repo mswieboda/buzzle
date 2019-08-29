@@ -5,9 +5,10 @@ module Buzzle
     getter z : Int32
     getter width : Int32
     getter height : Int32
+    getter direction : Direction
     getter? removed
 
-    def initialize(x : Int32 | Float32, y : Int32 | Float32, @z = 0, @width = 0, @height = 0)
+    def initialize(x : Int32 | Float32, y : Int32 | Float32, @z = 0, @width = 0, @height = 0, @direction = Direction::Down)
       @x = x.to_f32 * Game::GRID_SIZE
       @y = y.to_f32 * Game::GRID_SIZE
       @removed = false
@@ -56,21 +57,25 @@ module Buzzle
       io << "#{super.to_s(io)} (#{x}, #{y}) (#{width}x#{height})"
     end
 
-    def collisions(entities : Array(Entity))
-      entities.reject { |e| e == self }.select { |e| collision?(e) }
+    def collisions(objs : Array(Obj))
+      objs.reject { |o| o == self }.select { |o| collision?(o) }
     end
 
-    def collision?(entities : Array(Entity))
-      collisions(entities).any?
+    def collision?(objs : Array(Obj))
+      collisions(objs).any?
     end
 
-    def collision?(entity : Entity)
-      return false unless z == entity.z
+    def collision?(obj : Obj)
+      return false unless z == obj.z
+      return false unless x + width > obj.x &&
+        x < obj.x + obj.width &&
+        y + height > obj.y &&
+        y < obj.y + obj.height
+      obj.directional_collision?(direction)
+    end
 
-      x + width > entity.x &&
-        x < entity.x + entity.width &&
-        y + height > entity.y &&
-        y < entity.y + entity.height
+    def directional_collision?(obj_direction : Direction)
+      false
     end
 
     def remove
