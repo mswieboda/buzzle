@@ -54,5 +54,20 @@ module Buzzle
         [0, 0]
       end
     end
+
+    def to_rotation
+      case self
+      when Up
+        0
+      when Left
+        -90
+      when Down
+        180
+      when Right
+        90
+      else
+        0
+      end
+    end
   end
 end

@@ -9,7 +9,7 @@ module Buzzle
 
       @wall = Wall.new(
         x: x,
-        y: y,
+        y: y - 1,
         z: z
       )
     end
