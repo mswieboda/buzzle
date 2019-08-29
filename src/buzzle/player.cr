@@ -43,7 +43,7 @@ module Buzzle
       down = Keys.down?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
 
       if pressed
-        @actionable = entities.select(&.actionable?).find(&.trigger?(self))
+        @actionable = entities.select(&.actionable?).find(&.trigger_facing?(self))
 
         # action
         @actionable.try(&.action) if @actionable
