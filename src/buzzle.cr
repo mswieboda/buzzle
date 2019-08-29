@@ -1,4 +1,5 @@
 require "cray"
+require "./buzzle/obj"
 require "./buzzle/entity"
 require "./buzzle/sprite_entity"
 require "./buzzle/*"

@@ -1,13 +1,25 @@
 module Buzzle
   class Block < SpriteEntity
-    WIDTH  = Game::GRID_SIZE
-    HEIGHT = Game::GRID_SIZE
-
-    def initialize(x, y)
-      super("block", x, y, WIDTH, HEIGHT)
+    def initialize(x, y, z = 1)
+      super(
+        name: "block",
+        x: x,
+        y: y,
+        z: z,
+        width: Game::GRID_SIZE,
+        height: Game::GRID_SIZE
+      )
 
       @moving_x = @moving_y = 0_f32
-      @trigger = Trigger.new(x, y, -width / 2, -width / 2, width * 2, height * 2)
+      @trigger = Trigger.new(
+        x: x,
+        y: y,
+        z: z,
+        origin_x: -width / 2,
+        origin_y: -height / 2,
+        width: width * 2,
+        height: height * 2
+      )
     end
 
     def draw

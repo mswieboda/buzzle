@@ -2,14 +2,14 @@ module Buzzle::Scenes
   class Playground < Scene
     def initialize(@player)
       # Playground
-      @door = Door.new(3 * Game::GRID_SIZE, 0)
-      @switch = Switch.new(10 * Game::GRID_SIZE, 3 * Game::GRID_SIZE)
+      @door = Door.new(3, 0)
+      @switch = Switch.new(10, 3)
       entities = [@door, @switch]
 
       @room1 = Rooms::Playground.new(@player, entities)
 
       # House
-      @door2 = Door.new(5 * Game::GRID_SIZE, 0)
+      @door2 = Door.new(5, 0)
       entities = [@door2]
 
       @room2 = Rooms::House.new(@player, entities)

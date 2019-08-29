@@ -18,7 +18,7 @@ module Buzzle
       load_sprites
       load_sounds
 
-      @player = Player.new(3 * Game::GRID_SIZE, 3 * Game::GRID_SIZE)
+      @player = Player.new(3, 3)
       @scene = Scenes::Playground.new(@player)
 
       @scenes = [] of Scene

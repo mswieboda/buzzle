@@ -4,11 +4,26 @@ module Buzzle
   class Door < Switch
     getter direction : Direction
 
-    def initialize(x, y, closed = true, @direction = Direction::Down)
-      super(x, y, "door", !closed, Game::GRID_SIZE, Game::GRID_SIZE)
+    def initialize(x, y, z = 1, closed = true, @direction = Direction::Down)
+      super(
+        name: "door",
+        x: x,
+        y: y,
+        z: z,
+        on: !closed,
+        width: Game::GRID_SIZE,
+        height: Game::GRID_SIZE
+      )
 
       @exiting = false
-      @trigger = Trigger.new(x, y, 0, 0, Game::GRID_SIZE)
+      @trigger = Trigger.new(
+        x: x,
+        y: y,
+        z: z,
+        origin_x: 0,
+        origin_y: 0,
+        width: Game::GRID_SIZE
+      )
     end
 
     def trigger?(entity : Entity)

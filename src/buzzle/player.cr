@@ -9,8 +9,15 @@ module Buzzle
 
     MOVING_AMOUNT = 2
 
-    def initialize(x, y, @direction = Direction::Up)
-      super("player", x, y, Game::GRID_SIZE, Game::GRID_SIZE)
+    def initialize(x, y, z = 1, @direction = Direction::Up)
+      super(
+        name: "player",
+        x: x,
+        y: y,
+        z: z,
+        width: Game::GRID_SIZE,
+        height: Game::GRID_SIZE
+      )
 
       @moving_x = @moving_y = 0_f32
       @moving_left_foot = false
@@ -24,6 +31,8 @@ module Buzzle
     end
 
     def update(frame_time, entities : Array(Entity))
+      super
+
       actionable(entities) unless moving?
       movement_input(frame_time, entities) unless moving?
       moving_transition(frame_time, entities) if moving?

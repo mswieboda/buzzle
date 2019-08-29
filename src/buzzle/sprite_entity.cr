@@ -2,9 +2,16 @@ module Buzzle
   class SpriteEntity < Entity
     getter sprite : Sprite
 
-    def initialize(asset_file, x, y, width = nil, height = nil)
-      @sprite = Sprite.get(asset_file)
-      super(x, y, width || @sprite.width, height || sprite.height)
+    def initialize(name, x, y, z = 1, width = nil, height = nil)
+      @sprite = Sprite.get(name)
+
+      super(
+        x: x,
+        y: y,
+        z: z,
+        width: width || @sprite.width,
+        height: height || sprite.height
+      )
     end
 
     def draw(x = x, y = y, frame = 0, row = 0, rotation = 0, tint = LibRay::WHITE)
@@ -16,6 +23,8 @@ module Buzzle
         rotation: rotation,
         tint: tint
       )
+
+      @trigger.draw if Game::DEBUG
     end
   end
 end

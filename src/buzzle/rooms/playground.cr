@@ -4,8 +4,14 @@ module Buzzle::Rooms
       @entities = [] of Entity
       @entities += entities
       @entities << @player
-      @entities << Block.new(5 * Game::GRID_SIZE, 3 * Game::GRID_SIZE)
-      @entities << Block.new(7 * Game::GRID_SIZE, 5 * Game::GRID_SIZE)
+      @entities << Block.new(5, 3)
+      @entities << Block.new(7, 5)
+
+      (3..10).each do |x|
+        (0..10).each do |y|
+          @entities << Floor.new(x, y)
+        end
+      end
     end
   end
 end

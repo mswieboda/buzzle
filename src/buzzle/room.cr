@@ -14,8 +14,7 @@ module Buzzle
     def update(frame_time)
       @entities.each(&.update(frame_time, @entities))
 
-      # sort entities by y
-      @entities.sort! { |e1, e2| e1.y <=> e2.y }
+      @entities.sort! { |e1, e2| e1.draw_sort(e2) }
 
       @entities.reject!(&.removed?)
     end
