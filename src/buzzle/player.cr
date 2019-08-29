@@ -90,28 +90,33 @@ module Buzzle
         @x += dx * Game::GRID_SIZE
         @y += dy * Game::GRID_SIZE
 
-        if pushing_block?(dx, dy)
-          @held_block.try(&.move(dx * Game::GRID_SIZE, dy * Game::GRID_SIZE, entities))
-        end
-
-        if collision?(entities.select(&.collidable?))
-          @x -= dx * Game::GRID_SIZE
-          @y -= dy * Game::GRID_SIZE
-
+        if collision?(entities.select(&.is_a?(Floor)))
           if pushing_block?(dx, dy)
-            @held_block.try(&.move(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, entities))
+            @held_block.try(&.move(dx * Game::GRID_SIZE, dy * Game::GRID_SIZE, entities))
+          end
+
+          if collision?(entities.select(&.collidable?))
+            @x -= dx * Game::GRID_SIZE
+            @y -= dy * Game::GRID_SIZE
+
+            if pushing_block?(dx, dy)
+              @held_block.try(&.move(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, entities))
+            end
+          else
+            @x -= dx * Game::GRID_SIZE
+            @y -= dy * Game::GRID_SIZE
+
+            if pushing_block?(dx, dy)
+              @held_block.try(&.move(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, entities))
+            end
+
+            @moving_x = dx.to_f32 * MOVING_AMOUNT
+            @moving_y = dy.to_f32 * MOVING_AMOUNT
+            @moving_left_foot = !@moving_left_foot
           end
         else
           @x -= dx * Game::GRID_SIZE
           @y -= dy * Game::GRID_SIZE
-
-          if pushing_block?(dx, dy)
-            @held_block.try(&.move(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, entities))
-          end
-
-          @moving_x = dx.to_f32 * MOVING_AMOUNT
-          @moving_y = dy.to_f32 * MOVING_AMOUNT
-          @moving_left_foot = !@moving_left_foot
         end
       end
 
