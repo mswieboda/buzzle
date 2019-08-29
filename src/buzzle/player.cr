@@ -1,6 +1,7 @@
 module Buzzle
   class Player < SpriteEntity
     getter direction : Direction
+    getter? falling
 
     @actionable : Entity | Nil
     @held_block : Block | Nil
@@ -8,6 +9,12 @@ module Buzzle
     @sounds : Array(LibRay::Sound)
 
     MOVING_AMOUNT = 2
+
+    FPS         = 12
+    FALLING_FPS = 12
+
+    MOVING_FRAME_LAST  = 2
+    FALLING_FRAME_LAST = 5
 
     def initialize(x, y, z = 0, @direction = Direction::Up)
       super(
@@ -21,6 +28,8 @@ module Buzzle
 
       @moving_x = @moving_y = 0_f32
       @moving_left_foot = false
+      @frame_t = 0_f32
+      @falling = false
 
       @sounds = [
         Sound.get("footstep-1"),
@@ -33,8 +42,12 @@ module Buzzle
     def update(frame_time, entities : Array(Entity))
       super
 
-      actionable(entities) unless moving?
-      movement_input(frame_time, entities) unless moving?
+      unless moving?
+        actionable(entities)
+        movement_input(frame_time, entities)
+        transitions(frame_time)
+      end
+
       moving_transition(frame_time, entities) if moving?
     end
 
@@ -105,6 +118,17 @@ module Buzzle
       @direction = new_direction unless @held_block
     end
 
+    def transitions(frame_time)
+      if falling?
+        @frame_t += frame_time
+
+        if frame >= FALLING_FRAME_LAST + 1
+          @falling = false
+          remove
+        end
+      end
+    end
+
     def moving?
       @moving_x.abs > 0 || @moving_y.abs > 0
     end
@@ -152,9 +176,29 @@ module Buzzle
     end
 
     def frame
-      return 0 unless moving?
+      if moving?
+        @moving_left_foot ? 1 : 2
+      elsif falling?
+        MOVING_FRAME_LAST + (@frame_t * fps).to_i
+      else
+        0
+      end
+    end
 
-      @moving_left_foot ? 1 : 2
+    def frame=(frame)
+      @frame_t = frame.to_f32 / fps
+    end
+
+    def fps
+      if falling?
+        FALLING_FPS
+      else
+        FPS
+      end
+    end
+
+    def row
+      direction.to_i
     end
 
     def draw(screen_x, screen_y)
@@ -162,7 +206,7 @@ module Buzzle
         screen_x: screen_x,
         screen_y: screen_y,
         frame: frame,
-        row: direction.to_i
+        row: row
       )
     end
 
@@ -177,9 +221,9 @@ module Buzzle
     end
 
     def enter(door : Door, instant = false)
-      stop
-
       return if door.switching?
+
+      stop
 
       door.open(instant: instant) if door.closed?
 
@@ -202,6 +246,12 @@ module Buzzle
       @moving_y = dy.to_f32 * MOVING_AMOUNT
 
       @exit_door = door
+    end
+
+    def fall
+      stop
+      @falling = true
+      @frame_t = 0
     end
   end
 end

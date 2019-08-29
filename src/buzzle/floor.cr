@@ -1,8 +1,8 @@
 module Buzzle
   class Floor < SpriteEntity
-    def initialize(x, y, z = 0)
+    def initialize(x, y, z = 0, name = "floor")
       super(
-        name: "floor",
+        name: name,
         x: x,
         y: y,
         z: z,

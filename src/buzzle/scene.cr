@@ -25,5 +25,10 @@ module Buzzle
       change_room(room: room)
       @player.enter(door, instant: true)
     end
+
+    def change_rooms(player : Player, door : Door, room : Room, next_room : Room, next_door : Door)
+      change_room(room: next_room, door: next_door) if door.trigger?(player) if @room == room
+      change_room(room: room, door: door) if next_door.trigger?(player) if @room == next_room
+    end
   end
 end

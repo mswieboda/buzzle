@@ -30,7 +30,7 @@ module Buzzle
       # any classes that use a sprite internally
       Sprite.load(
         [
-          {asset_file: "player", frames: 3, rows: 4},
+          {asset_file: "player", frames: 6, rows: 4},
           {asset_file: "door", frames: 4, rows: 1},
           {asset_file: "block", frames: 1, rows: 1},
           {asset_file: "switch", frames: 7, rows: 1},

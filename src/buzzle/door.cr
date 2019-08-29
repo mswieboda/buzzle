@@ -4,13 +4,13 @@ module Buzzle
   class Door < Switch
     getter direction : Direction
 
-    def initialize(x, y, z = 0, closed = true, @direction = Direction::Down)
+    def initialize(x, y, z = 0, open = false, @direction = Direction::Down)
       super(
         name: "door",
         x: x,
         y: y,
         z: z,
-        on: !closed,
+        on: open,
         width: Game::GRID_SIZE,
         height: Game::GRID_SIZE
       )
@@ -58,7 +58,7 @@ module Buzzle
     end
 
     def collidable?
-      closed?
+      closed? || switching?
     end
 
     def exit
