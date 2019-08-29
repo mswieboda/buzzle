@@ -37,6 +37,7 @@ module Buzzle
       draw(
         screen_x: screen_x,
         screen_y: screen_y,
+        center_y: false,
         frame: frame
       )
     end

@@ -36,8 +36,8 @@ module Buzzle
           height: height
         ),
         dest_rec: LibRay::Rectangle.new(
-          x: x,
-          y: y,
+          x: x + width / 2,
+          y: y + height / 2,
           width: width,
           height: height
         ),

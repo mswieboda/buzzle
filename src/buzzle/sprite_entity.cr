@@ -23,10 +23,10 @@ module Buzzle
       )
     end
 
-    def draw(screen_x, screen_y, x = x, y = y, frame = 0, row = 0, rotation = 0, tint = LibRay::WHITE)
+    def draw(screen_x, screen_y, x = x, y = y, center_x = true, center_y = true, frame = 0, row = 0, rotation = 0, tint = LibRay::WHITE)
       sprite.draw(
-        x: x + screen_x + width / 2 + (Game::GRID_SIZE - width) / 2,
-        y: y + screen_y + height / 2 + (Game::GRID_SIZE - height) / 2,
+        x: x + screen_x + (Game::GRID_SIZE - sprite.width) / (center_x ? 2 : 1),
+        y: y + screen_y + (Game::GRID_SIZE - sprite.height) / (center_y ? 2 : 1),
         frame: frame,
         row: row,
         rotation: rotation,
