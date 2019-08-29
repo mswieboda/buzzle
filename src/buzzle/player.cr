@@ -9,7 +9,7 @@ module Buzzle
 
     MOVING_AMOUNT = 2
 
-    def initialize(x, y, z = 1, @direction = Direction::Up)
+    def initialize(x, y, z = 0, @direction = Direction::Up)
       super(
         name: "player",
         x: x,
@@ -157,8 +157,13 @@ module Buzzle
       @moving_left_foot ? 1 : 2
     end
 
-    def draw
-      draw(frame: frame, row: direction.to_i)
+    def draw(screen_x, screen_y)
+      draw(
+        screen_x: screen_x,
+        screen_y: screen_y,
+        frame: frame,
+        row: direction.to_i
+      )
     end
 
     def pushing_block?(dx, dy)

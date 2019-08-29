@@ -1,6 +1,6 @@
 module Buzzle
   class Block < SpriteEntity
-    def initialize(x, y, z = 1)
+    def initialize(x, y, z = 0)
       super(
         name: "block",
         x: x,
@@ -22,8 +22,14 @@ module Buzzle
       )
     end
 
-    def draw
-      draw(x: x + @moving_x, y: y + @moving_y, tint: LibRay::BLUE)
+    def draw(screen_x, screen_y)
+      draw(
+        screen_x: screen_x,
+        screen_y: screen_y,
+        x: x + @moving_x,
+        y: y + @moving_y,
+        tint: LibRay::BLUE
+      )
     end
 
     def actionable?

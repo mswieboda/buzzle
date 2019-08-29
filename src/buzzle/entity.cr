@@ -1,6 +1,6 @@
 module Buzzle
   class Entity < Obj
-    def initialize(x : Int32 | Float32, y : Int32 | Float32, @z = 1, @width = 0, @height = 0)
+    def initialize(x : Int32 | Float32, y : Int32 | Float32, z = 0, width = 0, height = 0)
       super
       @trigger = Trigger.new(enabled: false)
     end
@@ -23,8 +23,6 @@ module Buzzle
     end
 
     def trigger?(entity : Entity)
-      return unless @trigger.enabled?
-
       @trigger.trigger?(entity)
     end
 
@@ -38,6 +36,10 @@ module Buzzle
 
     def update(_frame_time)
       @trigger.update(self)
+    end
+
+    def draw(screen_x, screen_y)
+      @trigger.draw(screen_x, screen_y) if Game::DEBUG
     end
   end
 end

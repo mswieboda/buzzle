@@ -7,7 +7,7 @@ module Buzzle
 
     @sound : LibRay::Sound
 
-    def initialize(x, y, z = 1, name = "switch", @on = false, width = Game::GRID_SIZE, height = Game::GRID_SIZE)
+    def initialize(x, y, z = 0, name = "switch", @on = false, width = Game::GRID_SIZE, height = Game::GRID_SIZE)
       super(
         name: name,
         x: x,
@@ -33,8 +33,12 @@ module Buzzle
       self.frame = @sprite.frames - 1 if on?
     end
 
-    def draw
-      draw(frame: frame)
+    def draw(screen_x, screen_y)
+      draw(
+        screen_x: screen_x,
+        screen_y: screen_y,
+        frame: frame
+      )
     end
 
     def update(frame_time)

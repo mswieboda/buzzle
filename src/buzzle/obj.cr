@@ -7,7 +7,7 @@ module Buzzle
     getter height : Int32
     getter? removed
 
-    def initialize(x : Int32 | Float32, y : Int32 | Float32, @z = 1, @width = 0, @height = 0)
+    def initialize(x : Int32 | Float32, y : Int32 | Float32, @z = 0, @width = 0, @height = 0)
       @x = x.to_f32 * Game::GRID_SIZE
       @y = y.to_f32 * Game::GRID_SIZE
       @removed = false
@@ -20,11 +20,24 @@ module Buzzle
     def update(_frame_time)
     end
 
-    def draw
+    def draw(_screen_x, _screen_y)
     end
 
     def draw_sort(entity : Entity)
-      z <=> entity.z || y <=> entity.y
+      z_test = z <=> entity.z
+      return z_test unless z_test.zero?
+
+      l_test = layer <=> entity.layer
+      return l_test unless l_test.zero?
+
+      y_test = y <=> entity.y
+      return y_test unless y_test.zero?
+
+      0
+    end
+
+    def layer
+      2
     end
 
     def at?(other_x, other_y)

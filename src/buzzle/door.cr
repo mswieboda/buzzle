@@ -4,7 +4,7 @@ module Buzzle
   class Door < Switch
     getter direction : Direction
 
-    def initialize(x, y, z = 1, closed = true, @direction = Direction::Down)
+    def initialize(x, y, z = 0, closed = true, @direction = Direction::Down)
       super(
         name: "door",
         x: x,
@@ -24,6 +24,10 @@ module Buzzle
         origin_y: 0,
         width: Game::GRID_SIZE
       )
+    end
+
+    def layer
+      1
     end
 
     def trigger?(entity : Entity)

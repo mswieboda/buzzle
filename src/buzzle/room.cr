@@ -8,7 +8,12 @@ module Buzzle
 
     GRID_SIZE = Game::GRID_SIZE
 
-    def initialize(@player, @entities = [] of Entity, @x = 0, @y = 0, @width = 0, @height = 0)
+    def initialize(@player, @entities = [] of Entity, width = 10, height = 10)
+      @width = width * GRID_SIZE
+      @height = height * GRID_SIZE
+
+      @x = Game::SCREEN_WIDTH / 2 - @width / 2
+      @y = Game::SCREEN_HEIGHT / 2 - @height / 2
     end
 
     def update(frame_time)
@@ -20,20 +25,9 @@ module Buzzle
     end
 
     def draw
-      draw_room_border if Game::DEBUG
       draw_floor_grid if Game::DEBUG
 
-      @entities.each(&.draw)
-    end
-
-    def draw_room_border
-      LibRay.draw_rectangle_lines(
-        pos_x: 0,
-        pos_y: 0,
-        width: @width,
-        height: @height,
-        color: LibRay::GRAY
-      )
+      @entities.each(&.draw(x, y))
     end
 
     def draw_floor_grid
