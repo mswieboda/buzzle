@@ -23,17 +23,14 @@ module Buzzle
     def draw(_screen_x, _screen_y)
     end
 
-    def draw_sort(entity : Entity)
-      z_test = z <=> entity.z
+    def draw_sort(obj : Obj)
+      z_test = z <=> obj.z
       return z_test unless z_test.zero?
 
-      l_test = layer <=> entity.layer
+      l_test = layer <=> obj.layer
       return l_test unless l_test.zero?
 
-      y_test = y <=> entity.y
-      return y_test unless y_test.zero?
-
-      0
+      y <=> obj.y
     end
 
     def layer
