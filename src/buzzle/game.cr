@@ -36,6 +36,7 @@ module Buzzle
           {asset_file: "switch", frames: 7, rows: 1},
           {asset_file: "floor", frames: 1, rows: 1},
           {asset_file: "wall", frames: 6, rows: 1},
+          {asset_file: "ladder", frames: 1, rows: 1},
         ]
       )
     end
