@@ -65,6 +65,8 @@ module Buzzle
     end
 
     def collision?(entity : Entity)
+      return false unless z == entity.z
+
       x + width > entity.x &&
         x < entity.x + entity.width &&
         y + height > entity.y &&

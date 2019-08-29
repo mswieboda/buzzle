@@ -258,5 +258,13 @@ module Buzzle
       @falling = true
       @frame_t = 0
     end
+
+    def ascend
+      @z += 1
+    end
+
+    def descend
+      @z -= 1
+    end
   end
 end
