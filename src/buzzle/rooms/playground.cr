@@ -24,7 +24,6 @@ module Buzzle::Rooms
       @entities << WallLadder.new(7, 7)
       @entities << Ladder.new(7, 7, 1, ascend: false)
       @entities << Floor.new(7, 6, 1)
-      @entities << Wall.new(8, 7)
       @entities << Floor.new(8, 6, 1)
 
       ((0..2).to_a + [4] + (6..width - 1).to_a).each do |x|

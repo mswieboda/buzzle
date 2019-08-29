@@ -61,6 +61,16 @@ module Buzzle
       closed? || switching?
     end
 
+    def entered?(player : Player)
+      if trigger?(player)
+        exit
+        player.exit_door = self
+        direction.opposite == player.direction
+      else
+        false
+      end
+    end
+
     def exit
       @exiting = true
     end

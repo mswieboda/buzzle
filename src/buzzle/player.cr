@@ -2,10 +2,10 @@ module Buzzle
   class Player < SpriteEntity
     getter direction : Direction
     getter? falling
+    property exit_door : Door | Nil
 
     @actionable : Entity | Nil
     @held_block : Block | Nil
-    @exit_door : Door | Nil
     @sounds : Array(LibRay::Sound)
 
     MOVING_AMOUNT = 2
