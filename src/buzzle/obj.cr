@@ -75,7 +75,7 @@ module Buzzle
     end
 
     def directional_collision?(obj_direction : Direction)
-      false
+      true
     end
 
     def remove
