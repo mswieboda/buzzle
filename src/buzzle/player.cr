@@ -69,20 +69,20 @@ module Buzzle
 
     def movement_input(frame_time, entities)
       dx = dy = 0
-      new_direction = direction
+      original_direction = direction
 
       if Keys.down?([LibRay::KEY_W, LibRay::KEY_UP])
         dy = -1
-        new_direction = Direction::Up
+        @direction = Direction::Up
       elsif Keys.down?([LibRay::KEY_A, LibRay::KEY_LEFT])
         dx = -1
-        new_direction = Direction::Left
+        @direction = Direction::Left
       elsif Keys.down?([LibRay::KEY_S, LibRay::KEY_DOWN])
         dy = 1
-        new_direction = Direction::Down
+        @direction = Direction::Down
       elsif Keys.down?([LibRay::KEY_D, LibRay::KEY_RIGHT])
         dx = 1
-        new_direction = Direction::Right
+        @direction = Direction::Right
       end
 
       # if attempting to move (delta != 0)
@@ -120,7 +120,7 @@ module Buzzle
         end
       end
 
-      @direction = new_direction unless @held_block
+      @direction = original_direction if @held_block
     end
 
     def transitions(frame_time)
