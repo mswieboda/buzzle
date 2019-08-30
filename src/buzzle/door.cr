@@ -87,5 +87,13 @@ module Buzzle
         frame: frame
       )
     end
+
+    def directional_collision?(other_direction : Direction)
+      if direction.opposite == other_direction
+        false
+      else
+        true
+      end
+    end
   end
 end
