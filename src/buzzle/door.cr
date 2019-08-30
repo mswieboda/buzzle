@@ -2,9 +2,7 @@ require "./switch"
 
 module Buzzle
   class Door < Switch
-    getter direction : Direction
-
-    def initialize(x, y, z = 0, open = false, @direction = Direction::Down)
+    def initialize(x, y, z = 0, open = false)
       super(
         name: "door",
         x: x,
