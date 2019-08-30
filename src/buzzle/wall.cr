@@ -58,5 +58,9 @@ module Buzzle
     def collidable?
       true
     end
+
+    def directional_collision?(other_direction : Direction)
+      direction.opposite == other_direction
+    end
   end
 end
