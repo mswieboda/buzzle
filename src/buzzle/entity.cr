@@ -1,6 +1,6 @@
 module Buzzle
   class Entity < Obj
-    def initialize(x : Int32 | Float32, y : Int32 | Float32, z = 0, width = 0, height = 0)
+    def initialize(x : Int32 | Float32, y : Int32 | Float32, z = 0, width = 0, height = 0, direction = Direction::Down, hidden = false)
       super
       @trigger = Trigger.new(enabled: false)
     end

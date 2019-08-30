@@ -2,14 +2,16 @@ module Buzzle
   class Wall < SpriteEntity
     @frame : Int32
 
-    def initialize(x, y, z = 0, design = 0, @direction = Direction::Down)
+    def initialize(x, y, z = 0, design = 0, direction = Direction::Down, hidden = false)
       super(
         name: "wall",
         x: x,
         y: y,
         z: z,
         width: Game::GRID_SIZE,
-        height: Game::GRID_SIZE
+        height: Game::GRID_SIZE,
+        direction: direction,
+        hidden: hidden
       )
 
       @frame = design

@@ -7,8 +7,9 @@ module Buzzle
     getter height : Int32
     getter direction : Direction
     getter? removed
+    getter? hidden
 
-    def initialize(x : Int32 | Float32, y : Int32 | Float32, @z = 0, @width = 0, @height = 0, @direction = Direction::Down)
+    def initialize(x : Int32 | Float32, y : Int32 | Float32, @z = 0, @width = 0, @height = 0, @direction = Direction::Down, @hidden = false)
       @x = x.to_f32 * Game::GRID_SIZE
       @y = y.to_f32 * Game::GRID_SIZE
       @removed = false
@@ -68,9 +69,9 @@ module Buzzle
     def collision?(obj : Obj)
       return false unless z == obj.z
       return false unless x + width > obj.x &&
-        x < obj.x + obj.width &&
-        y + height > obj.y &&
-        y < obj.y + obj.height
+                          x < obj.x + obj.width &&
+                          y + height > obj.y &&
+                          y < obj.y + obj.height
       obj.directional_collision?(direction)
     end
 

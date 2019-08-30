@@ -2,7 +2,7 @@ module Buzzle
   class SpriteEntity < Entity
     getter sprite : Sprite
 
-    def initialize(name, x, y, z = 0, width = nil, height = nil)
+    def initialize(name, x, y, z = 0, width = nil, height = nil, direction = Direction::Down, hidden = false)
       @sprite = Sprite.get(name)
 
       super(
@@ -10,7 +10,9 @@ module Buzzle
         y: y,
         z: z,
         width: width || @sprite.width,
-        height: height || sprite.height
+        height: height || @sprite.height,
+        direction: direction,
+        hidden: hidden
       )
     end
 
@@ -31,7 +33,7 @@ module Buzzle
         row: row,
         rotation: rotation,
         tint: tint
-      )
+      ) unless hidden?
 
       @trigger.draw(screen_x, screen_y) if Game::DEBUG
     end
