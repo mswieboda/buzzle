@@ -1,6 +1,5 @@
 module Buzzle
   class Player < SpriteEntity
-    getter direction : Direction
     getter? falling
     property exit_door : Door | Nil
 
@@ -16,7 +15,7 @@ module Buzzle
     MOVING_FRAME_LAST  = 2
     FALLING_FRAME_LAST = 5
 
-    def initialize(x, y, z = 0, @direction = Direction::Up)
+    def initialize(x, y, z = 0)
       super(
         name: "player",
         x: x,

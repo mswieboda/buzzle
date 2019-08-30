@@ -23,6 +23,7 @@ module Buzzle::Rooms
       @entities << Floor.new(6, 6, 1)
       @entities << WallLadder.new(7, 7)
       @entities << Ladder.new(7, 7, 1, ascend: false)
+      @entities << Wall.new(8, 7, direction: Direction::Up, hidden: true)
       @entities << Floor.new(7, 6, 1)
       @entities << Floor.new(8, 6, 1)
 
