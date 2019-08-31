@@ -21,7 +21,12 @@ $ make
 
 ## Credits
 
-https://opengameart.org/content/a-blocky-dungeon - modified sizes for door, switch
-https://opengameart.org/content/fps-placeholder-sounds - used footsteps sounds
+https://opengameart.org/content/a-blocky-dungeon
+- modified sizes to 32x32
+- modified door, switch, walls
+
+
+https://opengameart.org/content/fps-placeholder-sounds
+- used footsteps sounds
 
 TODO: attribution, licenses, etc
