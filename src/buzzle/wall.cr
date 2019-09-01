@@ -24,9 +24,9 @@ module Buzzle
     def x_draw
       x_draw = x
 
-      if @direction.right?
+      if direction.right?
         x_draw += width
-      elsif @direction.left?
+      elsif direction.left?
         x_draw -= width
       end
 
@@ -36,9 +36,9 @@ module Buzzle
     def y_draw
       y_draw = y
 
-      if @direction.down?
+      if direction.down?
         y_draw += height
-      elsif @direction.up?
+      elsif direction.up?
         y_draw -= height
       end
 
@@ -52,8 +52,7 @@ module Buzzle
         screen_x: screen_x,
         screen_y: screen_y,
         frame: @frame,
-        row: @direction.down? ? 0 : 1,
-        rotation: @direction.down? ? 0 : 90 + @direction.opposite.to_rotation
+        row: direction.to_i
       )
     end
 

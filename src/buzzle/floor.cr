@@ -18,5 +18,13 @@ module Buzzle
     def collidable?
       false
     end
+
+    def draw(screen_x, screen_y)
+      draw(
+        screen_x: screen_x,
+        screen_y: screen_y,
+        frame: z
+      )
+    end
   end
 end

@@ -17,6 +17,9 @@ module Buzzle::Rooms
         end
       end
 
+      @entities << Floors::Pillar.new(3, 4, direction: Direction::Up)
+      @entities << Floors::Pillar.new(3, 3)
+
       @entities << Wall.new(5, 6)
       @entities << Floor.new(5, 6, 1)
       @entities << Wall.new(6, 6)
@@ -27,11 +30,11 @@ module Buzzle::Rooms
       @entities << Floor.new(7, 6, 1)
       @entities << Floor.new(8, 6, 1)
 
-      @entities << Wall.new(10, 10, direction: Direction::Right)
+      @entities << Wall.new(10, 10, direction: Direction::Right, design: rand > 0.5 ? 0 : rand(3))
       @entities << Wall.new(11, 10, direction: Direction::Left, hidden: true)
       @entities << Wall.new(10, 10, direction: Direction::Up)
       @entities << Wall.new(10, 9, direction: Direction::Down, hidden: true)
-      @entities << Wall.new(10, 10, direction: Direction::Down)
+      @entities << Wall.new(10, 10, direction: Direction::Down, design: rand > 0.5 ? 0 : rand(6))
       @entities << Wall.new(10, 11, direction: Direction::Up, hidden: true)
 
       ((0..2).to_a + [4] + (6..width - 1).to_a).each do |x|
