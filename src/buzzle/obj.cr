@@ -39,10 +39,6 @@ module Buzzle
       2
     end
 
-    def at?(other_x, other_y)
-      x == other_x && y == other_y
-    end
-
     def collidable?
       true
     end
@@ -68,15 +64,18 @@ module Buzzle
 
     def collision?(obj : Obj)
       return false unless z == obj.z
-      return false unless x + width > obj.x &&
-                          x < obj.x + obj.width &&
-                          y + height > obj.y &&
-                          y < obj.y + obj.height
-      obj.directional_collision?(direction)
+      x + width > obj.x &&
+        x < obj.x + obj.width &&
+        y + height > obj.y &&
+        y < obj.y + obj.height
     end
 
-    def directional_collision?(obj_direction : Direction)
-      true
+    def directional_collision?(objs : Array(Obj), direction : Direction)
+      objs.reject { |o| o == self }.select { |o| o.directional_collision?(self, direction) }.any?
+    end
+
+    def directional_collision?(obj : Obj, direction : Direction)
+      collision?(obj)
     end
 
     def remove

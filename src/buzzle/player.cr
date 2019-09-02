@@ -68,20 +68,19 @@ module Buzzle
 
     def movement_input(frame_time, entities)
       dx = dy = 0
-      original_direction = direction
 
       if Keys.down?([LibRay::KEY_W, LibRay::KEY_UP])
         dy = -1
-        @direction = Direction::Up
+        @direction = Direction::Up unless @held_block
       elsif Keys.down?([LibRay::KEY_A, LibRay::KEY_LEFT])
         dx = -1
-        @direction = Direction::Left
+        @direction = Direction::Left unless @held_block
       elsif Keys.down?([LibRay::KEY_S, LibRay::KEY_DOWN])
         dy = 1
-        @direction = Direction::Down
+        @direction = Direction::Down unless @held_block
       elsif Keys.down?([LibRay::KEY_D, LibRay::KEY_RIGHT])
         dx = 1
-        @direction = Direction::Right
+        @direction = Direction::Right unless @held_block
       end
 
       # if attempting to move (delta != 0)
@@ -91,35 +90,23 @@ module Buzzle
 
         if collision?(entities.select { |e| e.is_a?(Floor) || e.is_a?(Door) })
           if pushing_block?(dx, dy)
-            @held_block.try(&.move(dx * Game::GRID_SIZE, dy * Game::GRID_SIZE, entities))
+            @held_block.try(&.move(dx * Game::GRID_SIZE, dy * Game::GRID_SIZE, direction, entities))
           end
 
-          if collision?(entities.select(&.collidable?))
-            @x -= dx * Game::GRID_SIZE
-            @y -= dy * Game::GRID_SIZE
-
-            if pushing_block?(dx, dy)
-              @held_block.try(&.move(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, entities))
-            end
-          else
-            @x -= dx * Game::GRID_SIZE
-            @y -= dy * Game::GRID_SIZE
-
-            if pushing_block?(dx, dy)
-              @held_block.try(&.move(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, entities))
-            end
-
+          unless directional_collision?(entities.select(&.collidable?), direction)
             @moving_x = dx.to_f32 * MOVING_AMOUNT
             @moving_y = dy.to_f32 * MOVING_AMOUNT
             @moving_left_foot = !@moving_left_foot
           end
-        else
-          @x -= dx * Game::GRID_SIZE
-          @y -= dy * Game::GRID_SIZE
+        end
+
+        @x -= dx * Game::GRID_SIZE
+        @y -= dy * Game::GRID_SIZE
+
+        if pushing_block?(dx, dy)
+          @held_block.try(&.move(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, direction, entities))
         end
       end
-
-      @direction = original_direction if @held_block
     end
 
     def transitions(frame_time)
@@ -144,7 +131,7 @@ module Buzzle
 
       if pushing_block?(dx, dy)
         # push block
-        @held_block.try(&.move(dx, dy, entities))
+        @held_block.try(&.move(dx, dy, direction, entities))
       elsif @held_block && !pulling_block?(dx, dy)
         # trying to strafe while holding block, stop moving!
         stop
@@ -159,7 +146,7 @@ module Buzzle
 
       if pulling_block?(dx, dy)
         # pull block
-        @held_block.try(&.move(dx, dy, entities))
+        @held_block.try(&.move(dx, dy, direction, entities))
       end
 
       # stop moving at next grid cell

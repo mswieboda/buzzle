@@ -36,11 +36,11 @@ module Buzzle
       true
     end
 
-    def move(dx, dy, entities : Array(Entity))
+    def move(dx, dy, direction : Direction, entities : Array(Entity))
       @x += dx
       @y += dy
 
-      if collision?(entities.select(&.collidable?))
+      if directional_collision?(entities.select(&.collidable?), direction)
         @x -= dx
         @y -= dy
       end

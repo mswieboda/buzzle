@@ -60,8 +60,8 @@ module Buzzle
       true
     end
 
-    def directional_collision?(other_direction : Direction)
-      direction.opposite == other_direction
+    def directional_collision?(obj : Obj, other_direction : Direction)
+      collision?(obj) && direction.opposite == other_direction
     end
   end
 end
