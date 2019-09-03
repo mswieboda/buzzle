@@ -11,6 +11,8 @@ module Buzzle
         on: on
       )
 
+      @sound = Sound.get("pressure switch")
+
       @switched = false
 
       @triggers = [] of Trigger

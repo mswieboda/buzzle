@@ -29,12 +29,36 @@ module Buzzle
 
     def self.unload_all
       @@sounds.each do |(asset_file, sound)|
-        LibRay.unload_sound(sound)
+        stop(sound) if playing?(sound)
       end
+
+      @@sounds.each do |(asset_file, sound)|
+        unload(sound)
+      end
+    end
+
+    def self.playing?(sound)
+      LibRay.sound_playing?(sound)
     end
 
     def self.play(sound)
       LibRay.play_sound(sound)
+    end
+
+    def self.stop(sound)
+      LibRay.stop_sound(sound)
+    end
+
+    def self.pause(sound)
+      LibRay.pause_sound(sound)
+    end
+
+    def self.resume(sound)
+      LibRay.resume_sound(sound)
+    end
+
+    def self.unload(sound)
+      LibRay.unload_sound(sound)
     end
 
     def self.play_random_pitch(sound, min = 0.5_f32)

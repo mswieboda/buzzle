@@ -48,6 +48,7 @@ module Buzzle
         {name: "footstep-3", asset_file: "footstep-3", volume: 0.125_f32, pitch: nil},
         {name: "footstep-4", asset_file: "footstep-4", volume: 0.125_f32, pitch: nil},
         {name: "switch", asset_file: "footstep-1", volume: nil, pitch: 3.5_f32},
+        {name: "pressure switch", asset_file: "footstep-1", volume: nil, pitch: 0.33_f32},
       ])
     end
 
