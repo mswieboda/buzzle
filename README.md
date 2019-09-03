@@ -23,7 +23,7 @@ $ make
 
 https://opengameart.org/content/a-blocky-dungeon
 - modified sizes to 32x32
-- modified door, switch, walls
+- modified door, switch, walls, gate
 
 
 https://opengameart.org/content/fps-placeholder-sounds
