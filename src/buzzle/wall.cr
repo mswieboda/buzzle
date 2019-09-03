@@ -2,9 +2,9 @@ module Buzzle
   class Wall < SpriteEntity
     @frame : Int32
 
-    def initialize(x, y, z = 0, design = 0, direction = Direction::Down, hidden = false)
+    def initialize(x, y, z = 0, name = "wall", design = 0, direction = Direction::Down, hidden = false)
       super(
-        name: "wall",
+        name: name,
         x: x,
         y: y,
         z: z,

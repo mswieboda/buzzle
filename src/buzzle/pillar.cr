@@ -1,6 +1,6 @@
 require "./wall"
 
-module Buzzle::Floors
+module Buzzle
   class Pillar < Wall
     def initialize(x, y, z = 0, design = 0, direction = Direction::Down, hidden = false)
       super(
