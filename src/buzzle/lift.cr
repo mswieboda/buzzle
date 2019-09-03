@@ -2,7 +2,6 @@ module Buzzle
   class Lift < Floor
     getter? enabled
     getter? ascend
-    getter? moving
 
     MOVING_AMOUNT = 2
 
@@ -14,8 +13,7 @@ module Buzzle
         z: z
       )
 
-      @moving = false
-      @moving_y = 0
+      @moving = 0
       @enabled = true
 
       @triggers = [] of Trigger
@@ -57,47 +55,27 @@ module Buzzle
       !ascend?
     end
 
-    def ascending?
-      ascend? && moving?
-    end
-
-    def descending?
-      descend? && moving?
-    end
-
     def collidable?
-      ascending? || descending?
+      moving?
     end
 
-    def move
-      @moving = true
-      disable
+    def moving?
+      @moving != 0
     end
 
     def stop
-      @moving = false
-      @moving_y = 0
-    end
-
-    def ascend
-      @z += 1
-    end
-
-    def descend
-      @z -= 1
+      @moving = 0
     end
 
     def ascend(players : Array(Player))
       players.each(&.lift_ascend)
 
-      @moving_y -= MOVING_AMOUNT
-      @y -= MOVING_AMOUNT
+      @moving -= MOVING_AMOUNT
 
-      if @moving_y.abs > height
-        @y += MOVING_AMOUNT
+      if @moving.abs > height
+        @moving += MOVING_AMOUNT
 
         stop
-        ascend
         switch
       end
     end
@@ -105,14 +83,12 @@ module Buzzle
     def descend(players : Array(Player))
       players.each(&.lift_descend)
 
-      @moving_y += MOVING_AMOUNT
-      @y += MOVING_AMOUNT
+      @moving += MOVING_AMOUNT
 
-      if @moving_y.abs > height
-        @y -= MOVING_AMOUNT
+      if @moving.abs > height
+        @moving -= MOVING_AMOUNT
 
         stop
-        descend
         switch
       end
     end
@@ -141,16 +117,29 @@ module Buzzle
       players = entities.select(&.is_a?(Player)).map(&.as(Player)).select { |p| trigger?(p) }
 
       if enabled? && players.any?
-        move
+        disable
+
+        if ascend?
+          ascend(players)
+        elsif descend?
+          descend(players)
+        end
       elsif players.empty? && disabled? && !moving?
         enable
       end
+    end
 
-      if ascending?
-        ascend(players)
-      elsif descending?
-        descend(players)
-      end
+    def frame
+      # TODO: figure out division for animation
+      @moving / 16
+    end
+
+    def draw(screen_x, screen_y)
+      draw(
+        screen_x: screen_x,
+        screen_y: screen_y,
+        frame: frame
+      )
     end
   end
 end
