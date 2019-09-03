@@ -9,7 +9,7 @@ module Buzzle::Scenes
       @room1 = Rooms::Playground.new(@player, entities: [@door1_1, @door1_2, @switch, @pressure_switch])
 
       # House
-      @door2_1 = Door.new(5, 0)
+      @door2_1 = Door.new(5, 0, design: Door::Type::Gate)
       @room2 = Rooms::House.new(@player, entities: [@door2_1])
 
       @door3_1 = Door.new(5, 0)
