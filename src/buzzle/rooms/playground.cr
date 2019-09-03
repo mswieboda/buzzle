@@ -39,6 +39,8 @@ module Buzzle::Rooms
       @entities << Floor.new(8, 6, 1)
       @entities << Wall.new(8, 6, direction: Direction::Right)
 
+      @entities << Lift.new(4, 7)
+
       ((0..2).to_a + (4..width - 1).to_a).each do |x|
         @entities << Wall.new(x, -1, design: rand > 0.5 ? 0 : rand(6))
       end

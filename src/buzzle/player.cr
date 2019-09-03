@@ -268,5 +268,19 @@ module Buzzle
     def descend
       @z -= 1
     end
+
+    def lift_ascend
+      return if moving?
+
+      ascend
+      @moving_y = -1_f32 * MOVING_AMOUNT
+    end
+
+    def lift_descend
+      return if moving?
+
+      descend
+      @moving_y = 1_f32 * MOVING_AMOUNT
+    end
   end
 end

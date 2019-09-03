@@ -23,6 +23,7 @@ module Buzzle
 
       @x = this_entity.x + @origin_x
       @y = this_entity.y + @origin_y
+      @z = this_entity.z
     end
 
     def draw(screen_x, screen_y)
