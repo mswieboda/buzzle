@@ -11,7 +11,7 @@ module Buzzle
         on: on
       )
 
-      @sound = Sound.get("pressure switch")
+      @sound_done = Sound.get("pressure switch")
 
       @switched = false
 

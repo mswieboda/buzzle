@@ -29,6 +29,8 @@ module Buzzle
         origin_y: 0,
         width: Game::GRID_SIZE
       )
+
+      @sound_start = Sound.get("gate") if @design == Type::Gate
     end
 
     def layer
@@ -59,7 +61,12 @@ module Buzzle
       toggle(instant) if open?
     end
 
-    def play_sound
+    def play_sound_start
+      return unless @design == Type::Gate
+      super
+    end
+
+    def play_sound_done
     end
 
     def collidable?

@@ -5,7 +5,8 @@ module Buzzle
 
     FPS = 12
 
-    @sound : LibRay::Sound
+    @sound_done : LibRay::Sound
+    @sound_start : LibRay::Sound
 
     def initialize(x, y, z = 0, name = "switch", @on = false, width = Game::GRID_SIZE, height = Game::GRID_SIZE)
       super(
@@ -28,7 +29,8 @@ module Buzzle
         width: width * 2,
         height: height * 2
       )
-      @sound = Sound.get("switch")
+      @sound_start = Sound.get("switch start")
+      @sound_done = Sound.get("switch done")
 
       self.frame = @sprite.frames - 1 if on?
     end
@@ -65,22 +67,26 @@ module Buzzle
     end
 
     def on(sound = true)
-      play_sound if sound
+      play_sound_done if sound
       @on = true
     end
 
     def off(sound = true)
-      play_sound if sound
+      play_sound_done if sound
       @on = false
     end
 
     def flip(sound = true)
-      play_sound if sound
+      play_sound_done if sound
       @on = !@on
     end
 
-    def play_sound
-      Sound.play(@sound)
+    def play_sound_done
+      Sound.play(@sound_done)
+    end
+
+    def play_sound_start
+      Sound.play(@sound_start)
     end
 
     def actionable?
@@ -99,14 +105,15 @@ module Buzzle
       @frame_t = frame.to_f32 / FPS
     end
 
-    def switch(instant = false)
+    def switch(instant = false, sound = !instant)
       if instant
-        flip(!instant)
+        flip(sound)
 
         @frame_t = 0_f32
 
         self.frame = @sprite.frames - 1 if on?
       else
+        play_sound_start if sound
         @switching = true
       end
     end
