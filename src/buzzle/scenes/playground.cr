@@ -3,7 +3,7 @@ module Buzzle::Scenes
     def initialize(@player)
       # Playground
       @door1_1 = Door.new(3, 0)
-      @door1_2 = Door.new(8, 7, open: true)
+      @door1_2 = Door.new(8, 7, open: true, railing: true)
       @switch = Switch.new(10, 3)
       @room1 = Rooms::Playground.new(@player, entities: [@door1_1, @door1_2, @switch])
 

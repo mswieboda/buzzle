@@ -2,7 +2,9 @@ require "./switch"
 
 module Buzzle
   class Door < Switch
-    def initialize(x, y, z = 0, open = false)
+    @railing : SpriteEntity | Nil
+
+    def initialize(x, y, z = 0, open = false, railing = false)
       super(
         name: "door",
         x: x,
@@ -22,6 +24,14 @@ module Buzzle
         origin_y: 0,
         width: Game::GRID_SIZE
       )
+
+      @railing = SpriteEntity.new(
+        name: "wall",
+        x: x,
+        y: y,
+        z: z,
+        direction: Direction::Down
+      ) if railing
     end
 
     def layer
@@ -84,6 +94,16 @@ module Buzzle
         screen_y: screen_y,
         frame: frame
       )
+
+      if direction.down? && @railing
+        @railing.try(&.draw(
+          y: y + height,
+          screen_x: screen_x,
+          screen_y: screen_y,
+          frame: 0,
+          row: 4
+        ))
+      end
     end
   end
 end

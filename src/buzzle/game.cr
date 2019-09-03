@@ -35,7 +35,7 @@ module Buzzle
           {asset_file: "block", frames: 1, rows: 1},
           {asset_file: "switch", frames: 7, rows: 1},
           {asset_file: "floor", frames: 4, rows: 5},
-          {asset_file: "wall", frames: 6, rows: 5},
+          {asset_file: "wall", frames: 6, rows: 6},
           {asset_file: "ladder", frames: 1, rows: 1},
         ]
       )

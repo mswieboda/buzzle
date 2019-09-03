@@ -23,7 +23,7 @@ module Buzzle
         screen_x: screen_x,
         screen_y: screen_y,
         frame: direction.down? ? 0 : 1,
-        row: 4
+        row: 5
       )
     end
   end
