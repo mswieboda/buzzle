@@ -9,6 +9,8 @@ module Buzzle
 
     MOVING_AMOUNT = 2
 
+    MOVE_BLOCK_TIMER = 0.25
+
     FPS         = 12
     FALLING_FPS = 12
 
@@ -29,6 +31,7 @@ module Buzzle
       @moving_left_foot = false
       @frame_t = 0_f32
       @falling = false
+      @move_block_timer = Timer.new(MOVE_BLOCK_TIMER)
 
       @sounds = [
         Sound.get("footstep-1"),
@@ -40,6 +43,9 @@ module Buzzle
 
     def update(frame_time, entities : Array(Entity))
       super
+
+      @move_block_timer.reset if @move_block_timer.done?
+      @move_block_timer.increase(frame_time) if @move_block_timer.started?
 
       unless moving?
         actionable(entities)
@@ -90,13 +96,12 @@ module Buzzle
 
         if collision?(entities.select { |e| e.is_a?(Floor) || e.is_a?(Door) })
           if pushing_block?(dx, dy)
-            @held_block.try(&.move(dx * Game::GRID_SIZE, dy * Game::GRID_SIZE, direction, entities))
+            @held_block.try(&.move(dx * Game::GRID_SIZE, dy * Game::GRID_SIZE, direction, entities)) if !@move_block_timer.started?
           end
 
-          unless directional_collision?(entities.select(&.collidable?), direction)
+          unless directional_collision?(entities.select(&.collidable?), pulling_block?(dx, dy) ? direction.opposite : direction)
             @moving_x = dx.to_f32 * MOVING_AMOUNT
             @moving_y = dy.to_f32 * MOVING_AMOUNT
-            @moving_left_foot = !@moving_left_foot
           end
         end
 
@@ -104,7 +109,7 @@ module Buzzle
         @y -= dy * Game::GRID_SIZE
 
         if pushing_block?(dx, dy)
-          @held_block.try(&.move(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, direction, entities))
+          @held_block.try(&.move(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, direction, entities)) if !@move_block_timer.started?
         end
       end
     end
@@ -131,11 +136,20 @@ module Buzzle
 
       if pushing_block?(dx, dy)
         # push block
-        @held_block.try(&.move(dx, dy, direction, entities))
+        @held_block.try(&.move(dx, dy, direction, entities)) if !@move_block_timer.started?
+      elsif pulling_block?(dx, dy) && @move_block_timer.started?
+        # stop, and don't pull while move block timer active
+        stop
+        return
       elsif @held_block && !pulling_block?(dx, dy)
         # trying to strafe while holding block, stop moving!
         stop
         return
+      end
+
+      if @moving_x == dx && @moving_y == dy
+        # alternate foot step animation frame
+        @moving_left_foot = !@moving_left_foot
       end
 
       @moving_x += dx
@@ -146,7 +160,7 @@ module Buzzle
 
       if pulling_block?(dx, dy)
         # pull block
-        @held_block.try(&.move(dx, dy, direction, entities))
+        @held_block.try(&.move(dx, dy, direction, entities)) if !@move_block_timer.started?
       end
 
       # stop moving at next grid cell
@@ -159,6 +173,7 @@ module Buzzle
     def stop
       @moving_x = 0_f32
       @moving_y = 0_f32
+      @move_block_timer.start if @held_block && !@move_block_timer.started?
       @held_block = nil
 
       if @exit_door
