@@ -31,7 +31,7 @@ module Buzzle
       Sprite.load(
         [
           {asset_file: "player", frames: 6, rows: 4},
-          {asset_file: "door", frames: 4, rows: 1},
+          {asset_file: "door", frames: 5, rows: 2},
           {asset_file: "block", frames: 1, rows: 1},
           {asset_file: "switch", frames: 7, rows: 1},
           {asset_file: "floor", frames: 2, rows: 2},

@@ -2,8 +2,8 @@ module Buzzle::Scenes
   class Playground < Scene
     def initialize(@player)
       # Playground
-      @door1_1 = Door.new(3, 0)
-      @door1_2 = Door.new(8, 7, open: true, railing: true)
+      @door1_1 = Door.new(3, 0, design: Door::Type::Gate)
+      @door1_2 = Door.new(8, 7, open: true)
       @switch = Switch.new(10, 3)
       @pressure_switch = PressureSwitch.new(7, 3)
       @room1 = Rooms::Playground.new(@player, entities: [@door1_1, @door1_2, @switch, @pressure_switch])

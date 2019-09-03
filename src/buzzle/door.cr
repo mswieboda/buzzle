@@ -4,7 +4,12 @@ module Buzzle
   class Door < Switch
     @railing : SpriteEntity | Nil
 
-    def initialize(x, y, z = 0, open = false, railing = false)
+    enum Type
+      Wooden
+      Gate
+    end
+
+    def initialize(x, y, z = 0, open = false, @design = Type::Wooden)
       super(
         name: "door",
         x: x,
@@ -24,14 +29,6 @@ module Buzzle
         origin_y: 0,
         width: Game::GRID_SIZE
       )
-
-      @railing = SpriteEntity.new(
-        name: "wall",
-        x: x,
-        y: y,
-        z: z,
-        direction: Direction::Down
-      ) if railing
     end
 
     def layer
@@ -92,18 +89,9 @@ module Buzzle
         y: y + height,
         screen_x: screen_x,
         screen_y: screen_y,
-        frame: frame
+        frame: frame,
+        row: @design.to_i
       )
-
-      if direction.down? && @railing
-        @railing.try(&.draw(
-          y: y + height,
-          screen_x: screen_x,
-          screen_y: screen_y,
-          frame: 0,
-          row: 4
-        ))
-      end
     end
   end
 end
