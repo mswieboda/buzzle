@@ -13,7 +13,7 @@ module Buzzle
         z: ascend? ? z : z + 1
       )
 
-      @moving = 0.0
+      @moving = 0
       @enabled = true
 
       @triggers = [] of Trigger
@@ -41,6 +41,24 @@ module Buzzle
         width: 1,
         height: Game::GRID_SIZE
       )
+
+      @walls = [] of Wall
+      @walls << Wall.new(x, y + 1, z, direction: Direction::Up, hidden: true)
+      @walls << Wall.new(x, y, z, direction: Direction::Down)
+
+      @walls.each do |wall|
+        if ascend?
+          wall.disable
+          wall.source_height = @moving.abs
+        else
+          wall.enable
+          wall.source_height = wall.height - @moving.abs
+        end
+      end
+    end
+
+    def entities
+      [self] + @walls
     end
 
     def trigger?(entity : Entity)
@@ -61,6 +79,7 @@ module Buzzle
 
     def lift(players : Array(Player), amount)
       @y += amount
+      @walls.each(&.lift(amount))
 
       players.each do |player|
         player.lift(amount)
@@ -74,6 +93,7 @@ module Buzzle
       if @moving.abs > Game::GRID_SIZE
         @moving -= amount
         @y -= amount
+        @walls.each(&.lift(-amount))
 
         players.each do |player|
           player.lift(-amount)
@@ -88,14 +108,22 @@ module Buzzle
 
         switch
       end
+
+      @walls.each do |wall|
+        wall.source_height = ascend? ? @moving.abs : wall.height - @moving.abs
+      end
     end
 
     def ascend
       @z += 1
+
+      @walls.each(&.enable)
     end
 
     def descend
       @z -= 1
+
+      @walls.each(&.disable)
     end
 
     def switch
@@ -131,11 +159,11 @@ module Buzzle
     end
 
     def draw(screen_x, screen_y)
-      draw_partial(
+      draw(
         screen_x: screen_x,
         screen_y: screen_y,
-        source_height: ascend? ? Game::GRID_SIZE + @moving.abs : Game::GRID_SIZE * 2 - @moving.abs,
-        y: y
+        frame: 0,
+        row: 0
       )
     end
   end

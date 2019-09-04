@@ -1,7 +1,6 @@
 module Buzzle
   class Player < SpriteEntity
     getter? falling
-    getter? lifting
     property exit_door : Door | Nil
 
     @actionable : Entity | Nil
@@ -271,15 +270,6 @@ module Buzzle
 
     def descend
       @z -= 1
-    end
-
-    def lift(amount)
-      @lifting = true
-      @y += amount
-    end
-
-    def lift_stopped
-      @lifting = false
     end
   end
 end

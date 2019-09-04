@@ -1,6 +1,8 @@
 module Buzzle
   class SpriteEntity < Entity
     getter sprite : Sprite
+    property source_width : Int32 | Nil
+    property source_height : Int32 | Nil
 
     def initialize(name, x, y, z = 0, width = nil, height = nil, direction = Direction::Down, hidden = false)
       @sprite = Sprite.get(name)
@@ -14,6 +16,9 @@ module Buzzle
         direction: direction,
         hidden: hidden
       )
+
+      @source_width = nil
+      @source_height = nil
     end
 
     def draw(screen_x, screen_y)
@@ -26,9 +31,13 @@ module Buzzle
     end
 
     def draw(screen_x, screen_y, x = x, y = y, center_x = true, center_y = true, frame = 0, row = 0, rotation = 0, tint = LibRay::WHITE)
-      sprite.draw(
-        x: x + screen_x + (Game::GRID_SIZE - sprite.width) / (center_x ? 2 : 1),
-        y: y + screen_y + (Game::GRID_SIZE - sprite.height) / (center_y ? 2 : 1),
+      draw_partial(
+        screen_x: screen_x,
+        screen_y: screen_y,
+        x: x + (Game::GRID_SIZE - sprite.width) / (center_x ? 2 : 1),
+        y: y + (Game::GRID_SIZE - sprite.height) / (center_y ? 2 : 1),
+        source_width: source_width || sprite.width,
+        source_height: source_height || sprite.height,
         frame: frame,
         row: row,
         rotation: rotation,

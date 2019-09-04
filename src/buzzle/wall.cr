@@ -1,5 +1,7 @@
 module Buzzle
   class Wall < SpriteEntity
+    getter? enabled
+
     @frame : Int32
 
     def initialize(x, y, z = 0, name = "wall", design = 0, direction = Direction::Down, hidden = false, @railing = false)
@@ -14,7 +16,20 @@ module Buzzle
         hidden: hidden
       )
 
+      @enabled = true
       @frame = design
+    end
+
+    def enable
+      @enabled = true
+    end
+
+    def disable
+      @enabled = false
+    end
+
+    def disabled?
+      !enabled?
     end
 
     def layer
@@ -67,8 +82,32 @@ module Buzzle
       end
     end
 
+    def draw_partial(screen_x, screen_y, source_width = width, source_height = height)
+      draw_partial(
+        y: y_draw,
+        x: x_draw,
+        screen_x: screen_x,
+        screen_y: screen_y,
+        source_width: source_width,
+        source_height: source_height,
+        frame: @frame,
+        row: direction.to_i
+      )
+
+      if direction.down? && @railing
+        draw(
+          y: y_draw,
+          x: x_draw,
+          screen_x: screen_x,
+          screen_y: screen_y,
+          frame: @frame,
+          row: 4
+        )
+      end
+    end
+
     def collidable?
-      true
+      enabled?
     end
 
     def directional_collision?(obj : Obj, other_direction : Direction)

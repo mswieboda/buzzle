@@ -9,6 +9,7 @@ module Buzzle
     GRID_SIZE = Game::GRID_SIZE
 
     def initialize(@player, @entities = [] of Entity, width = 10, height = 10)
+      @entities = entities.flat_map(&.entities)
       @width = width * GRID_SIZE
       @height = height * GRID_SIZE
 
