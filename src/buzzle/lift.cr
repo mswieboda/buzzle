@@ -2,44 +2,46 @@ module Buzzle
   class Lift < Floor
     getter? enabled
     getter? ascend
+    getter? active
 
-    MOVING_AMOUNT = 2
+    MOVING_AMOUNT = 1
 
     def initialize(x, y, z = 0, @ascend = true)
       super(
-        name: "ladder",
+        name: "lift",
         x: x,
         y: y,
-        z: z
+        z: ascend? ? z : z + 1
       )
 
       @moving = 0
       @enabled = true
+      @active = false
 
       @triggers = [] of Trigger
       @triggers << Trigger.new(
         origin_x: 0,
         origin_y: 0,
-        width: width,
+        width: Game::GRID_SIZE,
         height: 1
       )
       @triggers << Trigger.new(
-        origin_x: width - 1,
+        origin_x: Game::GRID_SIZE - 1,
         origin_y: 0,
         width: 1,
-        height: height
+        height: Game::GRID_SIZE
       )
       @triggers << Trigger.new(
         origin_x: 0,
-        origin_y: height - 1,
-        width: width,
+        origin_y: Game::GRID_SIZE - 1,
+        width: Game::GRID_SIZE,
         height: 1
       )
       @triggers << Trigger.new(
         origin_x: 0,
         origin_y: 0,
         width: 1,
-        height: height
+        height: Game::GRID_SIZE
       )
     end
 
@@ -55,46 +57,64 @@ module Buzzle
       !ascend?
     end
 
-    def collidable?
-      moving?
-    end
-
     def moving?
       @moving != 0
     end
 
+    def start
+      puts "start"
+      @active = true
+    end
+
     def stop
-      @moving = 0
+      puts "stop"
+      @active = false
     end
 
-    def ascend(players : Array(Player))
-      players.each(&.lift_ascend)
+    def lift(players : Array(Player), amount)
+      @y += amount
 
-      @moving -= MOVING_AMOUNT
+      players.each do |player|
+        player.lift(amount)
+        player.ascend if ascend? && @moving == 0
+      end
 
-      if @moving.abs > height
-        @moving += MOVING_AMOUNT
+      ascend if ascend? && @moving == 0
+
+      @moving += amount
+
+      if @moving.abs > Game::GRID_SIZE
+        @moving -= amount
+        @y -= amount
+
+        players.each do |player|
+          player.lift(-amount)
+          player.lift_stopped
+
+          if descend?
+            player.descend
+          end
+        end
+
+        descend if descend?
 
         stop
         switch
       end
     end
 
-    def descend(players : Array(Player))
-      players.each(&.lift_descend)
+    def ascend
+      @z += 1
+    end
 
-      @moving += MOVING_AMOUNT
-
-      if @moving.abs > height
-        @moving -= MOVING_AMOUNT
-
-        stop
-        switch
-      end
+    def descend
+      @z -= 1
     end
 
     def switch
       @ascend = !@ascend
+      @moving = 0
+      disable
     end
 
     def disable
@@ -117,27 +137,28 @@ module Buzzle
       players = entities.select(&.is_a?(Player)).map(&.as(Player)).select { |p| trigger?(p) }
 
       if enabled? && players.any?
-        disable
-
-        if ascend?
-          ascend(players)
-        elsif descend?
-          descend(players)
-        end
-      elsif players.empty? && disabled? && !moving?
+        lift(players, ascend? ? -MOVING_AMOUNT : MOVING_AMOUNT)
+      elsif disabled? && players.empty?
         enable
       end
     end
 
+    def y_draw
+      ascend? ? y - @moving : y + Game::GRID_SIZE - @moving
+    end
+
     def frame
-      # TODO: figure out division for animation
-      @moving / 16
+      frame = ((@moving.abs / (Game::GRID_SIZE / sprite.frames)) - 1).clamp(0, sprite.frames - 1).to_i
+
+      ascend? ? frame : sprite.frames - frame - 1
     end
 
     def draw(screen_x, screen_y)
       draw(
         screen_x: screen_x,
         screen_y: screen_y,
+        center_y: false,
+        y: y_draw,
         frame: frame
       )
     end

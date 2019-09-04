@@ -1,6 +1,7 @@
 module Buzzle
   class Player < SpriteEntity
     getter? falling
+    getter? lifting
     property exit_door : Door | Nil
 
     @actionable : Entity | Nil
@@ -44,16 +45,18 @@ module Buzzle
     def update(frame_time, entities : Array(Entity))
       super
 
+      return if lifting?
+
       @move_block_timer.reset if @move_block_timer.done?
       @move_block_timer.increase(frame_time) if @move_block_timer.started?
 
-      unless moving?
-        actionable(entities)
-        movement_input(frame_time, entities)
+      unless moving? || lifting?
+        actionable(entities) unless falling?
+        movement_input(frame_time, entities) unless falling?
         transitions(frame_time)
       end
 
-      moving_transition(frame_time, entities) if moving?
+      moving_transition(frame_time, entities) if moving? && !lifting?
     end
 
     def actionable(entities)
@@ -127,6 +130,7 @@ module Buzzle
 
     def moving?
       return false if falling?
+      return false if lifting?
       @moving_x.abs > 0 || @moving_y.abs > 0
     end
 
@@ -269,18 +273,13 @@ module Buzzle
       @z -= 1
     end
 
-    def lift_ascend
-      return if moving?
-
-      ascend
-      @moving_y = -1_f32 * MOVING_AMOUNT
+    def lift(amount)
+      @lifting = true
+      @y += amount
     end
 
-    def lift_descend
-      return if moving?
-
-      descend
-      @moving_y = 1_f32 * MOVING_AMOUNT
+    def lift_stopped
+      @lifting = false
     end
   end
 end
