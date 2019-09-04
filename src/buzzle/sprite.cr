@@ -50,6 +50,30 @@ module Buzzle
       )
     end
 
+    def draw_partial(x, y, source_width = width, source_height = height, frame = 0, row = 0, rotation = 0, tint = LibRay::WHITE)
+      LibRay.draw_texture_pro(
+        texture: texture,
+        source_rec: LibRay::Rectangle.new(
+          x: frame * width,
+          y: row * height,
+          width: source_width,
+          height: source_height
+        ),
+        dest_rec: LibRay::Rectangle.new(
+          x: x + source_width / 2,
+          y: y + source_height / 2,
+          width: source_width,
+          height: source_height
+        ),
+        origin: LibRay::Vector2.new(
+          x: source_width / 2,
+          y: source_height / 2
+        ),
+        rotation: rotation,
+        tint: tint
+      )
+    end
+
     def self.load(sprites : Array(NamedTuple(asset_file: String, frames: Int32, rows: Int32)))
       sprites.each { |sprite| load(sprite[:asset_file], sprite[:frames], sprite[:rows]) }
     end

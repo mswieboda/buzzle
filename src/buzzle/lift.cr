@@ -2,9 +2,8 @@ module Buzzle
   class Lift < Floor
     getter? enabled
     getter? ascend
-    getter? active
 
-    MOVING_AMOUNT = 1
+    MOVING_AMOUNT = 2
 
     def initialize(x, y, z = 0, @ascend = true)
       super(
@@ -14,9 +13,8 @@ module Buzzle
         z: ascend? ? z : z + 1
       )
 
-      @moving = 0
+      @moving = 0.0
       @enabled = true
-      @active = false
 
       @triggers = [] of Trigger
       @triggers << Trigger.new(
@@ -61,16 +59,6 @@ module Buzzle
       @moving != 0
     end
 
-    def start
-      puts "start"
-      @active = true
-    end
-
-    def stop
-      puts "stop"
-      @active = false
-    end
-
     def lift(players : Array(Player), amount)
       @y += amount
 
@@ -98,7 +86,6 @@ module Buzzle
 
         descend if descend?
 
-        stop
         switch
       end
     end
@@ -143,23 +130,12 @@ module Buzzle
       end
     end
 
-    def y_draw
-      ascend? ? y - @moving : y + Game::GRID_SIZE - @moving
-    end
-
-    def frame
-      frame = ((@moving.abs / (Game::GRID_SIZE / sprite.frames)) - 1).clamp(0, sprite.frames - 1).to_i
-
-      ascend? ? frame : sprite.frames - frame - 1
-    end
-
     def draw(screen_x, screen_y)
-      draw(
+      draw_partial(
         screen_x: screen_x,
         screen_y: screen_y,
-        center_y: false,
-        y: y_draw,
-        frame: frame
+        source_height: ascend? ? Game::GRID_SIZE + @moving.abs : Game::GRID_SIZE * 2 - @moving.abs,
+        y: y
       )
     end
   end
