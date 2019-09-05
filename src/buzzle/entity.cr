@@ -31,6 +31,18 @@ module Buzzle
       end
     end
 
+    def liftable?
+      false
+    end
+
+    def ascend
+      @z += 1
+    end
+
+    def descend
+      @z -= 1
+    end
+
     def lift(amount)
       @lifting = true
       @y += amount

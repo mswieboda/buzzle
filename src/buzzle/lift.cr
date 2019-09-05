@@ -2,6 +2,8 @@ module Buzzle
   class Lift < Floor
     getter? enabled
     getter? ascend
+    getter? lowering
+    getter? raising
 
     MOVING_AMOUNT = 2
 
@@ -15,6 +17,7 @@ module Buzzle
 
       @moving = 0
       @enabled = true
+      @lowering = @raising = false
 
       @triggers = [] of Trigger
       @triggers << Trigger.new(
@@ -77,13 +80,13 @@ module Buzzle
       @moving != 0
     end
 
-    def lift(players : Array(Player), amount)
+    def lift(entities : Array(Entity), amount)
       @y += amount
       @walls.each(&.lift(amount))
 
-      players.each do |player|
-        player.lift(amount)
-        player.ascend if ascend? && @moving == 0
+      entities.each do |entity|
+        entity.lift(amount)
+        entity.ascend if ascend? && @moving == 0
       end
 
       ascend if ascend? && @moving == 0
@@ -95,12 +98,12 @@ module Buzzle
         @y -= amount
         @walls.each(&.lift(-amount))
 
-        players.each do |player|
-          player.lift(-amount)
-          player.lift_stopped
+        entities.each do |entity|
+          entity.lift(-amount)
+          entity.lift_stopped
 
           if descend?
-            player.descend
+            entity.descend
           end
         end
 
@@ -129,7 +132,22 @@ module Buzzle
     def switch
       @ascend = !@ascend
       @moving = 0
+      @lowering = @raising = false
       disable
+    end
+
+    def lower
+      return if ascend? || lowering? || raising?
+
+      @raising = false
+      @lowering = true
+    end
+
+    def raise
+      return if descend? || lowering? || raising?
+
+      @lowering = false
+      @raising = true
     end
 
     def disable
@@ -149,12 +167,18 @@ module Buzzle
 
       @triggers.each(&.update(self))
 
-      players = entities.select(&.is_a?(Player)).map(&.as(Player)).select { |p| trigger?(p) }
+      if enabled?
+        liftables = [] of Entity
 
-      if enabled? && players.any?
-        lift(players, ascend? ? -MOVING_AMOUNT : MOVING_AMOUNT)
-      elsif disabled? && players.empty?
-        enable
+        if !lowering? && !raising?
+          liftables = entities.select { |e| e.liftable? && trigger?(e) }
+          return unless liftables.any?
+        end
+
+        lift(liftables, ascend? ? -MOVING_AMOUNT : MOVING_AMOUNT)
+      else
+        liftables = entities.select { |e| e.liftable? && @triggers.any? { |t| t.trigger?(e) } }
+        enable if liftables.empty?
       end
     end
 

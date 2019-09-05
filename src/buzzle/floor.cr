@@ -1,13 +1,13 @@
 module Buzzle
   class Floor < SpriteEntity
-    def initialize(x, y, z = 0, name = "floor", direction = Direction::Down)
+    def initialize(x, y, z = 0, name = "floor", direction = Direction::Down, width = Game::GRID_SIZE, height = Game::GRID_SIZE)
       super(
         name: name,
         x: x,
         y: y,
         z: z,
-        width: Game::GRID_SIZE,
-        height: Game::GRID_SIZE,
+        width: width,
+        height: height,
         direction: direction
       )
     end

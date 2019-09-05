@@ -35,6 +35,10 @@ module Buzzle
       self.frame = @sprite.frames - 1 if on?
     end
 
+    def liftable?
+      true
+    end
+
     def draw(screen_x, screen_y)
       draw(
         screen_x: screen_x,

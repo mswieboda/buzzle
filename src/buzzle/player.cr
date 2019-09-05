@@ -264,12 +264,8 @@ module Buzzle
       @frame_t = 0
     end
 
-    def ascend
-      @z += 1
-    end
-
-    def descend
-      @z -= 1
+    def liftable?
+      true
     end
   end
 end

@@ -32,6 +32,10 @@ module Buzzle
       )
     end
 
+    def liftable?
+      true
+    end
+
     def actionable?
       true
     end

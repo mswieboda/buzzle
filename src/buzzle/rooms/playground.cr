@@ -39,8 +39,12 @@ module Buzzle::Rooms
       @entities << Floor.new(8, 6, 1)
       @entities << Wall.new(8, 6, direction: Direction::Right)
 
-      @entities << Lift.new(4, 7)
+      @lift = Lift.new(4, 7)
+      @entities << @lift
       @entities << Lift.new(6, 8)
+
+      @lift_switch = Switch.new(6, 8)
+      @entities << @lift_switch
 
       ((0..2).to_a + (4..width - 1).to_a).each do |x|
         @entities << Wall.new(x, -1, design: rand > 0.5 ? 0 : rand(6))
@@ -52,6 +56,13 @@ module Buzzle::Rooms
         width: width,
         height: height
       )
+    end
+
+    def update(frame_time)
+      super
+
+      # @lift.raise if @lift_switch.on?
+      # @lift.lower if @lift_switch.off?
     end
   end
 end
