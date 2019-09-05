@@ -36,7 +36,7 @@ module Buzzle
     end
 
     def layer
-      1
+      2
     end
 
     def trigger?(entity : Entity)

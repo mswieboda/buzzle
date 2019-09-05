@@ -18,7 +18,7 @@ module Buzzle
     end
 
     def layer
-      1
+      2
     end
 
     def draw(_screen_x, _screen_y)

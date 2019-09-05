@@ -47,7 +47,7 @@ module Buzzle
     end
 
     def layer
-      1
+      2
     end
 
     def actionable?
