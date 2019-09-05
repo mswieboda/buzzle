@@ -69,7 +69,7 @@ module Buzzle
         @actionable.try(&.action) if @actionable
       elsif down && @actionable && @actionable.is_a?(Block)
         @held_block = @actionable.as(Block)
-        @held_block = nil if @held_block.try(&.lifting?)
+        @actionable = @held_block = nil if @held_block.try(&.lifting?)
       elsif Keys.released?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
         @actionable = @held_block = nil
       end

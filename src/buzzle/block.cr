@@ -46,7 +46,7 @@ module Buzzle
       @x += dx
       @y += dy
 
-      unless collision?(entities.select(&.is_a?(Floor)))
+      unless collision?(entities.select { |e| e.is_a?(Floor) && !e.is_a?(Floors::Pit) })
         @x -= dx
         @y -= dy
 
