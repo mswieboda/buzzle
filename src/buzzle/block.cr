@@ -41,8 +41,17 @@ module Buzzle
     end
 
     def move(dx, dy, direction : Direction, entities : Array(Entity))
+      return if lifting?
+
       @x += dx
       @y += dy
+
+      unless collision?(entities.select(&.is_a?(Floor)))
+        @x -= dx
+        @y -= dy
+
+        return
+      end
 
       if directional_collision?(entities.select(&.collidable?), direction)
         @x -= dx

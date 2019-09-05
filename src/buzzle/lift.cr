@@ -4,10 +4,11 @@ module Buzzle
     getter? ascend
     getter? lowering
     getter? raising
+    getter? auto
 
     MOVING_AMOUNT = 2
 
-    def initialize(x, y, z = 0, @ascend = true)
+    def initialize(x, y, z = 0, @ascend = true, @auto = true)
       super(
         name: "lift",
         x: x,
@@ -139,6 +140,7 @@ module Buzzle
     def lower
       return if ascend? || lowering? || raising?
 
+      enable unless auto?
       @raising = false
       @lowering = true
     end
@@ -146,6 +148,7 @@ module Buzzle
     def raise
       return if descend? || lowering? || raising?
 
+      enable unless auto?
       @lowering = false
       @raising = true
     end
@@ -172,13 +175,16 @@ module Buzzle
 
         if !lowering? && !raising?
           liftables = entities.select { |e| e.liftable? && trigger?(e) }
-          return unless liftables.any?
+
+          return if auto? && liftables.empty?
         end
 
         lift(liftables, ascend? ? -MOVING_AMOUNT : MOVING_AMOUNT)
       else
-        liftables = entities.select { |e| e.liftable? && @triggers.any? { |t| t.trigger?(e) } }
-        enable if liftables.empty?
+        if auto?
+          liftables = entities.select { |e| e.liftable? && @triggers.any? { |t| t.trigger?(e) } }
+          enable if liftables.empty?
+        end
       end
     end
 

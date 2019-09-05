@@ -41,7 +41,7 @@ module Buzzle::Rooms
 
       @lift = Lift.new(4, 7)
       @entities << @lift
-      @entities << Lift.new(6, 8)
+      @entities << Lift.new(6, 8, auto: false)
 
       @lift_switch = Switch.new(6, 8)
       @entities << @lift_switch
@@ -61,8 +61,8 @@ module Buzzle::Rooms
     def update(frame_time)
       super
 
-      # @lift.raise if @lift_switch.on?
-      # @lift.lower if @lift_switch.off?
+      @lift.raise if @lift_switch.on?
+      @lift.lower if @lift_switch.off?
     end
   end
 end
