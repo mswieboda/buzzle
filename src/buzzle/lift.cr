@@ -17,7 +17,7 @@ module Buzzle
       )
 
       @moving = 0
-      @enabled = true
+      @enabled = auto?
       @lowering = @raising = false
 
       @triggers = [] of Trigger

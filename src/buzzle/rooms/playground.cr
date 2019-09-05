@@ -39,9 +39,9 @@ module Buzzle::Rooms
       @entities << Floor.new(8, 6, 1)
       @entities << Wall.new(8, 6, direction: Direction::Right)
 
-      @lift = Lift.new(4, 7)
+      @lift = Lift.new(4, 7, auto: false)
       @entities << @lift
-      @entities << Lift.new(6, 8, auto: false)
+      @entities << Lift.new(6, 8)
 
       @lift_switch = Switch.new(6, 8)
       @entities << @lift_switch
