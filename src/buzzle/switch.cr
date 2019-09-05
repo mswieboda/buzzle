@@ -71,12 +71,18 @@ module Buzzle
     end
 
     def on(sound = true)
+      return if on?
+
       play_sound_done if sound
+      self.frame = @sprite.frames - 1
       @on = true
     end
 
     def off(sound = true)
+      return if off?
+
       play_sound_done if sound
+      @frame_t = 0_f32
       @on = false
     end
 
@@ -112,10 +118,6 @@ module Buzzle
     def switch(instant = false, sound = !instant)
       if instant
         flip(sound)
-
-        @frame_t = 0_f32
-
-        self.frame = @sprite.frames - 1 if on?
       else
         play_sound_start if sound
         @switching = true

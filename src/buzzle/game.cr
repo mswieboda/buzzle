@@ -19,10 +19,11 @@ module Buzzle
       load_sounds
 
       @player = Player.new(3, 3)
-      @scene = Scenes::Playground.new(@player)
+      @scene = Scenes::Scene1.new(@player)
 
       @scenes = [] of Scene
       @scenes << @scene
+      @scenes << Scenes::Playground.new(@player)
     end
 
     def load_sprites

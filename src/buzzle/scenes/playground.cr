@@ -22,6 +22,8 @@ module Buzzle::Scenes
     end
 
     def update(frame_time)
+      super
+
       @door1_1.open if @switch.on?
       @door1_1.close if @switch.off?
 
@@ -30,8 +32,6 @@ module Buzzle::Scenes
 
       change_rooms(player: @player, door: @door1_1, room: @room1, next_room: @room2, next_door: @door2_1)
       change_rooms(player: @player, door: @door1_2, room: @room1, next_room: @room3, next_door: @door3_1)
-
-      @room.update(frame_time)
     end
   end
 end
