@@ -1,15 +1,28 @@
 module Buzzle
   class Scene
     getter player : Player
+    getter? loaded
 
     def initialize(@player)
       @room = Room.new(@player)
 
       @rooms = [] of Room
       @rooms << @room
+
+      @loaded = false
+    end
+
+    def load
+      @loaded = true
+    end
+
+    def unload
+      @loaded = false
     end
 
     def update(frame_time)
+      load unless loaded?
+
       @room.update(frame_time)
     end
 
@@ -29,6 +42,10 @@ module Buzzle
     def change_rooms(player : Player, door : Door, room : Room, next_room : Room, next_door : Door)
       change_room(room: next_room, door: next_door) if door.entered?(player) if @room == room
       change_room(room: room, door: door) if next_door.entered?(player) if @room == next_room
+    end
+
+    def next_scene?
+      false
     end
   end
 end

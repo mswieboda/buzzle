@@ -24,7 +24,7 @@ module Buzzle::Rooms
         @entities << Floors::Pit.new(x, height - 1)
       end
 
-      ((0..4).to_a + (6..width - 1).to_a).each do |x|
+      ([0] + (2..4).to_a + (6..width - 1).to_a).each do |x|
         @entities << Wall.new(x, -1, design: rand > 0.5 ? 0 : rand(6))
       end
 

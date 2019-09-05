@@ -17,12 +17,12 @@ module Buzzle
     MOVING_FRAME_LAST  = 2
     FALLING_FRAME_LAST = 5
 
-    def initialize(x, y, z = 0)
+    def initialize
       super(
         name: "player",
-        x: x,
-        y: y,
-        z: z,
+        x: 0,
+        y: 0,
+        z: 0,
         width: Game::GRID_SIZE,
         height: Game::GRID_SIZE
       )
@@ -238,17 +238,13 @@ module Buzzle
 
       door.open(instant: instant) if door.closed?
 
-      return unless instant
+      return if door.closed?
 
       door.exit
 
       @x = door.x
       @y = door.y
 
-      exit(door)
-    end
-
-    def exit(door : Door)
       @direction = door.direction
 
       dx, dy = @direction.to_delta
@@ -257,6 +253,12 @@ module Buzzle
       @moving_y = dy.to_f32 * MOVING_AMOUNT
 
       @exit_door = door
+    end
+
+    def initial_location(x = 0, y = 0, z = 0)
+      @x = x
+      @y = y
+      @z = z
     end
 
     def fall
