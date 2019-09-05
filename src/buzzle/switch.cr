@@ -89,6 +89,9 @@ module Buzzle
     def flip(sound = true)
       play_sound_done if sound
       @on = !@on
+
+      @frame_t = 0_f32
+      self.frame = @sprite.frames - 1 if on?
     end
 
     def play_sound_done

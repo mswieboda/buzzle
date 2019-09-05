@@ -2,6 +2,8 @@ require "./switch"
 
 module Buzzle
   class Door < Switch
+    getter? exiting
+
     @railing : SpriteEntity | Nil
 
     enum Type
@@ -38,10 +40,12 @@ module Buzzle
     end
 
     def trigger?(entity : Entity)
-      !@exiting && open? && super(entity)
+      !exiting? && open? && super(entity)
     end
 
     def toggle(instant = false)
+      return if active?
+
       switch(instant)
     end
 
@@ -61,6 +65,10 @@ module Buzzle
       toggle(instant) if open?
     end
 
+    def active?
+      switching? || exiting?
+    end
+
     def play_sound_start
       return unless @design == Type::Gate
       super
@@ -70,14 +78,14 @@ module Buzzle
     end
 
     def collidable?
-      closed? || switching?
+      closed? || active?
     end
 
     def entered?(player : Player)
-      if trigger?(player)
+      if trigger?(player) && direction.opposite == player.direction
         exit
         player.exit_door = self
-        direction.opposite == player.direction
+        true
       else
         false
       end
