@@ -4,10 +4,9 @@ module Buzzle
   class Door < Switch
     getter? exiting
 
-    @railing : SpriteEntity | Nil
-
     enum Type
       Wooden
+      WoodenLocked
       Gate
     end
 

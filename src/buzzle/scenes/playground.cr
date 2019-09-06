@@ -15,7 +15,7 @@ module Buzzle::Scenes
       @room2 = Rooms::House.new(@player, entities: [@door2_1])
 
       @door3_1 = Door.new(5, 0)
-      @door3_2 = Door.new(1, 0, open: true)
+      @door3_2 = LockedDoor.new(1, 0)
       @room3 = Rooms::DeadEnd.new(@player, entities: [@door3_1, @door3_2])
 
       @rooms = [] of Room

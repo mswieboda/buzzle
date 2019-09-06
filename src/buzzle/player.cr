@@ -39,6 +39,8 @@ module Buzzle
         Sound.get("footstep-3"),
         Sound.get("footstep-4"),
       ]
+
+      @items = [:key]
     end
 
     def update(frame_time, entities : Array(Entity))
@@ -269,6 +271,10 @@ module Buzzle
 
     def liftable?
       true
+    end
+
+    def use_item?(item)
+      !!@items.delete(item)
     end
   end
 end
