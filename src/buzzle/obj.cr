@@ -43,27 +43,23 @@ module Buzzle
       true
     end
 
-    def actionable?
-      false
-    end
-
-    def action
-    end
-
     def facing?(entity : Entity, opposite = false)
       direction = opposite ? @direction.opposite : @direction
 
-      if x > entity.x
-        y == entity.y && direction.left?
-      elsif x < entity.x
-        y == entity.y && direction.right?
+      if x >= entity.x + entity.width
+        # is on right side of entity
+        (y >= entity.y && y <= entity.y + entity.height) || (y + height >= entity.y && y <= entity.y + entity.height) && direction.left?
+      elsif x + width <= entity.x
+        # is on left side of entity
+        (y >= entity.y && y <= entity.y + entity.height) || (y + height >= entity.y && y <= entity.y + entity.height) && direction.right?
       else
-        if y > entity.y
+        # x is in between entity.x and entity.x + entity.width
+        if y >= entity.y + height
           direction.up?
-        elsif y < entity.y
+        elsif y + height <= entity.y
           direction.down?
         else
-          # at (x, y)
+          # overlapping entity
           true
         end
       end

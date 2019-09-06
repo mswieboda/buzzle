@@ -23,13 +23,23 @@ module Buzzle
       )
 
       @exiting = false
-      @trigger = Trigger.new(
+      @enter_trigger = Trigger.new(
         x: x,
         y: y - 1,
         z: z,
         origin_x: 0,
         origin_y: 0,
         width: Game::GRID_SIZE
+      )
+
+      @trigger = Trigger.new(
+        x: x,
+        y: y,
+        z: z,
+        origin_x: 0,
+        origin_y: -height / 2,
+        width: width,
+        height: height * 2
       )
 
       @sound_start = Sound.get("gate") if @design == Type::Gate
@@ -39,8 +49,8 @@ module Buzzle
       2
     end
 
-    def trigger?(entity : Entity)
-      !exiting? && open? && super(entity)
+    def enter_trigger?(entity : Entity)
+      !exiting? && open? && @enter_trigger.trigger?(entity)
     end
 
     def toggle(instant = false)
@@ -82,7 +92,7 @@ module Buzzle
     end
 
     def entered?(player : Player)
-      if trigger?(player) && direction.opposite == player.direction
+      if enter_trigger?(player) && direction.opposite == player.direction
         exit
         player.exit_door = self
         true

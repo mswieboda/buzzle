@@ -12,6 +12,17 @@ module Buzzle
       [self]
     end
 
+    def actionable?
+      false
+    end
+
+    def action
+    end
+
+    def actionable_condition?(entity : Entity)
+      trigger_facing?(entity)
+    end
+
     def liftable?
       false
     end
