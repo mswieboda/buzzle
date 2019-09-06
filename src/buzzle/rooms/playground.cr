@@ -46,6 +46,8 @@ module Buzzle::Rooms
       @lift_switch = Switch.new(6, 8)
       @entities << @lift_switch
 
+      @entities << Chest.new(9, 9)
+
       ((0..2).to_a + (4..width - 1).to_a).each do |x|
         @entities << Wall.new(x, -1, design: rand > 0.5 ? 0 : rand(6))
       end

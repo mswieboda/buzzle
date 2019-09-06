@@ -36,9 +36,9 @@ module Buzzle
         y: y,
         z: z,
         origin_x: 0,
-        origin_y: -height / 2,
+        origin_y: height / 2,
         width: width,
-        height: height * 2
+        height: height
       )
 
       @sound_start = Sound.get("gate") if @design == Type::Gate
