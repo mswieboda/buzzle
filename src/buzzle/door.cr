@@ -108,5 +108,13 @@ module Buzzle
         row: @design.to_i
       )
     end
+
+    def actionable?
+      true
+    end
+
+    def action
+      toggle
+    end
   end
 end
