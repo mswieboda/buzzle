@@ -50,6 +50,25 @@ module Buzzle
     def action
     end
 
+    def facing?(entity : Entity, opposite = false)
+      direction = opposite ? @direction.opposite : @direction
+
+      if x > entity.x
+        y == entity.y && direction.left?
+      elsif x < entity.x
+        y == entity.y && direction.right?
+      else
+        if y > entity.y
+          direction.up?
+        elsif y < entity.y
+          direction.down?
+        else
+          # at (x, y)
+          true
+        end
+      end
+    end
+
     def to_s(io)
       io << "#{super.to_s(io)} (#{x}, #{y}) (#{width}x#{height})"
     end

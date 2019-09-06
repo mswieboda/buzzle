@@ -12,25 +12,6 @@ module Buzzle
       [self]
     end
 
-    def facing?(player : Player, opposite = false)
-      direction = opposite ? player.direction.opposite : player.direction
-
-      if player.x < x
-        player.y == y && direction.right?
-      elsif player.x > x
-        player.y == y && direction.left?
-      else
-        if player.y < y
-          direction.down?
-        elsif player.y > y
-          direction.up?
-        else
-          # player is standing on (x, y)
-          true
-        end
-      end
-    end
-
     def liftable?
       false
     end
@@ -56,8 +37,8 @@ module Buzzle
       @trigger.trigger?(entity)
     end
 
-    def trigger_facing?(player : Player, opposite = false)
-      trigger?(player) && facing?(player, opposite)
+    def trigger_facing?(entity : Entity, opposite = false)
+      trigger?(entity) && entity.facing?(self, opposite)
     end
 
     def update(frame_time, _entities)
