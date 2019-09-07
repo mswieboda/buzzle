@@ -39,8 +39,9 @@ module Buzzle
 
       item = item_class.new
       item.x = @x
-      item.y = @y + height - item.sprite.height
+      item.y = @y + height / 2 - item.sprite.height
       item.z = @z
+      item.hide
 
       @item = item
 
@@ -109,6 +110,7 @@ module Buzzle
           @lift_item_timer.increase(frame_time)
 
           @item.try do |item|
+            item.show
             item.y -= LIFT_ITEM_MOVEMENT
           end
         end

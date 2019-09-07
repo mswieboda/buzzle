@@ -14,7 +14,7 @@ module Buzzle
     end
 
     def layer
-      2
+      3
     end
 
     def collidable?

@@ -39,6 +39,10 @@ module Buzzle
       @hidden = true
     end
 
+    def show
+      @hidden = false
+    end
+
     def layer
       3
     end
