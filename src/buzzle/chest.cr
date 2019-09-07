@@ -1,10 +1,20 @@
 module Buzzle
   class Chest < SpriteEntity
     getter? open
+    getter? opened
 
-    FPS = 12
+    FPS                =  12
+    LIFT_ITEM_TIMER    = 0.3
+    LIFT_ITEM_MOVEMENT =   2
+    GET_ITEM_TIMER     = 0.5
 
-    def initialize(x, y, z = 0)
+    @item : Item | Nil
+    @player : Player | Nil
+
+    def initialize(x, y, z = 0, item_class = Key)
+      @player = nil
+      @item = nil
+
       super(
         name: "chest",
         x: x,
@@ -26,6 +36,23 @@ module Buzzle
         width: width,
         height: height
       )
+
+      item = item_class.new
+      item.x = @x
+      item.y = @y + height - item.sprite.height
+      item.z = @z
+
+      @item = item
+
+      @lift_item_timer = Timer.new(LIFT_ITEM_TIMER)
+      @get_item_timer = Timer.new(GET_ITEM_TIMER)
+    end
+
+    def entities
+      entities = [] of Entity
+      entities += super
+      entities << @item.as(Item) if @item
+      entities
     end
 
     def closed?
@@ -42,14 +69,15 @@ module Buzzle
       super(entity)
     end
 
-    def action
-      open
+    def action(player : Player)
+      open(player)
     end
 
-    def open
-      return if open?
+    def open(player : Player)
+      return if opened? || open?
 
       @open = true
+      @player = player
     end
 
     def frame
@@ -59,7 +87,32 @@ module Buzzle
     def update(frame_time)
       super
 
-      @frame_t += frame_time if open? && frame + frame_time <= sprite.frames - 1
+      if open?
+        @frame_t += frame_time
+
+        if frame == sprite.frames - 1
+          @open = false
+          @opened = true
+        end
+      end
+
+      if opened?
+        if @lift_item_timer.done? && @item && @player.is_a?(Player)
+          if @get_item_timer.done?
+            if @player.try(&.receive_item(@item.as(Item)))
+              @item = nil
+            end
+          else
+            @get_item_timer.increase(frame_time)
+          end
+        else
+          @lift_item_timer.increase(frame_time)
+
+          @item.try do |item|
+            item.y -= LIFT_ITEM_MOVEMENT
+          end
+        end
+      end
     end
 
     def draw(screen_x, screen_y)

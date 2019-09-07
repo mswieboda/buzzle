@@ -34,8 +34,8 @@ module Buzzle
       draw_partial(
         screen_x: screen_x,
         screen_y: screen_y,
-        x: x + (Game::GRID_SIZE - sprite.width) / (center_x ? 2 : 1),
-        y: y + (Game::GRID_SIZE - sprite.height) / (center_y ? 2 : 1),
+        x: x + (center_x ? (Game::GRID_SIZE - sprite.width) / 2 : 0),
+        y: y + (center_y ? (Game::GRID_SIZE - sprite.height) / 2 : 0),
         source_width: source_width || sprite.width,
         source_height: source_height || sprite.height,
         frame: frame,

@@ -6,6 +6,7 @@ module Buzzle
     @actionable : Entity | Nil
     @held_block : Block | Nil
     @sounds : Array(LibRay::Sound)
+    @items : Array(Item)
 
     MOVING_AMOUNT = 2
 
@@ -40,7 +41,7 @@ module Buzzle
         Sound.get("footstep-4"),
       ]
 
-      @items = [:key]
+      @items = [] of Item
     end
 
     def update(frame_time, entities : Array(Entity))
@@ -68,7 +69,7 @@ module Buzzle
         @actionable = entities.select(&.actionable?).find(&.actionable_condition?(self))
 
         # action
-        @actionable.try(&.action) if @actionable
+        @actionable.try(&.action(self)) if @actionable
       elsif down && @actionable && @actionable.is_a?(Block)
         @held_block = @actionable.as(Block)
         @actionable = @held_block = nil if @held_block.try(&.lifting?)
@@ -273,8 +274,21 @@ module Buzzle
       true
     end
 
-    def use_item?(item)
-      !!@items.delete(item)
+    def receive_item(item : Item)
+      @items << item
+      item.hide
+      item
+    end
+
+    def use_item?(item_class : Class)
+      item = @items.find { |item| item.class == item_class }
+
+      if item
+        item.remove
+        !!@items.delete(item)
+      else
+        false
+      end
     end
   end
 end

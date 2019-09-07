@@ -27,7 +27,7 @@ module Buzzle
 
       player = entity.as(Player)
 
-      return false if closed? && locked? && !player.use_item?(:key)
+      return false if closed? && locked? && !player.use_item?(Key)
 
       trigger_facing?(player)
     end
@@ -36,7 +36,7 @@ module Buzzle
       true
     end
 
-    def action
+    def action(_entity : Entity)
       unlock if closed? && locked?
 
       toggle

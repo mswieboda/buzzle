@@ -35,6 +35,10 @@ module Buzzle
       y <=> obj.y
     end
 
+    def hide
+      @hidden = true
+    end
+
     def layer
       3
     end

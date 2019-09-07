@@ -106,7 +106,7 @@ module Buzzle
       true
     end
 
-    def action
+    def action(_entity : Entity)
       switch
     end
 

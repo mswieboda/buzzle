@@ -122,7 +122,7 @@ module Buzzle
       true
     end
 
-    def action
+    def action(_entity : Entity)
       toggle
     end
   end

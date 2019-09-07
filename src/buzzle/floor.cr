@@ -31,7 +31,7 @@ module Buzzle
 
     def entities
       if @accent
-        [self, @accent.as(Floors::Accent)]
+        [self, @accent.as(Entity)]
       else
         super
       end

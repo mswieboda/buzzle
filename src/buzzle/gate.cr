@@ -16,7 +16,7 @@ module Buzzle
       false
     end
 
-    def action
+    def action(_entity : Entity)
     end
   end
 end
