@@ -2,6 +2,7 @@ module Buzzle
   class Player < SpriteEntity
     getter? falling
     property exit_door : Door | Nil
+    getter items
 
     @actionable : Entity | Nil
     @held_block : Block | Nil

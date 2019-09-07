@@ -2,9 +2,7 @@ module Buzzle
   class SceneManager
     @scene : Scene
 
-    def initialize
-      @player = Player.new
-
+    def initialize(@player : Player)
       @scene_index = 0
 
       @scene = Scenes::Scene1.new(@player)
