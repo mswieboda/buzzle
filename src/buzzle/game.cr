@@ -39,6 +39,7 @@ module Buzzle
           {asset_file: "lift", frames: 1, rows: 1},
           {asset_file: "chest", frames: 6, rows: 1},
           {asset_file: "key", frames: 1, rows: 1},
+          {asset_file: "torch", frames: 6, rows: 1},
         ]
       )
     end

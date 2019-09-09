@@ -27,6 +27,8 @@ module Buzzle::Rooms
       # block
       @entities << Block.new(5, 3)
 
+      @entities << Torch.new(5, 6, on: true)
+
       super(
         player: player,
         entities: @entities,
