@@ -265,6 +265,10 @@ module Buzzle
       @z = z
     end
 
+    def initial_visibility
+      @visibility = Visibility::Shadow
+    end
+
     def fall
       stop
       @falling = true

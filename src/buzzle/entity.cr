@@ -4,6 +4,7 @@ module Buzzle
 
     def initialize(x : Int32 | Float32 = 0, y : Int32 | Float32 = 0, z = 0, width = 0, height = 0, direction = Direction::Down, hidden = false)
       super
+
       @lifting = false
       @trigger = Trigger.new(enabled: false)
     end
@@ -27,6 +28,10 @@ module Buzzle
 
     def liftable?
       false
+    end
+
+    def initial_visibility
+      @visibility = Visibility::Hidden
     end
 
     def ascend

@@ -33,7 +33,8 @@ module Buzzle::Rooms
         player: player,
         entities: @entities,
         width: width,
-        height: height
+        height: height,
+        dark: true
       )
     end
   end

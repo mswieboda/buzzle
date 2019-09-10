@@ -13,6 +13,7 @@ module Buzzle
     end
 
     def load
+      @player.visibility = Visibility::Visible unless @room.dark?
       @loaded = true
     end
 

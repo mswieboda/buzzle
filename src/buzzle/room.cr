@@ -5,11 +5,15 @@ module Buzzle
     getter y : Int32
     getter width : Int32
     getter height : Int32
+    getter? dark
+
+    @torches : Array(Torch)
 
     GRID_SIZE = Game::GRID_SIZE
 
-    def initialize(@player, @entities = [] of Entity, width = 10, height = 10)
+    def initialize(@player, @entities = [] of Entity, width = 10, height = 10, @dark = false)
       @entities = entities.flat_map(&.entities)
+      @torches = entities.select(&.is_a?(Torch)).map(&.as(Torch))
       @width = width * GRID_SIZE
       @height = height * GRID_SIZE
 
@@ -18,11 +22,13 @@ module Buzzle
     end
 
     def update(frame_time)
+      @entities.each(&.initial_visibility) if dark?
+
       @entities.each(&.update(frame_time, @entities))
 
-      @entities.sort! { |e1, e2| e1.draw_sort(e2) }
-
       @entities.reject!(&.removed?)
+
+      @entities.sort! { |e1, e2| e1.draw_sort(e2) }
     end
 
     def draw

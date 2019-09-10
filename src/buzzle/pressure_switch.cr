@@ -50,6 +50,10 @@ module Buzzle
       2
     end
 
+    def initial_visibility
+      @visibility = Visibility::Hidden
+    end
+
     def actionable?
       false
     end
