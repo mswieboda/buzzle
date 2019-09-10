@@ -32,6 +32,8 @@ module Buzzle::Floors
         width: 1,
         height: height
       )
+
+      @accent = nil
     end
 
     def trigger?(entity : Entity)
