@@ -15,14 +15,6 @@ module Buzzle
       )
     end
 
-    def layer
-      3
-    end
-
-    def initial_visibility
-      @visibility = Visibility::Hidden
-    end
-
     def action(_entity : Entity)
       switch(instant: true, sound: false)
     end
@@ -51,6 +43,7 @@ module Buzzle
     end
 
     def update(frame_time, entities : Array(Entity))
+      # TODO: call super for switching animation
       @trigger.update(self)
 
       @frame_t += frame_time

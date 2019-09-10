@@ -20,10 +20,6 @@ module Buzzle::Rooms
       @entities << Pillar.new(3, 4, direction: Direction::Up)
       @entities << Pillar.new(3, 3)
 
-      # switches
-      @switch = Switch.new(10, 3)
-      @pressure_switch = PressureSwitch.new(7, 3)
-
       # block
       @entities << Block.new(5, 3)
 

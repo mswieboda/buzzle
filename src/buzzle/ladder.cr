@@ -30,7 +30,8 @@ module Buzzle
       super
 
       players = entities.select(&.is_a?(Player)).map(&.as(Player))
-      players.select { |p| trigger_facing?(p, opposite: @ascend) }.each do |player|
+      # TODO: fix ladder `trigger_facing?(p, opposite: @ascend)` issues
+      players.select { |p| trigger?(p) }.each do |player|
         @ascend ? player.ascend : player.descend
       end
     end

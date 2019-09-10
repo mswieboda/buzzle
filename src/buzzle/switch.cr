@@ -35,18 +35,6 @@ module Buzzle
       self.frame = @sprite.frames - 1 if on?
     end
 
-    def initial_visibility
-      if on?
-        @visibility = Visibility::Shadow
-      else
-        @visibility = Visibility::Hidden
-      end
-    end
-
-    def liftable?
-      true
-    end
-
     def draw(screen_x, screen_y)
       draw(
         screen_x: screen_x,

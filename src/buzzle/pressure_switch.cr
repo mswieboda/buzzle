@@ -1,7 +1,5 @@
 module Buzzle
   class PressureSwitch < Switch
-    getter? switched
-
     def initialize(x, y, z = 0, on = false)
       super(
         name: "floor",
@@ -12,8 +10,6 @@ module Buzzle
       )
 
       @sound_done = Sound.get("pressure switch")
-
-      @switched = false
 
       @triggers = [] of Trigger
       @triggers << Trigger.new(
@@ -50,10 +46,6 @@ module Buzzle
       2
     end
 
-    def initial_visibility
-      @visibility = Visibility::Hidden
-    end
-
     def actionable?
       false
     end
@@ -63,8 +55,6 @@ module Buzzle
     end
 
     def update(_frame_time, entities)
-      super
-
       @triggers.each(&.update(self))
 
       entities = collisions(entities.select(&.collidable?))

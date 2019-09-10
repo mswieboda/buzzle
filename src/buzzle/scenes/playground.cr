@@ -6,9 +6,9 @@ module Buzzle::Scenes
       # Playground
       @door1_1 = Door.new(3, 0, design: Door::Type::Gate)
       @door1_2 = Door.new(8, 7, open: true)
-      @switch = Switch.new(10, 3)
+      @lever = Lever.new(10, 3)
       @pressure_switch = PressureSwitch.new(7, 3)
-      @room1 = Rooms::Playground.new(@player, entities: [@door1_1, @door1_2, @switch, @pressure_switch])
+      @room1 = Rooms::Playground.new(@player, entities: [@door1_1, @door1_2, @lever, @pressure_switch])
 
       # House
       @door2_1 = Door.new(5, 0, design: Door::Type::Gate)
@@ -39,8 +39,8 @@ module Buzzle::Scenes
     def update(frame_time)
       super
 
-      @door1_1.open if @switch.on?
-      @door1_1.close if @switch.off?
+      @door1_1.open if @lever.on?
+      @door1_1.close if @lever.off?
 
       @door1_2.open if @pressure_switch.on?
       @door1_2.close if @pressure_switch.off?
