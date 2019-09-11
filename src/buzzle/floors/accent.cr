@@ -1,15 +1,16 @@
 module Buzzle::Floors
   class Accent < SpriteEntity
-    def initialize(x, y, z = 0, direction = Direction::Down, width = Game::GRID_SIZE, height = Game::GRID_SIZE, @design = -1)
+    def initialize(x, y, z = 0, direction = Direction::Down, @design = -1)
       super(
         name: "accents",
         x: x,
         y: y,
         z: z,
-        width: width,
-        height: height,
         direction: direction
       )
+
+      @width = sprite.width
+      @height = sprite.height
 
       @design = rand(sprite.frames) - 1 if @design < 0
     end
@@ -23,8 +24,8 @@ module Buzzle::Floors
     end
 
     def randomize_origin
-      @x += rand(width - sprite.width)
-      @y += rand(height - sprite.height)
+      @x += rand(Game::GRID_SIZE - sprite.width)
+      @y += rand(Game::GRID_SIZE - sprite.height)
     end
 
     def draw(screen_x, screen_y)

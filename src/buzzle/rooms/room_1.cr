@@ -17,8 +17,8 @@ module Buzzle::Rooms
         end
       end
 
-      @entities << Pillar.new(3, 4, direction: Direction::Up)
-      @entities << Pillar.new(3, 3)
+      @entities << Pillar.new(3, 3, 1, direction: Direction::Up)
+      @entities << Pillar.new(3, 4)
 
       # block
       @entities << Block.new(5, 3)

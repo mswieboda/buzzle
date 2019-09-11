@@ -18,13 +18,17 @@ module Buzzle
 
     def draw(screen_x, screen_y)
       draw(
-        y: y_draw,
-        x: x_draw,
+        x: x,
+        y: y,
         screen_x: screen_x,
         screen_y: screen_y,
         frame: direction.down? ? 0 : 1,
         row: 5
       )
+    end
+
+    def directional_collision?(obj : Obj, _other_direction : Direction)
+      collision?(obj)
     end
   end
 end

@@ -2,8 +2,8 @@ module Buzzle
   class Torch < Switch
     FPS = 3
 
-    VISIBLITY_RADIUS = 3
-    SHADOW_RADIUS    = 5
+    VISIBLITY_RADIUS = 2
+    SHADOW_RADIUS    = 3
 
     def initialize(x, y, z = 0, @bottom = false, on = false)
       super(
@@ -13,6 +13,10 @@ module Buzzle
         z: z,
         on: on
       )
+
+      radius = VISIBLITY_RADIUS * Game::GRID_SIZE
+      rect = {x: @x - radius, y: @y - radius, width: radius * 3, height: radius * 3}
+      puts rect
     end
 
     def action(_entity : Entity)
@@ -22,13 +26,10 @@ module Buzzle
     def set_visibility(entity)
       return unless on?
 
-      center_x = @x + width / 2
-      center_y = @y + height / 2
-
       if entity.visibility.hidden?
         radius = SHADOW_RADIUS * Game::GRID_SIZE
 
-        if entity.collision?(x: center_x - radius, y: center_y - radius, width: radius * 2, height: radius * 2)
+        if entity.collision?(x: @x - radius, y: @y - radius, width: radius * 2 + Game::GRID_SIZE, height: radius * 2 + Game::GRID_SIZE)
           entity.visibility = Visibility::Shadow
         end
       end
@@ -36,7 +37,7 @@ module Buzzle
       if entity.visibility.hidden? || entity.visibility.shadow?
         radius = VISIBLITY_RADIUS * Game::GRID_SIZE
 
-        if entity.collision?(x: center_x - radius, y: center_y - radius, width: radius * 2, height: radius * 2)
+        if entity.collision?(x: @x - radius, y: @y - radius, width: radius * 2 + Game::GRID_SIZE, height: radius * 2 + Game::GRID_SIZE)
           entity.visibility = Visibility::Visible
         end
       end

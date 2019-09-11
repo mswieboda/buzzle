@@ -20,9 +20,7 @@ module Buzzle
           x: x,
           y: y,
           z: z,
-          direction: direction,
-          width: width,
-          height: height
+          direction: direction
         )
 
         @accent.try(&.randomize_origin)
