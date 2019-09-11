@@ -3,9 +3,9 @@ module Buzzle
     FPS = 3
 
     VISIBLITY_RADIUS = 2
-    SHADOW_RADIUS    = 3
+    SHADOW_RADIUS    = 6
 
-    def initialize(x, y, z = 0, @bottom = false, on = false)
+    def initialize(x, y, z = 0, on = false)
       super(
         name: "torch",
         x: x,
@@ -56,7 +56,11 @@ module Buzzle
 
     def frame
       return 1 if off?
-      2 + (@frame_t * FPS).to_i
+      (@frame_t * FPS).to_i
+    end
+
+    def row
+      off? ? 0 : 1
     end
 
     def draw(screen_x, screen_y)
@@ -64,6 +68,7 @@ module Buzzle
       draw(
         screen_x: screen_x,
         screen_y: screen_y,
+        row: 0,
         frame: 0
       )
 
@@ -72,6 +77,7 @@ module Buzzle
         y: y - height,
         screen_x: screen_x,
         screen_y: screen_y,
+        row: row,
         frame: frame
       )
     end
