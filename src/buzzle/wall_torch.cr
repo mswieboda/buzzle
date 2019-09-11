@@ -1,9 +1,9 @@
 module Buzzle
-  class Torch < Switch
-    FPS = 3
+  class WallTorch < Switch
+    FPS = 12
 
-    VISIBLITY_RADIUS = 2
-    SHADOW_RADIUS    = 5
+    VISIBLITY_RADIUS = 0
+    SHADOW_RADIUS    = 1
 
     def initialize(x, y, z = 0, on = false)
       super(
@@ -13,10 +13,14 @@ module Buzzle
         z: z,
         on: on
       )
+
+      puts "WallTorch switching?: #{switching?} on?: #{on?} ft: #{@frame_t} #{sprite.frames}"
     end
 
     def action(_entity : Entity)
-      switch(instant: true, sound: false)
+      @frame_t = (@sprite.frames - 1).to_f32 / FPS if on?
+      puts "WallTorch#action ft: #{@frame_t}"
+      switch
     end
 
     def set_visibility(entity)
@@ -39,43 +43,22 @@ module Buzzle
       end
     end
 
+    def frame
+      return (@frame_t * FPS).to_i if switching?
+      off? ? 0 : sprite.frames - 1
+    end
+
     def update(frame_time, entities : Array(Entity))
-      # TODO: call super for switching animation
-      @trigger.update(self)
-
-      if !switching? && on?
-        @frame_t += frame_time
-
-        @frame_t = 0 if frame >= sprite.frames
-      end
+      super
 
       entities.each { |e| set_visibility(e) } if on?
     end
 
-    def frame
-      return 1 if off?
-      (@frame_t * FPS).to_i
-    end
-
-    def row
-      off? ? 0 : 1
-    end
-
     def draw(screen_x, screen_y)
-      # bottom
       draw(
         screen_x: screen_x,
         screen_y: screen_y,
-        row: 0,
-        frame: 0
-      )
-
-      # top
-      draw(
-        y: y - height,
-        screen_x: screen_x,
-        screen_y: screen_y,
-        row: row,
+        row: 2,
         frame: frame
       )
     end

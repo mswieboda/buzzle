@@ -55,7 +55,7 @@ module Buzzle
             @switching = false
             on
           end
-        elsif on? && frame >= 1
+        elsif on? && frame >= 0
           @frame_t -= frame_time
 
           if frame <= 0
@@ -107,7 +107,7 @@ module Buzzle
     end
 
     def frame
-      (@frame_t * FPS).to_i
+      (@frame_t * FPS).round.to_i
     end
 
     def frame=(frame)

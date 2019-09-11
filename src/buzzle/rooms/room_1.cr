@@ -23,7 +23,10 @@ module Buzzle::Rooms
       # block
       @entities << Block.new(5, 3)
 
+      # torches
       @entities << Torch.new(5, 6, on: true)
+      @entities << WallTorch.new(4, 0, on: true)
+      @entities << WallTorch.new(2, 0, on: true)
 
       super(
         player: player,
