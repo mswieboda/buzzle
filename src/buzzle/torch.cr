@@ -15,8 +15,6 @@ module Buzzle
       )
 
       radius = VISIBLITY_RADIUS * Game::GRID_SIZE
-      rect = {x: @x - radius, y: @y - radius, width: radius * 3, height: radius * 3}
-      puts rect
     end
 
     def action(_entity : Entity)
