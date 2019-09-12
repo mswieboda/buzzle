@@ -10,22 +10,23 @@ module Buzzle
       Gate
     end
 
-    def initialize(x, y, z = 0, open = false, @design = Type::Wooden, hidden = false)
+    def initialize(x, y, z = 0, open = false, @design = Type::Wooden, direction = Direction::Down, hidden = false)
       super(
         name: "door",
         x: x,
-        y: y - 1,
+        y: y,
         z: z,
         on: open,
         width: Game::GRID_SIZE,
         height: Game::GRID_SIZE,
+        direction: direction,
         hidden: hidden
       )
 
       @exiting = false
       @enter_trigger = Trigger.new(
         x: x,
-        y: y - 1,
+        y: y,
         z: z,
         origin_x: 0,
         origin_y: 0,
@@ -46,7 +47,7 @@ module Buzzle
     end
 
     def layer
-      2
+      direction.down? ? 2 : 4
     end
 
     def enter_trigger?(entity : Entity)
@@ -109,9 +110,34 @@ module Buzzle
       @exiting = false
     end
 
+    def x_draw
+      x_draw = x
+
+      if direction.right?
+        x_draw += width
+      elsif direction.left?
+        x_draw -= width
+      end
+
+      x_draw
+    end
+
+    def y_draw
+      y_draw = y
+
+      if direction.down?
+        y_draw += height
+      elsif direction.up?
+        y_draw -= height
+      end
+
+      y_draw
+    end
+
     def draw(screen_x, screen_y)
       draw(
-        y: y + height,
+        x: x_draw,
+        y: y_draw,
         screen_x: screen_x,
         screen_y: screen_y,
         frame: frame,

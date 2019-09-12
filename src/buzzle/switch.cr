@@ -8,7 +8,7 @@ module Buzzle
     @sound_done : LibRay::Sound
     @sound_start : LibRay::Sound
 
-    def initialize(x, y, z = 0, name = "switch", @on = false, width = Game::GRID_SIZE, height = Game::GRID_SIZE, hidden = false)
+    def initialize(x, y, z = 0, name = "switch", @on = false, width = Game::GRID_SIZE, height = Game::GRID_SIZE, direction = Direction::Down, hidden = false)
       super(
         name: name,
         x: x,
@@ -16,6 +16,7 @@ module Buzzle
         z: z,
         width: width,
         height: height,
+        direction: direction,
         hidden: hidden
       )
 
