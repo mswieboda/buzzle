@@ -33,12 +33,25 @@ module Buzzle
         width: Game::GRID_SIZE
       )
 
+      origin_x = 0
+      origin_y = 0
+
+      if direction.up?
+        origin_y = -height / 2
+      elsif direction.left?
+        origin_x = -width / 2
+      elsif direction.right?
+        origin_x = width / 2
+      elsif direction.down?
+        origin_y = height / 2
+      end
+
       @trigger = Trigger.new(
         x: x,
         y: y,
         z: z,
-        origin_x: 0,
-        origin_y: height / 2,
+        origin_x: origin_x,
+        origin_y: origin_y,
         width: width,
         height: height
       )
@@ -47,7 +60,7 @@ module Buzzle
     end
 
     def layer
-      direction.down? ? 2 : 4
+      direction.down? || direction.left? ? 2 : 4
     end
 
     def enter_trigger?(entity : Entity)
@@ -141,7 +154,7 @@ module Buzzle
         screen_x: screen_x,
         screen_y: screen_y,
         frame: frame,
-        row: @design.to_i
+        row: direction.to_i * Type.values.size + @design.to_i
       )
     end
 

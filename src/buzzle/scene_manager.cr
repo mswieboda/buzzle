@@ -7,11 +7,11 @@ module Buzzle
     def initialize(@player : Player)
       @scene_index = 0
 
-      @scene = Scenes::Scene1.new(@player)
-
       @scenes = [] of Scene
-      @scenes << @scene
+      @scenes << Scenes::Scene1.new(@player)
       @scenes << Scenes::Playground.new(@player)
+
+      @scene = @scenes[1]
 
       @respawn_timer = Timer.new(RESPAWN_TIMER)
     end

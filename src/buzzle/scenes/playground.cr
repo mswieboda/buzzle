@@ -6,9 +6,13 @@ module Buzzle::Scenes
       # Playground
       @door1_1 = Door.new(3, -1, design: Door::Type::Gate)
       @door1_2 = Door.new(8, 6, open: true)
+      @door_up = Door.new(5, 15, design: Door::Type::Gate, direction: Direction::Up)
+      @door_left = Door.new(15, 3, direction: Direction::Left)
+      @door_down = Door.new(5, -1)
+      @door_right = Door.new(-1, 3, direction: Direction::Right)
       @lever = Lever.new(10, 3)
       @pressure_switch = PressureSwitch.new(7, 3)
-      @room1 = Rooms::Playground.new(@player, entities: [@door1_1, @door1_2, @lever, @pressure_switch])
+      @room1 = Rooms::Playground.new(@player, entities: [@door1_1, @door1_2, @door_up, @door_left, @door_down, @door_right, @lever, @pressure_switch])
 
       # House
       @door2_1 = Door.new(5, -1, design: Door::Type::Gate)
@@ -47,6 +51,9 @@ module Buzzle::Scenes
 
       change_rooms(player: @player, door: @door1_1, room: @room1, next_room: @room2, next_door: @door2_1)
       change_rooms(player: @player, door: @door1_2, room: @room1, next_room: @room3, next_door: @door3_1)
+
+      change_rooms(player: @player, door: @door_up, room: @room1, next_room: @room1, next_door: @door_down)
+      change_rooms(player: @player, door: @door_left, room: @room1, next_room: @room1, next_door: @door_right)
     end
 
     def next_scene?
