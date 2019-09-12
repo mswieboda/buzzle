@@ -265,8 +265,16 @@ module Buzzle
       @z = z
     end
 
-    def initial_visibility
-      @visibility = Visibility::Shadow
+    def light_source?
+      true
+    end
+
+    def light_radius
+      -1
+    end
+
+    def light_shadow_extension
+      2
     end
 
     def fall

@@ -30,8 +30,42 @@ module Buzzle
       false
     end
 
-    def initial_visibility
-      @visibility = Visibility::Hidden
+    def light_source?
+      false
+    end
+
+    def light_radius
+      0
+    end
+
+    def light_shadow_extension
+      0
+    end
+
+    def update_visibility(visibilities : Array(Visibility))
+      return unless light_source?
+
+      visibilities.reject(&.visible?).each { |v| update_visibility(v) }
+    end
+
+    def update_visibility(visibility : Visibility)
+      if light_radius >= 0
+        radius = light_radius * Game::GRID_SIZE
+        size = radius * 2 + Game::GRID_SIZE
+
+        if visibility.collision?(x: @x - radius, y: @y - radius, width: size, height: size)
+          visibility.visible!
+        end
+      end
+
+      if visibility.dark?
+        radius = (light_radius + light_shadow_extension) * Game::GRID_SIZE
+        size = radius * 2 + Game::GRID_SIZE
+
+        if visibility.collision?(x: @x - radius, y: @y - radius, width: size, height: size)
+          visibility.shadow!
+        end
+      end
     end
 
     def ascend

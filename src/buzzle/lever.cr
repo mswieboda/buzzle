@@ -10,16 +10,24 @@ module Buzzle
       )
     end
 
-    def initial_visibility
-      if on?
-        @visibility = Visibility::Shadow
-      else
-        @visibility = Visibility::Hidden
-      end
-    end
-
     def liftable?
       true
+    end
+
+    def light_source?
+      on?
+    end
+
+    def update_visibility(visibility : Visibility)
+      size = Game::GRID_SIZE
+
+      if visibility.collision?(x: @x, y: @y, width: size, height: size)
+        visibility.visible!
+      end
+
+      if visibility.dark? && visibility.collision?(x: @x, y: @y + size, width: size, height: size)
+        visibility.shadow!
+      end
     end
   end
 end

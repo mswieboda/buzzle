@@ -1,5 +1,5 @@
 module Buzzle::Rooms
-  class Room1 < Room
+  class Room1 < DarkRoom
     def initialize(player, entities = [] of Entity, width = 10, height = 10)
       @entities = [] of Entity
       @entities += entities
@@ -32,8 +32,7 @@ module Buzzle::Rooms
         player: player,
         entities: @entities,
         width: width,
-        height: height,
-        dark: true
+        height: height
       )
     end
   end

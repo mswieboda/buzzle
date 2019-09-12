@@ -42,19 +42,12 @@ module Buzzle
         row: row,
         rotation: rotation,
         tint: tint
-      ) unless hidden? || visibility.hidden?
+      ) unless hidden?
 
       @trigger.draw(screen_x, screen_y) if Game::DEBUG
     end
 
     def draw_partial(screen_x, screen_y, x = x, y = y, source_width = width, source_height = height, frame = 0, row = 0, rotation = 0, tint = LibRay::WHITE)
-      tint = LibRay::Color.new(
-        r: (tint.r * 0.5).clamp(0, 255),
-        g: (tint.g * 0.5).clamp(0, 255),
-        b: (tint.b * 0.5).clamp(0, 255),
-        a: tint.a, # (tint.a * 0.5).clamp(0, 255)
-      ) if visibility.shadow?
-
       sprite.draw_partial(
         x: x + screen_x,
         y: y + screen_y,
@@ -64,7 +57,7 @@ module Buzzle
         row: row,
         rotation: rotation,
         tint: tint
-      ) unless hidden? || visibility.hidden?
+      ) unless hidden?
 
       @trigger.draw(screen_x, screen_y) if Game::DEBUG
     end

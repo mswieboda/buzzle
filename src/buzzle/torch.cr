@@ -2,9 +2,6 @@ module Buzzle
   class Torch < Switch
     FPS = 3
 
-    VISIBLITY_RADIUS = 2
-    SHADOW_RADIUS    = 5
-
     def initialize(x, y, z = 0, on = false)
       super(
         name: "torch",
@@ -19,24 +16,16 @@ module Buzzle
       switch(instant: true, sound: false)
     end
 
-    def set_visibility(entity)
-      return unless on?
+    def light_source?
+      on?
+    end
 
-      if entity.visibility.hidden?
-        radius = SHADOW_RADIUS * Game::GRID_SIZE
+    def light_radius
+      2
+    end
 
-        if entity.collision?(x: @x - radius, y: @y - radius, width: radius * 2 + Game::GRID_SIZE, height: radius * 2 + Game::GRID_SIZE)
-          entity.visibility = Visibility::Shadow
-        end
-      end
-
-      if entity.visibility.hidden? || entity.visibility.shadow?
-        radius = VISIBLITY_RADIUS * Game::GRID_SIZE
-
-        if entity.collision?(x: @x - radius, y: @y - radius, width: radius * 2 + Game::GRID_SIZE, height: radius * 2 + Game::GRID_SIZE)
-          entity.visibility = Visibility::Visible
-        end
-      end
+    def light_shadow_extension
+      2
     end
 
     def update(frame_time, entities : Array(Entity))
@@ -48,8 +37,6 @@ module Buzzle
 
         @frame_t = 0 if frame >= sprite.frames
       end
-
-      entities.each { |e| set_visibility(e) } if on?
     end
 
     def frame

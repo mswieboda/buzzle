@@ -7,13 +7,11 @@ module Buzzle
     getter height : Int32
     getter direction : Direction
     getter? removed
-    property visibility : Visibility
     getter? hidden
 
     def initialize(x : Int32, y : Int32, @z = 0, @width = 0, @height = 0, @direction = Direction::Down, @hidden = false)
       @x = x * Game::GRID_SIZE
       @y = y * Game::GRID_SIZE
-      @visibility = Visibility::Visible
       @removed = false
     end
 
