@@ -13,6 +13,10 @@ module Buzzle
       @started = true
     end
 
+    def progressing?
+      @started && @time < @length
+    end
+
     def done?
       started? && @time >= @length
     end
