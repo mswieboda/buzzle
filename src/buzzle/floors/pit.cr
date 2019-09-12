@@ -36,6 +36,10 @@ module Buzzle::Floors
       @accent = nil
     end
 
+    def layer
+      1
+    end
+
     def trigger?(entity : Entity)
       @triggers.all? { |t| t.trigger?(entity) }
     end
@@ -45,11 +49,8 @@ module Buzzle::Floors
 
       @triggers.each(&.update(self))
 
-      players = entities.select { |e| e.is_a?(Player) && trigger?(e) }.map { |p| p.as(Player) }.reject { |p| p.falling? }
-
-      players.each do |player|
-        player.fall
-      end
+      players = entities.select(&.is_a?(Player)).map(&.as(Player)).reject { |p| p.falling? || p.dead? }
+      players.select { |p| trigger?(p) }.each(&.fall)
     end
 
     def draw(screen_x, screen_y)

@@ -1,6 +1,7 @@
 module Buzzle
   class Player < SpriteEntity
     getter? falling
+    getter? dead
     property exit_door : Door | Nil
     getter items
 
@@ -33,6 +34,7 @@ module Buzzle
       @moving_left_foot = false
       @frame_t = 0_f32
       @falling = false
+      @dead = false
       @move_block_timer = Timer.new(MOVE_BLOCK_TIMER)
 
       @sounds = [
@@ -48,7 +50,7 @@ module Buzzle
     def update(frame_time, entities : Array(Entity))
       super
 
-      return if lifting?
+      return if dead? || lifting?
 
       @move_block_timer.reset if @move_block_timer.done?
       @move_block_timer.increase(frame_time) if @move_block_timer.started?
@@ -127,7 +129,8 @@ module Buzzle
 
         if frame >= FALLING_FRAME_LAST + 1
           @falling = false
-          remove
+          @frame_t = 0_f32
+          die
         end
       end
     end
@@ -217,6 +220,8 @@ module Buzzle
     end
 
     def draw(screen_x, screen_y)
+      return if dead?
+
       draw(
         screen_x: screen_x,
         screen_y: screen_y,
@@ -236,13 +241,13 @@ module Buzzle
     end
 
     def enter(door : Door, instant = false)
-      return if door.switching?
+      return if !instant && door.switching?
 
       stop
 
       door.open(instant: instant) if door.closed?
 
-      return if door.closed?
+      return if !instant && door.closed?
 
       door.exit
 
@@ -302,6 +307,14 @@ module Buzzle
       else
         false
       end
+    end
+
+    def die
+      @dead = true
+    end
+
+    def revive
+      @dead = false
     end
   end
 end

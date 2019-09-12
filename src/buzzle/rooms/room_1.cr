@@ -28,6 +28,8 @@ module Buzzle::Rooms
       @entities << WallTorch.new(4, 0, on: true)
       @entities << WallTorch.new(2, 0, on: true)
 
+      @entities << Floors::Pit.new(4, 5)
+
       super(
         player: player,
         entities: @entities,
