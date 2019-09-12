@@ -18,6 +18,10 @@ Run the Makefile to build/compile in Crystal, and run the executable (from `./bu
 $ make
 ```
 
+## Screenshot Example
+
+![image](https://user-images.githubusercontent.com/2223822/64809064-1bb50100-d55e-11e9-80b4-912859f9407d.png)
+
 
 ## Credits
 
