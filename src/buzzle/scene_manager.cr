@@ -11,7 +11,7 @@ module Buzzle
       @scenes << Scenes::Scene1.new(@player)
       @scenes << Scenes::Playground.new(@player)
 
-      @scene = @scenes[1]
+      @scene = @scenes[0]
 
       @respawn_timer = Timer.new(RESPAWN_TIMER)
     end
