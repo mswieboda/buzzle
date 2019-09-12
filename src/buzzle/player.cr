@@ -316,5 +316,9 @@ module Buzzle
     def revive
       @dead = false
     end
+
+    def face(direction : Direction)
+      @direction = direction
+    end
   end
 end

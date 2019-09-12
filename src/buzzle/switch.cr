@@ -8,14 +8,15 @@ module Buzzle
     @sound_done : LibRay::Sound
     @sound_start : LibRay::Sound
 
-    def initialize(x, y, z = 0, name = "switch", @on = false, width = Game::GRID_SIZE, height = Game::GRID_SIZE)
+    def initialize(x, y, z = 0, name = "switch", @on = false, width = Game::GRID_SIZE, height = Game::GRID_SIZE, hidden = false)
       super(
         name: name,
         x: x,
         y: y,
         z: z,
         width: width,
-        height: height
+        height: height,
+        hidden: hidden
       )
 
       @frame_t = 0_f32

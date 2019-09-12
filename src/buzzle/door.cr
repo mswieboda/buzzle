@@ -10,7 +10,7 @@ module Buzzle
       Gate
     end
 
-    def initialize(x, y, z = 0, open = false, @design = Type::Wooden)
+    def initialize(x, y, z = 0, open = false, @design = Type::Wooden, hidden = false)
       super(
         name: "door",
         x: x,
@@ -18,7 +18,8 @@ module Buzzle
         z: z,
         on: open,
         width: Game::GRID_SIZE,
-        height: Game::GRID_SIZE
+        height: Game::GRID_SIZE,
+        hidden: hidden
       )
 
       @exiting = false

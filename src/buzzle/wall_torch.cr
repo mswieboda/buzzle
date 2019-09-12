@@ -2,7 +2,7 @@ module Buzzle
   class WallTorch < Switch
     FPS = 12
 
-    def initialize(x, y, z = 0, on = false)
+    def initialize(x, y, z = 0, on = true)
       super(
         name: "torch",
         x: x,

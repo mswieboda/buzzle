@@ -1,5 +1,5 @@
 module Buzzle::Rooms
-  class Room1 < DarkRoom
+  class Entrance < Room
     def initialize(player, entities = [] of Entity, width = 10, height = 10)
       @entities = [] of Entity
       @entities += entities
@@ -13,22 +13,9 @@ module Buzzle::Rooms
       # floors
       (0..width - 1).each do |x|
         (0..height - 1).each do |y|
-          @entities << Floor.new(x, y)
+          @entities << Floors::Grass.new(x, y)
         end
       end
-
-      @entities << Pillar.new(3, 3, 1, direction: Direction::Up)
-      @entities << Pillar.new(3, 4)
-
-      # block
-      @entities << Block.new(5, 3)
-
-      # torches
-      @entities << Torch.new(5, 6)
-      @entities << WallTorch.new(4, 0)
-      @entities << WallTorch.new(2, 0)
-
-      @entities << Floors::Pit.new(4, 5)
 
       super(
         player: player,

@@ -1,6 +1,8 @@
 module Buzzle::Floors
   class Accent < SpriteEntity
-    def initialize(x, y, z = 0, direction = Direction::Down, @design = -1)
+    property tint : LibRay::Color
+
+    def initialize(x, y, z = 0, direction = Direction::Down, @design = -1, @tint = LibRay::WHITE)
       super(
         name: "accents",
         x: x,
@@ -34,7 +36,8 @@ module Buzzle::Floors
         screen_y: screen_y,
         center_x: false,
         center_y: false,
-        frame: @design
+        frame: @design,
+        tint: tint
       )
     end
   end
