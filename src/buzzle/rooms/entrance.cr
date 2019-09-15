@@ -13,8 +13,14 @@ module Buzzle::Rooms
       # floors
       (0..width - 1).each do |x|
         (0..height - 1).each do |y|
+          next if y == 3
           @entities << Floors::Grass.new(x, y)
         end
+      end
+
+      # river
+      (0..width - 1).each do |x|
+        @entities << River.new(x, 3)
       end
 
       super(

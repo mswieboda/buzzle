@@ -109,8 +109,7 @@ module Buzzle
           end
 
           unless directional_collision?(entities.select(&.collidable?), pulling_block?(dx, dy) ? direction.opposite : direction)
-            @moving_x = dx.to_f32 * MOVING_AMOUNT
-            @moving_y = dy.to_f32 * MOVING_AMOUNT
+            move(dx: dx, dy: dy)
           end
         end
 
@@ -133,6 +132,11 @@ module Buzzle
           die
         end
       end
+    end
+
+    def move(dx = 0, dy = 0)
+      @moving_x = dx.to_f32 * MOVING_AMOUNT
+      @moving_y = dy.to_f32 * MOVING_AMOUNT
     end
 
     def moving?
