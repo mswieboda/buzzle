@@ -56,8 +56,11 @@ module Buzzle
       @move_block_timer.increase(frame_time) if @move_block_timer.started?
 
       unless moving? || lifting?
-        actionable(entities) unless falling?
-        movement_input(frame_time, entities) unless falling?
+        unless falling?
+          actionable(entities)
+          movement_input(frame_time, entities)
+        end
+
         transitions(frame_time)
       end
 
@@ -73,11 +76,20 @@ module Buzzle
 
         # action
         @actionable.try(&.action(self)) if @actionable
+
+        # fight enemies
+        fight(entities.select { |e| e.is_a?(Enemy) && e.actionable_condition?(self) }.map(&.as(Enemy)))
       elsif down && @actionable && @actionable.is_a?(Block)
         @held_block = @actionable.as(Block)
         @actionable = @held_block = nil if @held_block.try(&.lifting?)
       elsif Keys.released?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
         @actionable = @held_block = nil
+      end
+    end
+
+    def fight(enemies : Array(Enemy))
+      enemies.each do |enemy|
+        puts "fight: #{enemy}"
       end
     end
 
