@@ -103,7 +103,7 @@ module Buzzle
         @x += dx * Game::GRID_SIZE
         @y += dy * Game::GRID_SIZE
 
-        if collision?(entities.select { |e| e.is_a?(Floor) || e.is_a?(Door) })
+        if collision?(entities.select(&.traversable?))
           if pushing_block?(dx, dy)
             @held_block.try(&.move(dx * Game::GRID_SIZE, dy * Game::GRID_SIZE, direction, entities)) if !@move_block_timer.started?
           end

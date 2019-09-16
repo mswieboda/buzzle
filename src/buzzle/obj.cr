@@ -79,7 +79,13 @@ module Buzzle
     end
 
     def collision?(objs : Array(Obj))
-      collisions(objs).any?
+      collision = false
+
+      objs.reject { |o| o == self }.each do |o|
+        return true if collision?(o)
+      end
+
+      collision
     end
 
     def collision?(obj : Obj)

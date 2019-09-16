@@ -15,6 +15,10 @@ module Buzzle
       entities
     end
 
+    def traversable?
+      false
+    end
+
     def actionable?
       false
     end

@@ -18,6 +18,9 @@ module Buzzle::Rooms
         end
       end
 
+      # block
+      @entities << Block.new(5, 5)
+
       # river
       (0..width - 1).each do |x|
         @entities << River.new(x, 3)

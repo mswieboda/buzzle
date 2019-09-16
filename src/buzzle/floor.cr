@@ -27,6 +27,10 @@ module Buzzle
       end
     end
 
+    def traversable?
+      true
+    end
+
     def entities
       if @accent
         [self, @accent.as(Entity)]

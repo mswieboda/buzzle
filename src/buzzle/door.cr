@@ -63,6 +63,10 @@ module Buzzle
       direction.down? || direction.left? ? 2 : 4
     end
 
+    def traversable?
+      true
+    end
+
     def enter_trigger?(entity : Entity)
       !exiting? && open? && @enter_trigger.trigger?(entity)
     end

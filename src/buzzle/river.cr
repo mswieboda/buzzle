@@ -1,5 +1,7 @@
 module Buzzle
   class River < Floor
+    getter? bridge
+
     def initialize(x, y, z = 0)
       super(
         x: x,
@@ -33,17 +35,12 @@ module Buzzle
         height: height
       )
 
+      @bridge = false
       @accent = nil
     end
 
-    def draw(screen_x, screen_y)
-      draw(
-        screen_x: screen_x,
-        screen_y: screen_y,
-        frame: 0,
-        row: 0,
-        tint: LibRay::BLUE
-      )
+    def traversable?
+      bridge?
     end
 
     def trigger?(entity : Entity)
@@ -55,12 +52,23 @@ module Buzzle
 
       @triggers.each(&.update(self))
 
-      players = entities.select(&.is_a?(Player)).select { |e| trigger?(e) }.map(&.as(Player)).select { |p| !p.moving? }
+      blocks = entities.select(&.is_a?(Block)).select { |e| trigger?(e) }.map(&.as(Block))
 
-      players.each do |player|
-        # auto move player
-        # player.auto_move(dx: 1)
+      blocks.each do |block|
+        # have block fall into river
+        block.remove
+        @bridge = true
       end
+    end
+
+    def draw(screen_x, screen_y)
+      draw(
+        screen_x: screen_x,
+        screen_y: screen_y,
+        frame: 0,
+        row: 0,
+        tint: LibRay::BLUE
+      )
     end
   end
 end
