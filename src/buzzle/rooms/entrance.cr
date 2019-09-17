@@ -13,17 +13,24 @@ module Buzzle::Rooms
       # floors
       (0..width - 1).each do |x|
         (0..height - 1).each do |y|
-          next if y == 3
+          next if y == 3 || (y >= 5 && y <= 7)
           @entities << Floors::Grass.new(x, y)
         end
       end
 
       # block
-      @entities << Block.new(5, 5)
+      @entities << Block.new(5, 7)
 
       # river
       (0..width - 1).each do |x|
         @entities << Floors::River.new(x, 3)
+      end
+
+      # ice
+      (0..width - 1).each do |x|
+        (5..7).each do |y|
+          @entities << Floors::Ice.new(x, y)
+        end
       end
 
       super(

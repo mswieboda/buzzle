@@ -32,7 +32,7 @@ module Buzzle
           {asset_file: "door", frames: 5, rows: 12},
           {asset_file: "block", frames: 1, rows: 1},
           {asset_file: "switch", frames: 7, rows: 2},
-          {asset_file: "floor", frames: 4, rows: 1},
+          {asset_file: "floor", frames: 5, rows: 1},
           {asset_file: "accents", frames: 32, rows: 3},
           {asset_file: "wall", frames: 2, rows: 6},
           {asset_file: "chest", frames: 6, rows: 1},
