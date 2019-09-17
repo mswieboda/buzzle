@@ -1,6 +1,6 @@
 module Buzzle
   class River < Floor
-    getter? bridge
+    DROP_MOVEMENT = 1
 
     def initialize(x, y, z = 0)
       super(
@@ -35,12 +35,20 @@ module Buzzle
         height: height
       )
 
-      @bridge = false
       @accent = nil
+
+      @drop_blocks = [] of Block
+      @drop_block_movement = 0
+
+      @bridge_floor = Floor.new(x: x, y: y, z: z - 1, hidden: true)
+    end
+
+    def entities
+      [self, @bridge_floor]
     end
 
     def traversable?
-      bridge?
+      false
     end
 
     def trigger?(entity : Entity)
@@ -52,12 +60,22 @@ module Buzzle
 
       @triggers.each(&.update(self))
 
-      blocks = entities.select(&.is_a?(Block)).select { |e| trigger?(e) }.map(&.as(Block))
+      unless @bridge_floor.z > z || @drop_blocks.any?
+        @drop_blocks = entities.select(&.is_a?(Block)).select { |e| trigger?(e) }.map(&.as(Block))
+      end
 
-      blocks.each do |block|
-        # have block fall into river
-        block.remove
-        @bridge = true
+      @drop_blocks.each do |block|
+        block.lift(DROP_MOVEMENT)
+        @drop_block_movement += DROP_MOVEMENT
+        block.source_height = block.height - 4 - @drop_block_movement
+
+        if @drop_block_movement >= Game::GRID_SIZE / 4
+          @bridge_floor.ascend
+          block.descend
+          descend
+
+          @drop_blocks.clear
+        end
       end
     end
 

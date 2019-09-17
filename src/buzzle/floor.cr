@@ -2,7 +2,7 @@ module Buzzle
   class Floor < SpriteEntity
     @accent : Floors::Accent | Nil
 
-    def initialize(x, y, z = 0, name = "floor", direction = Direction::Down, width = Game::GRID_SIZE, height = Game::GRID_SIZE)
+    def initialize(x, y, z = 0, name = "floor", direction = Direction::Down, width = Game::GRID_SIZE, height = Game::GRID_SIZE, hidden = false)
       super(
         name: name,
         x: x,
@@ -10,7 +10,8 @@ module Buzzle
         z: z,
         direction: direction,
         width: width,
-        height: height
+        height: height,
+        hidden: hidden
       )
 
       @accent = nil
