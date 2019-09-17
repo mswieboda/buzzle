@@ -51,6 +51,10 @@ module Buzzle
       false
     end
 
+    def bridge?
+      @bridge_floor.z > z
+    end
+
     def trigger?(entity : Entity)
       @triggers.all? { |t| t.trigger?(entity) }
     end
@@ -60,7 +64,7 @@ module Buzzle
 
       @triggers.each(&.update(self))
 
-      unless @bridge_floor.z > z || @drop_blocks.any?
+      unless bridge? || @drop_blocks.any?
         @drop_blocks = entities.select(&.is_a?(Block)).select { |e| trigger?(e) }.map(&.as(Block))
       end
 
