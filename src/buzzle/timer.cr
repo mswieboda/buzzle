@@ -4,9 +4,9 @@ module Buzzle
     getter length : Float64 | Float32 | Int32
     getter? started
 
-    def initialize(@length : Float64 | Float32 | Int32)
+    def initialize(@length : Float64 | Float32 | Int32, start_time = 0_f32)
       @started = false
-      @time = 0_f32
+      @time = start_time
     end
 
     def start
@@ -21,13 +21,13 @@ module Buzzle
       started? && @time >= @length
     end
 
-    def reset
+    def reset(start_time = 0_f32)
       @started = false
-      @time = 0_f32
+      @time = start_time
     end
 
-    def restart
-      reset
+    def restart(start_time = 0_f32)
+      reset(start_time)
       start
     end
 

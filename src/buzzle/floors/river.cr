@@ -35,7 +35,15 @@ module Buzzle::Floors
         height: height
       )
 
-      @accent = nil
+      @accent = Floors::Accent.new(
+        x: x,
+        y: y,
+        z: z,
+        direction: direction,
+        design: Floors::Accent::Design::River
+      )
+
+      @accent.try(&.randomize_origin)
 
       @drop_blocks = [] of Block
       @drop_block_movement = 0
@@ -44,7 +52,7 @@ module Buzzle::Floors
     end
 
     def entities
-      [self, @bridge_floor]
+      super + [@bridge_floor]
     end
 
     def traversable?
@@ -77,6 +85,7 @@ module Buzzle::Floors
           @bridge_floor.ascend
           block.descend
           descend
+          @accent.try(&.descend)
 
           @drop_blocks.clear
         end
