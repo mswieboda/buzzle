@@ -19,7 +19,13 @@ module Buzzle::Rooms
       end
 
       # block
+      # @entities << Block.new(5, 5)
       @entities << Block.new(5, 7)
+
+      block = Block.new(3, 7)
+      @entities << block
+      puts block
+      block.move(dx: 0, dy: -1, amount: 2)
 
       # river
       (0..width - 1).each do |x|

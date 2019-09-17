@@ -11,6 +11,8 @@ module Buzzle
       )
 
       @moving_x = @moving_y = 0_f32
+      @moving_amount = 0
+
       @trigger = Trigger.new(
         x: x,
         y: y,
@@ -27,8 +29,8 @@ module Buzzle
         screen_x: screen_x,
         screen_y: screen_y,
         center_y: false,
-        x: x + @moving_x,
-        y: y + @moving_y
+        x: x,
+        y: y
       )
     end
 
@@ -40,22 +42,54 @@ module Buzzle
       true
     end
 
-    def move(dx, dy, direction : Direction, entities : Array(Entity))
-      return if lifting?
+    def update(frame_time, entities : Array(Entity))
+      super
 
+      moving_transition(frame_time, entities) if moving? && !lifting?
+    end
+
+    def move_now(dx, dy, entities : Array(Entity))
       @x += dx
       @y += dy
 
-      unless collision?(entities.select { |e| e.is_a?(Floor) && !e.is_a?(Floors::Pit) })
+      if !collision?(entities.select { |e| e.is_a?(Floor) && !e.is_a?(Floors::Pit) }) || directional_collision?(entities.select(&.collidable?), Direction.from_delta(dx: dx.sign, dy: dy.sign))
         @x -= dx
         @y -= dy
-
-        return
       end
+    end
 
-      if directional_collision?(entities.select(&.collidable?), direction)
-        @x -= dx
-        @y -= dy
+    def move(dx = 0, dy = 0, amount = 2)
+      return if lifting?
+
+      @moving_amount = amount
+      @moving_x = dx.to_f32 * @moving_amount
+      @moving_y = dy.to_f32 * @moving_amount
+    end
+
+    def moving?
+      return false if lifting?
+
+      @moving_x.abs > 0 || @moving_y.abs > 0
+    end
+
+    def stop
+      @moving_x = 0_f32
+      @moving_y = 0_f32
+    end
+
+    def moving_transition(frame_time, entities)
+      dx = @moving_x.sign * @moving_amount
+      dy = @moving_y.sign * @moving_amount
+
+      @moving_x += dx
+      @x += dx
+
+      @moving_y += dy
+      @y += dy
+
+      # stop moving at next grid cell
+      if @moving_x.abs > Game::GRID_SIZE || @moving_y.abs > Game::GRID_SIZE
+        stop
       end
     end
   end

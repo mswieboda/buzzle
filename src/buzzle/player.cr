@@ -105,11 +105,12 @@ module Buzzle
 
         if collision?(entities.select(&.traversable?))
           if pushing_block?(dx, dy)
-            @held_block.try(&.move(dx * Game::GRID_SIZE, dy * Game::GRID_SIZE, direction, entities)) if !@move_block_timer.started?
+            @held_block.try(&.move_now(dx * Game::GRID_SIZE, dy * Game::GRID_SIZE, entities)) if !@move_block_timer.started?
           end
 
           unless directional_collision?(entities.select(&.collidable?), pulling_block?(dx, dy) ? direction.opposite : direction)
             move(dx: dx, dy: dy)
+            @held_block.try(&.move(dx: dx, dy: dy, amount: MOVING_AMOUNT)) if !@move_block_timer.started?
           end
         end
 
@@ -117,7 +118,7 @@ module Buzzle
         @y -= dy * Game::GRID_SIZE
 
         if pushing_block?(dx, dy)
-          @held_block.try(&.move(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, direction, entities)) if !@move_block_timer.started?
+          @held_block.try(&.move_now(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, entities)) if !@move_block_timer.started?
         end
       end
     end
@@ -149,10 +150,7 @@ module Buzzle
       dx = @moving_x.sign * MOVING_AMOUNT
       dy = @moving_y.sign * MOVING_AMOUNT
 
-      if pushing_block?(dx, dy)
-        # push block
-        @held_block.try(&.move(dx, dy, direction, entities)) if !@move_block_timer.started?
-      elsif pulling_block?(dx, dy) && @move_block_timer.started?
+      if pulling_block?(dx, dy) && @move_block_timer.started?
         # stop, and don't pull while move block timer active
         stop
         return
@@ -172,11 +170,6 @@ module Buzzle
 
       @moving_y += dy
       @y += dy
-
-      if pulling_block?(dx, dy)
-        # pull block
-        @held_block.try(&.move(dx, dy, direction, entities)) if !@move_block_timer.started?
-      end
 
       # stop moving at next grid cell
       if @moving_x.abs > Game::GRID_SIZE || @moving_y.abs > Game::GRID_SIZE

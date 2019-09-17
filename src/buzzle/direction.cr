@@ -4,6 +4,7 @@ module Buzzle
     Left
     Down
     Right
+    None
 
     def opposite?(other_direction)
       self.opposite == other_direction
@@ -24,6 +25,22 @@ module Buzzle
       end
     end
 
+    def self.from_delta(dx, dy)
+      if dx == 0 && dy == -1
+        Up
+      elsif dx == -1 && dy == 0
+        Left
+      elsif dx == 0 && dy == 1
+        Down
+      elsif dx == 1 && dy == 0
+        Right
+      elsif dx == 0 && dy == 0
+        None
+      else
+        None
+      end
+    end
+
     def to_delta
       case self
       when Up
@@ -34,6 +51,8 @@ module Buzzle
         [0, 1]
       when Right
         [1, 0]
+      when None
+        [0, 0]
       else
         [0, 0]
       end
