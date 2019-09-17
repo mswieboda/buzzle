@@ -5,22 +5,6 @@ module Buzzle
     Down
     Right
 
-    def up?
-      self == Up
-    end
-
-    def left?
-      self == Left
-    end
-
-    def down?
-      self == Down
-    end
-
-    def right?
-      self == Right
-    end
-
     def opposite?(other_direction)
       self.opposite == other_direction
     end

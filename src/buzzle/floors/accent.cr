@@ -1,8 +1,22 @@
 module Buzzle::Floors
   class Accent < SpriteEntity
-    property tint : LibRay::Color
+    enum Design
+      Floor
+      Grass
 
-    def initialize(x, y, z = 0, direction = Direction::Down, @design = -1, @tint = LibRay::WHITE)
+      def variations
+        case self
+        when .floor?
+          32
+        when .grass?
+          32
+        else
+          0
+        end
+      end
+    end
+
+    def initialize(x, y, z = 0, direction = Direction::Down, @design = Design::Floor, @variation = -1)
       super(
         name: "accents",
         x: x,
@@ -14,7 +28,7 @@ module Buzzle::Floors
       @width = sprite.width
       @height = sprite.height
 
-      @design = rand(sprite.frames) - 1 if @design < 0
+      @variation = rand(@design.variations) if @variation < 0
     end
 
     def layer
@@ -36,8 +50,8 @@ module Buzzle::Floors
         screen_y: screen_y,
         center_x: false,
         center_y: false,
-        frame: @design,
-        tint: tint
+        frame: @variation,
+        row: @design.to_i
       )
     end
   end
