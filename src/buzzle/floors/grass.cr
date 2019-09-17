@@ -16,7 +16,7 @@ module Buzzle::Floors
       draw(
         screen_x: screen_x,
         screen_y: screen_y,
-        frame: z,
+        frame: 0,
         tint: TINT
       )
     end

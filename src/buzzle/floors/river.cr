@@ -1,4 +1,4 @@
-module Buzzle
+module Buzzle::Floors
   class River < Floor
     DROP_MOVEMENT = 1
 
@@ -88,7 +88,6 @@ module Buzzle
         screen_x: screen_x,
         screen_y: screen_y,
         frame: 0,
-        row: 0,
         tint: LibRay::BLUE
       )
     end

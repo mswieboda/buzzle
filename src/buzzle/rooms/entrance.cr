@@ -23,7 +23,7 @@ module Buzzle::Rooms
 
       # river
       (0..width - 1).each do |x|
-        @entities << River.new(x, 3)
+        @entities << Floors::River.new(x, 3)
       end
 
       super(
