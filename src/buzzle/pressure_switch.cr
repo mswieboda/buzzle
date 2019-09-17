@@ -2,7 +2,7 @@ module Buzzle
   class PressureSwitch < Switch
     def initialize(x, y, z = 0, on = false)
       super(
-        name: "floor",
+        name: "switch",
         x: x,
         y: y,
         z: z,

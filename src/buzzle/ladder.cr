@@ -2,7 +2,7 @@ module Buzzle
   class Ladder < Floor
     def initialize(x, y, z = 0, @ascend = true)
       super(
-        name: "ladder",
+        name: "wall",
         x: x,
         y: y,
         z: z
@@ -21,9 +21,14 @@ module Buzzle
       2
     end
 
-    def draw(_screen_x, _screen_y)
+    def draw(screen_x, screen_y)
       return unless @ascend
-      super
+
+      draw(
+        screen_x: screen_x,
+        screen_y: screen_y,
+        frame: 1
+      )
     end
 
     def update(_frame_time, entities)

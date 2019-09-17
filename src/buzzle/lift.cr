@@ -10,7 +10,7 @@ module Buzzle
 
     def initialize(x, y, z = 0, @ascend = true, @auto = true)
       super(
-        name: "lift",
+        name: "floor",
         x: x,
         y: y,
         z: ascend? ? z : z + 1
@@ -192,8 +192,7 @@ module Buzzle
       draw(
         screen_x: screen_x,
         screen_y: screen_y,
-        frame: 0,
-        row: 0
+        frame: 2
       )
     end
   end
