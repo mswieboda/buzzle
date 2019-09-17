@@ -24,7 +24,6 @@ module Buzzle::Rooms
 
       block = Block.new(3, 7)
       @entities << block
-      puts block
       block.move(dx: 0, dy: -1, amount: 2)
 
       # river

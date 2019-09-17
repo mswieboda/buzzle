@@ -68,14 +68,14 @@ module Buzzle
       pressed = Keys.pressed?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
       down = Keys.down?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
 
-      if pressed
-        @actionable = entities.select(&.actionable?).find(&.actionable_condition?(self))
+      @actionable = entities.select(&.actionable?).find(&.actionable_condition?(self)) if pressed || down
 
+      if pressed
         # action
         @actionable.try(&.action(self)) if @actionable
-      elsif down && @actionable && @actionable.is_a?(Block)
-        @held_block = @actionable.as(Block)
-        @actionable = @held_block = nil if @held_block.try(&.lifting?)
+      elsif down
+        @held_block = nil
+        @held_block = @actionable.as(Block) if @actionable && @actionable.is_a?(Block) && !@actionable.try(&.lifting?)
       elsif Keys.released?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
         @actionable = @held_block = nil
       end
@@ -154,7 +154,7 @@ module Buzzle
         # stop, and don't pull while move block timer active
         stop
         return
-      elsif @held_block && !pulling_block?(dx, dy)
+      elsif @held_block && !pushing_block?(dx, dy) && !pulling_block?(dx, dy)
         # trying to strafe while holding block, stop moving!
         stop
         return
@@ -165,11 +165,11 @@ module Buzzle
         @moving_left_foot = !@moving_left_foot
       end
 
-      @moving_x += dx
       @x += dx
+      @moving_x += dx
 
-      @moving_y += dy
       @y += dy
+      @moving_y += dy
 
       # stop moving at next grid cell
       if @moving_x.abs > Game::GRID_SIZE || @moving_y.abs > Game::GRID_SIZE

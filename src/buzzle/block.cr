@@ -48,6 +48,18 @@ module Buzzle
       moving_transition(frame_time, entities) if moving? && !lifting?
     end
 
+    # def try_move(dx, dy, amount, entities : Array(Entity))
+    #   @x += dx
+    #   @y += dy
+
+    #   if collision?(entities.select { |e| e.is_a?(Floor) && !e.is_a?(Floors::Pit) }) && !directional_collision?(entities.select(&.collidable?), Direction.from_delta(dx: dx.sign, dy: dy.sign))
+    #     move(dx: dx, dy: dy, amount: amount)
+    #   end
+
+    #   @x -= dx
+    #   @y -= dy
+    # end
+
     def move_now(dx, dy, entities : Array(Entity))
       @x += dx
       @y += dy
@@ -89,7 +101,12 @@ module Buzzle
 
       # stop moving at next grid cell
       if @moving_x.abs > Game::GRID_SIZE || @moving_y.abs > Game::GRID_SIZE
-        stop
+        if collision?(entities.select(&.is_a?(Floors::Ice)))
+          # TODO: check if no collisions in direction of movement
+          move(dx: @moving_x.sign, dy: @moving_y.sign, amount: @moving_amount)
+        else
+          stop
+        end
       end
     end
   end
