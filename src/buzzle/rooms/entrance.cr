@@ -14,18 +14,13 @@ module Buzzle::Rooms
       (0..width - 1).each do |x|
         (0..height - 1).each do |y|
           # skip if river or ice
-          next if y == 3 || (x > 0 && x < width - 1 && y >= 5 && y <= 7)
+          next if y == 3 || (x > 0 && x < width - 1 && y >= 4 && y <= 7)
           @entities << Floors::Grass.new(x, y)
         end
       end
 
       # block
-      # @entities << Block.new(5, 5)
       @entities << Block.new(5, 7)
-
-      block = Block.new(3, 7)
-      @entities << block
-      block.move(dx: 0, dy: -1, amount: 2)
 
       # river
       (0..width - 1).each do |x|
@@ -34,7 +29,7 @@ module Buzzle::Rooms
 
       # ice
       (1..width - 2).each do |x|
-        (5..7).each do |y|
+        (4..7).each do |y|
           @entities << Floors::Ice.new(x, y)
         end
       end
