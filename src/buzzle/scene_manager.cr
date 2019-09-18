@@ -11,8 +11,6 @@ module Buzzle
       @scenes << Scenes::Scene1
       @scenes << Scenes::Playground
 
-      puts @scenes.class
-
       @scene = @scenes[0].new(@player)
 
       @respawn_timer = Timer.new(RESPAWN_TIMER)
