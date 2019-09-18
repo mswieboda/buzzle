@@ -52,7 +52,7 @@ module Buzzle
       @x += dx
       @y += dy
 
-      if !collision?(entities.select { |e| e.is_a?(Floor) && !e.is_a?(Floors::Pit) }) || directional_collision?(entities.select(&.collidable?), Direction.from_delta(dx: dx.sign, dy: dy.sign))
+      if !collision?(entities.select(&.traversable?)) || directional_collision?(entities.select(&.collidable?), Direction.from_delta(dx: dx.sign, dy: dy.sign))
         @x -= dx
         @y -= dy
       end
@@ -91,7 +91,7 @@ module Buzzle
       if @moving_x.abs > Game::GRID_SIZE || @moving_y.abs > Game::GRID_SIZE
         stop
 
-        ice_floors = entities.select { |e| e.is_a?(Floors::Ice) || e.is_a?(Floors::River) }
+        ice_floors = entities.select(&.is_a?(Floor)).map(&.as(Floor)).select(&.block_slide?)
 
         # if we're on ice, slide again
         if collision?(ice_floors)

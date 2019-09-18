@@ -48,6 +48,10 @@ module Buzzle
       false
     end
 
+    def block_slide?
+      false
+    end
+
     def draw(screen_x, screen_y)
       draw(
         screen_x: screen_x,

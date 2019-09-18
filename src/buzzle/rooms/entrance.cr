@@ -19,6 +19,9 @@ module Buzzle::Rooms
         end
       end
 
+      # pit
+      @entities << Floors::Pit.new(5, 4)
+
       # block
       @entities << Block.new(5, 7)
 
@@ -30,6 +33,7 @@ module Buzzle::Rooms
       # ice
       (1..width - 2).each do |x|
         (4..7).each do |y|
+          next if x == 5 && y == 4
           @entities << Floors::Ice.new(x, y)
         end
       end

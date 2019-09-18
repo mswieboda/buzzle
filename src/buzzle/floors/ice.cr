@@ -10,6 +10,10 @@ module Buzzle::Floors
       @accent = nil
     end
 
+    def block_slide?
+      true
+    end
+
     def draw(screen_x, screen_y)
       draw(
         screen_x: screen_x,

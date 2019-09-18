@@ -59,6 +59,10 @@ module Buzzle::Floors
       false
     end
 
+    def block_slide?
+      true
+    end
+
     def bridge?
       @bridge_floor.z > z
     end
@@ -88,6 +92,7 @@ module Buzzle::Floors
           @accent.try(&.descend)
 
           @drop_blocks.clear
+          @drop_block_movement = 0
         end
       end
     end
