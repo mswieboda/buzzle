@@ -2,7 +2,7 @@ module Buzzle
   class SceneManager
     @scene : Scene
 
-    RESPAWN_TIMER = 1.5
+    RESPAWN_TIMER = 3
 
     def initialize(@player : Player)
       @scene_index = 0
