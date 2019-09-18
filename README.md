@@ -12,11 +12,21 @@ Install crystal shard dependencies ([cray](https://github.com/tapgg/cray))
 $ shards install
 ```
 
-Run the Makefile to build/compile in Crystal, and run the executable (from `./builds`)
+Run the Makefile to build a release and run via Crystal (builds to `./builds`)
 
 ```
 $ make
 ```
+
+If developing/testing, quickly compile a non-release build using
+
+(takes around 4 sec vs 12 sec as of 9/17/2019)
+
+```
+$ make test
+```
+
+The Makefile will check if there are any unstaged changes, and if so clean and rebuild
 
 ## Screenshot Example
 

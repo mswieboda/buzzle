@@ -1,20 +1,28 @@
-default: build_run
+.PHONY: default clean clean_if_diff test release
 
-builds_mkdir:
-	if [ ! -d "./builds" ]; then mkdir "builds"; fi
+clean = env echo "cleaning builds..." && rm -r builds
 
-build: builds_mkdir
-	env LIBRARY_PATH="$(PWD)/lib_ext" crystal build src/buzzle.cr -o builds/buzzle
+default: release
 
-build_release: builds_mkdir
-	env LIBRARY_PATH="$(PWD)/lib_ext" crystal build --release --no-debug src/buzzle.cr -o builds/buzzle_release
+builds:
+	@if [ ! -d "./builds" ]; then mkdir "builds"; fi
 
-build_run: build run
+clean:
+	@$(call clean)
 
-build_release_run: build_release run_release
+clean_if_diff:
+	@[[ -z `git status -s -uall` ]] || $(call clean)
 
-run:
-	env LD_LIBRARY_PATH="$(PWD)/lib_ext" ./builds/buzzle
+builds/buzzle_test: builds
+	@echo "compiling test build..."
+	@env LIBRARY_PATH="$(PWD)/lib_ext" crystal build src/buzzle.cr -o builds/buzzle_test
 
-run_release:
-	env LD_LIBRARY_PATH="$(PWD)/lib_ext" ./builds/buzzle_release
+test: clean_if_diff builds/buzzle_test
+	@env LD_LIBRARY_PATH="$(PWD)/lib_ext" ./builds/buzzle_test
+
+builds/buzzle: builds
+	@echo "compiling release build..."
+	@env LIBRARY_PATH="$(PWD)/lib_ext" crystal build --release --no-debug src/buzzle.cr -o builds/buzzle
+
+release: clean_if_diff builds/buzzle
+	@env LD_LIBRARY_PATH="$(PWD)/lib_ext" ./builds/buzzle
