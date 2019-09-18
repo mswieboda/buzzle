@@ -1,4 +1,4 @@
-## Installation
+# Installation
 
 Requires [Crystal](https://crystal-lang.org) to be installed
 
@@ -12,7 +12,7 @@ Install crystal shard dependencies ([cray](https://gitlab.com/Zatherz/cray))
 $ shards install
 ```
 
-## Running
+# Running
 
 Run the Makefile to build a release and run
 
@@ -20,7 +20,7 @@ Run the Makefile to build a release and run
 $ make
 ```
 
-### Development/Testing
+## Development/Testing
 
 Compile a non-release build quicker using
 
@@ -37,16 +37,16 @@ All builds are compiled to `./builds`, however, running it requires the RayLib e
 Ultimately, I'd like the release to create a native system application wrapper like `.app` for OSX, `.exe` for Windows, etc. This would be doable, however the libraries crystal depends on still need to be installed for the target
 machine, so installing `crystal` is easiest for now.
 
-## Screenshot Example
+# Screenshot Example
 
 <img src="https://user-images.githubusercontent.com/2223822/64809064-1bb50100-d55e-11e9-80b4-912859f9407d.png" width="250">
 
 
-## Credits
+# Credits
 
 Thanks to [Zatherz](https://gitlab.com/Zatherz) for creating the RayLib Crystal bindings ([cray](https://gitlab.com/Zatherz/cray))!
 
-### Assets Attribution
+## Assets Attribution
 
 TODO: attribution, licenses, etc. the correct way
 
