@@ -34,12 +34,17 @@ $ make test
 
 `make test` takes around 4 sec vs 12 sec for a release as of 9/17/2019.
 
-The Makefile checks if there are any unstaged changes, and if so clean and rebuild, for both `make` and `make test`.
+All builds are compiled to `./builds`.
 
-All builds are compiled to `./builds`, however, running it requires the RayLib external library (in `./lib_ext`) so using the `Makefile` is easiest for now.
+### Distribution Notes
 
-Ultimately, I'd like the release to create a native system application wrapper like `.app` for OSX, `.exe` for Windows, etc. This would be doable, however the libraries crystal depends on still need to be installed for the target
-machine, so installing `crystal` is easiest for now.
+Running a build requires referencing the RayLib external library (in `./lib_ext`) so using the `Makefile` is easiest. This could be wrapped in a script, that a native wrapper application can call.
+
+Ultimately, I'd like the release to create a distribution of a native system application wrapper like `.app` for OSX, `.exe` for Windows, etc. This is doable, but since crystal static compiling is only currently available on Alpine Linux, all libraries crystal depends on still need to be installed for the target. See [Static Linking](https://github.com/crystal-lang/crystal/wiki/Static-Linking) Crystal wiki. I could possibly figure out the libraries needed and supply them, or install Crystal as a setup/installing part of the distribution.
+
+### Cross-Platform
+
+If anyone reading this knows how to use Crystal (with or without RayLib) to develop for native platforms like Nintendo Switch, Xbox, PlayStation, etc, or Roms for older platforms (GBA, GBC, NES, SNES, etc), please let me know, I'd be very interested on how I could compile Crystal to be executed on a platform other than a Linux/MacOS/Windows. I very much doubt it's possible right now, or really ever in the future, but hey, I can dream! Developing prototype games in Crystal/RayLib has been far more enjoyable for me than the game engine bohemoths like Unity, Godot, UnrealEngine, etc. I also just really prefer the syntax of Crystal/Ruby to everything else. I'm guessing custom compilers would need to be written, similar to jruby, IronRuby, etc for Ruby? Maybe it would be more similar to a transpiler like Opal for Ruby -> JavaScript. I'll probably post something on the [Crystal forum](https://forum.crystal-lang.org/) if I realize it's more than a pipe dream.
 
 # Credits
 
