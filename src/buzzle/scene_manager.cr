@@ -7,11 +7,13 @@ module Buzzle
     def initialize(@player : Player)
       @scene_index = 0
 
-      @scenes = [] of Scene
-      @scenes << Scenes::Scene1.new(@player)
-      @scenes << Scenes::Playground.new(@player)
+      @scenes = [] of Scene.class
+      @scenes << Scenes::Scene1
+      @scenes << Scenes::Playground
 
-      @scene = @scenes[0]
+      puts @scenes.class
+
+      @scene = @scenes[0].new(@player)
 
       @respawn_timer = Timer.new(RESPAWN_TIMER)
     end
@@ -24,7 +26,8 @@ module Buzzle
 
         if @respawn_timer.done?
           @respawn_timer.reset
-          respawn
+          @player.revive
+          @scene.initialize(@player)
         end
       end
 
@@ -44,12 +47,7 @@ module Buzzle
       end
 
       @scene.unload
-      @scene = @scenes[@scene_index]
-    end
-
-    def respawn
-      @player.revive
-      @scene.load
+      @scene = @scenes[@scene_index].new(@player)
     end
   end
 end
