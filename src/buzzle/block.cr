@@ -6,7 +6,7 @@ module Buzzle
     @respawn_y : Int32
     @respawn_z : Int32
 
-    RESPAWN_TIMER = 1.5
+    RESPAWN_TIMER = 3
 
     def initialize(x, y, z = 0)
       super(
@@ -155,6 +155,7 @@ module Buzzle
 
         if @source_height.try { |h| h >= height }
           @source_height = nil
+          @respawn_timer.reset
           @dead = false
         end
       end
