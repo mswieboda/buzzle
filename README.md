@@ -17,7 +17,7 @@ $ shards install
 Run the Makefile to build a release and run
 
 ```
-$ make
+$ make release
 ```
 
 ## Screenshot Example
@@ -29,10 +29,12 @@ $ make
 Compile a non-release build quicker using
 
 ```
-$ make test
+$ make
 ```
 
-`make test` takes around 4 sec vs 12 sec for a release as of 9/17/2019.
+(`test` is the default `Makefile` target for now.)
+
+`make test` takes around 4 sec vs 12 sec for `make release` as of 9/17/2019.
 
 All builds are compiled to `./builds`.
 

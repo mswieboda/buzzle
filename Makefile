@@ -2,7 +2,7 @@
 
 clean = env echo "cleaning builds..." && rm -r builds
 
-default: release
+default: test
 
 builds:
 	@if [ ! -d "./builds" ]; then mkdir "builds"; fi
