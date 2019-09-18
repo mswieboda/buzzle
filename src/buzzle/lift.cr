@@ -87,7 +87,11 @@ module Buzzle
 
       entities.each do |entity|
         entity.lift(amount)
-        entity.ascend if ascend? && @moving == 0
+
+        if ascend? && @moving == 0
+          entity.lift_stopped
+          entity.ascend
+        end
       end
 
       ascend if ascend? && @moving == 0
@@ -101,9 +105,9 @@ module Buzzle
 
         entities.each do |entity|
           entity.lift(-amount)
-          entity.lift_stopped
 
           if descend?
+            entity.lift_stopped
             entity.descend
           end
         end

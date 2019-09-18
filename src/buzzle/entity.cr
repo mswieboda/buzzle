@@ -2,7 +2,7 @@ module Buzzle
   class Entity < Obj
     getter? lifting
 
-    def initialize(x = 0, y = 0, z = 0, width = 0, height = 0, direction = Direction::Down, hidden = false)
+    def initialize(x : Int32 = 0, y : Int32 = 0, z : Int32 = 0, width : Int32 = 0, height : Int32 = 0, direction = Direction::Down, hidden = false)
       super
 
       @lifting = false

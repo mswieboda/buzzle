@@ -71,7 +71,10 @@ module Buzzle::Floors
         block.source_height = block.height - @drop_block_movement
 
         if @drop_block_movement >= Game::GRID_SIZE
-          block.remove
+          block.stop
+          block.lift_stopped
+          block.source_height = nil
+          block.die
           @drop_blocks.clear
           @drop_block_movement = 0
         end

@@ -1,5 +1,13 @@
 module Buzzle
   class Block < SpriteEntity
+    getter? dead
+
+    @respawn_x : Int32
+    @respawn_y : Int32
+    @respawn_z : Int32
+
+    RESPAWN_TIMER = 1.5
+
     def initialize(x, y, z = 0)
       super(
         name: "block",
@@ -12,6 +20,11 @@ module Buzzle
 
       @moving_x = @moving_y = 0_f32
       @moving_amount = 0
+      @dead = false
+      @respawn_x = @x
+      @respawn_y = @y
+      @respawn_z = @z
+      @respawn_timer = Timer.new(RESPAWN_TIMER)
 
       @trigger = Trigger.new(
         x: x,
@@ -34,6 +47,10 @@ module Buzzle
       )
     end
 
+    def collidable?
+      !dead?
+    end
+
     def liftable?
       true
     end
@@ -46,6 +63,14 @@ module Buzzle
       super
 
       moving_transition(frame_time, entities) if moving? && !lifting?
+
+      if dead?
+        if @respawn_timer.done?
+          respawn
+        else
+          @respawn_timer.increase(frame_time)
+        end
+      end
     end
 
     def move_now(dx, dy, entities : Array(Entity))
@@ -106,6 +131,31 @@ module Buzzle
 
           @x -= dx.sign * Game::GRID_SIZE
           @y -= dy.sign * Game::GRID_SIZE
+        end
+      end
+    end
+
+    def die
+      hide
+      @dead = true
+    end
+
+    def respawn
+      if hidden?
+        show
+
+        @source_height = 0
+
+        @x = @respawn_x
+        @y = @respawn_y + height
+        @z = @respawn_z
+      else
+        @source_height.try { |h| @source_height = h + 1 }
+        @y -= 1
+
+        if @source_height.try { |h| h >= height }
+          @source_height = nil
+          @dead = false
         end
       end
     end
