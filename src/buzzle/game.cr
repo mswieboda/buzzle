@@ -18,9 +18,7 @@ module Buzzle
       load_sprites
       load_sounds
 
-      @player = Player.new
-      @heads_up_display = HeadsUpDisplay.new(@player)
-      @scene_manager = Scene::Manager.new(@player)
+      @scene_manager = Scene::Manager.new
     end
 
     def load_sprites
@@ -67,12 +65,10 @@ module Buzzle
 
     def update(frame_time)
       @scene_manager.update(frame_time)
-      @heads_up_display.update(frame_time)
     end
 
     def draw
       @scene_manager.draw
-      @heads_up_display.draw
     end
 
     def draw_wrapper

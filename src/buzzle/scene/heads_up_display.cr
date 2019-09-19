@@ -1,4 +1,4 @@
-module Buzzle
+module Buzzle::Scene
   class HeadsUpDisplay
     @keys_sprite : Sprite
     @keys_text_color : LibRay::Color
