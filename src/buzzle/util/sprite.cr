@@ -93,7 +93,7 @@ module Buzzle
     def self.load_texture(asset_file)
       puts "loading texture: #{asset_file}" if DEBUG
 
-      @@textures[asset_file] ||= LibRay.load_texture(File.join(__DIR__, "../../assets/sprites/#{asset_file}.png"))
+      @@textures[asset_file] ||= LibRay.load_texture(File.join(__DIR__, "../../../assets/sprites/#{asset_file}.png"))
 
       texture = @@textures[asset_file]
 
