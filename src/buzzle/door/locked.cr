@@ -26,7 +26,7 @@ module Buzzle::Door
 
       player = entity.as(Player)
 
-      return false if closed? && locked? && !player.use_item?(Key)
+      return false if closed? && locked? && !player.use_item?(Item::Key)
 
       trigger_facing?(player)
     end

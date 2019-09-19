@@ -8,10 +8,10 @@ module Buzzle
     LIFT_ITEM_MOVEMENT =   2
     GET_ITEM_TIMER     = 0.5
 
-    @item : Item | Nil
+    @item : Item::Base | Nil
     @player : Player | Nil
 
-    def initialize(x, y, z = 0, item_class = Key)
+    def initialize(x, y, z = 0, item_class = Item::Key)
       @player = nil
       @item = nil
 
@@ -52,7 +52,7 @@ module Buzzle
     def entities
       entities = [] of Entity
       entities += super
-      entities << @item.as(Item) if @item
+      entities << @item.as(Item::Base) if @item
       entities
     end
 
@@ -100,7 +100,7 @@ module Buzzle
       if opened?
         if @lift_item_timer.done? && @item && @player.is_a?(Player)
           if @get_item_timer.done?
-            if @player.try(&.receive_item(@item.as(Item)))
+            if @player.try(&.receive_item(@item.as(Item::Base)))
               @item = nil
             end
           else

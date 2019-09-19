@@ -8,7 +8,6 @@ module Buzzle
     @actionable : Entity | Nil
     @held_block : Block | Nil
     @sounds : Array(LibRay::Sound)
-    @items : Array(Item)
 
     MOVING_AMOUNT = 2
 
@@ -44,7 +43,7 @@ module Buzzle
         Sound.get("footstep-4"),
       ]
 
-      @items = [] of Item
+      @items = [] of Item::Base
     end
 
     def update(frame_time, entities : Array(Entity))
@@ -294,7 +293,7 @@ module Buzzle
       true
     end
 
-    def receive_item(item : Item)
+    def receive_item(item : Item::Base)
       @items << item
       item.hide
       item

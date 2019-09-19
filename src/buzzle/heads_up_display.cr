@@ -22,7 +22,7 @@ module Buzzle
     end
 
     def update(_frame_time)
-      @keys_text = @player.items.count(&.is_a?(Key)).to_s
+      @keys_text = @player.items.count(&.is_a?(Item::Key)).to_s
       @keys_text_measured = LibRay.measure_text_ex(
         sprite_font: @default_font,
         text: @keys_text,

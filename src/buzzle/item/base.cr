@@ -1,12 +1,20 @@
-module Buzzle
-  class Key < Item
-    def initialize(x = 0, y = 0, z = 0)
+module Buzzle::Item
+  class Base < SpriteEntity
+    property x
+    property y
+    property z
+
+    def initialize(x = 0, y = 0, z = 0, name = "key")
       super(
-        name: "key",
+        name: name,
         x: x,
         y: y,
         z: z
       )
+    end
+
+    def layer
+      3
     end
 
     def collidable?
