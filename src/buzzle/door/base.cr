@@ -1,16 +1,15 @@
-require "./switch"
-
-module Buzzle
-  class Door < Switch
+module Buzzle::Door
+  class Base < Switch
     getter? exiting
 
-    enum Type
+    enum Design
       Wooden
-      WoodenLocked
+      Locked
       Gate
+      Cell
     end
 
-    def initialize(x, y, z = 0, open = false, @design = Type::Wooden, direction = Direction::Down, hidden = false)
+    def initialize(x, y, z = 0, direction = Direction::Down, @design = Design::Wooden, open = false)
       super(
         name: "door",
         x: x,
@@ -19,8 +18,7 @@ module Buzzle
         on: open,
         width: Game::GRID_SIZE,
         height: Game::GRID_SIZE,
-        direction: direction,
-        hidden: hidden
+        direction: direction
       )
 
       @exiting = false
@@ -56,7 +54,7 @@ module Buzzle
         height: height
       )
 
-      @sound_start = Sound.get("gate") if @design == Type::Gate
+      @sound_start = Sound.get("gate") if @design == Design::Gate
     end
 
     def layer
@@ -98,7 +96,7 @@ module Buzzle
     end
 
     def play_sound_start
-      return unless @design == Type::Gate
+      return unless @design == Design::Gate
       super
     end
 
@@ -158,16 +156,8 @@ module Buzzle
         screen_x: screen_x,
         screen_y: screen_y,
         frame: frame,
-        row: direction.to_i * Type.values.size + @design.to_i
+        row: direction.to_i * Design.values.size + @design.to_i
       )
-    end
-
-    def actionable?
-      true
-    end
-
-    def action(_entity : Entity)
-      toggle
     end
   end
 end

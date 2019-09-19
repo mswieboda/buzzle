@@ -2,7 +2,7 @@ module Buzzle
   class Player < SpriteEntity
     getter? falling
     getter? dead
-    property exit_door : Door | Nil
+    property exit_door : Door::Base | Nil
     getter items
 
     @actionable : Entity | Nil
@@ -240,7 +240,7 @@ module Buzzle
       [dx.sign, dy.sign] == direction.opposite.to_delta
     end
 
-    def enter(door : Door, instant = false)
+    def enter(door : Door::Base, instant = false)
       return if !instant && door.switching?
 
       stop

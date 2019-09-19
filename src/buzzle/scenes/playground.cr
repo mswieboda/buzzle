@@ -4,22 +4,22 @@ module Buzzle::Scenes
       super(@player)
 
       # Playground
-      @door1_1 = Door.new(3, -1, design: Door::Type::Gate)
-      @door1_2 = Door.new(8, 6, open: true)
-      @door_up = Door.new(5, 15, design: Door::Type::Gate, direction: Direction::Up)
-      @door_left = Door.new(15, 3, direction: Direction::Left)
-      @door_down = Door.new(5, -1)
-      @door_right = Door.new(-1, 3, direction: Direction::Right)
+      @door1_1 = Door::Gate.new(3, -1)
+      @door1_2 = Door::Wooden.new(8, 6, open: true)
+      @door_up = Door::Gate.new(5, 15, direction: Direction::Up)
+      @door_left = Door::Wooden.new(15, 3, direction: Direction::Left)
+      @door_down = Door::Wooden.new(5, -1)
+      @door_right = Door::Wooden.new(-1, 3, direction: Direction::Right)
       @lever = Lever.new(10, 3)
       @pressure_switch = PressureSwitch.new(7, 3)
       @room1 = Rooms::Playground.new(@player, entities: [@door1_1, @door1_2, @door_up, @door_left, @door_down, @door_right, @lever, @pressure_switch])
 
       # House
-      @door2_1 = Door.new(5, -1, design: Door::Type::Gate)
+      @door2_1 = Door::Gate.new(5, -1)
       @room2 = Rooms::House.new(@player, entities: [@door2_1])
 
-      @door3_1 = Door.new(5, -1)
-      @door3_2 = LockedDoor.new(1, -1)
+      @door3_1 = Door::Wooden.new(5, -1)
+      @door3_2 = Door::Locked.new(1, -1)
       @room3 = Rooms::DeadEnd.new(@player, entities: [@door3_1, @door3_2])
 
       @rooms = [] of Room
