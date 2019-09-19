@@ -1,7 +1,5 @@
-require "./room"
-
-module Buzzle
-  class DarkRoom < Room
+module Buzzle::Room
+  class Dark < Base
     def initialize(@player, @entities = [] of Entity, width = 10, height = 10)
       super
 

@@ -1,5 +1,5 @@
-module Buzzle
-  class Room
+module Buzzle::Room
+  class Base
     getter player : Player
     getter x : Int32
     getter y : Int32

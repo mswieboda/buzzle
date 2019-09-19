@@ -2,18 +2,18 @@ module Buzzle::Scenes
   class Scene1 < Scene
     def initialize(@player)
       super(@player)
-      @rooms = [] of Room
+      @rooms = [] of Room::Base
 
       # Entrance
       @door_entrance = Door::Gate.new(3, -1, open: true)
-      @rooms << Rooms::Entrance.new(@player, entities: [@door_entrance])
+      @rooms << Room::Entrance.new(@player, entities: [@door_entrance])
 
       # Room 1
       @door_exit = Door::Gate.new(5, 10, direction: Direction::Up)
       @door1_1 = Door::Gate.new(3, -1)
       @lever = Lever.new(7, 3)
       @pressure_switch = PressureSwitch.new(5, 5)
-      @rooms << Rooms::Room1.new(@player, entities: [@door_exit, @door1_1, @lever, @pressure_switch])
+      @rooms << Room::Room1.new(@player, entities: [@door_exit, @door1_1, @lever, @pressure_switch])
 
       @room = @rooms.first
     end

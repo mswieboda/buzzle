@@ -7,7 +7,7 @@ require "./buzzle/floor/*"
 
 require "./buzzle/*"
 
-require "./buzzle/rooms/*"
+require "./buzzle/room/*"
 require "./buzzle/scenes/*"
 
 module Buzzle

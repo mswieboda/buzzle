@@ -4,9 +4,9 @@ module Buzzle
     getter? loaded
 
     def initialize(@player)
-      @room = Room.new(@player)
+      @room = Room::Base.new(@player)
 
-      @rooms = [] of Room
+      @rooms = [] of Room::Base
       @rooms << @room
 
       @loaded = false
@@ -30,16 +30,16 @@ module Buzzle
       @room.draw
     end
 
-    def change_room(room : Room)
+    def change_room(room : Room::Base)
       @room = room
     end
 
-    def change_room(room : Room, door : Door::Base)
+    def change_room(room : Room::Base, door : Door::Base)
       change_room(room: room)
       @player.enter(door, instant: true)
     end
 
-    def change_rooms(player : Player, door : Door::Base, room : Room, next_room : Room, next_door : Door::Base)
+    def change_rooms(player : Player, door : Door::Base, room : Room::Base, next_room : Room::Base, next_door : Door::Base)
       change_room(room: next_room, door: next_door) if door.entered?(player) if @room == room
       change_room(room: room, door: door) if next_door.entered?(player) if @room == next_room
     end

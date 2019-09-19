@@ -12,17 +12,17 @@ module Buzzle::Scenes
       @door_right = Door::Wooden.new(-1, 3, direction: Direction::Right)
       @lever = Lever.new(10, 3)
       @pressure_switch = PressureSwitch.new(7, 3)
-      @room1 = Rooms::Playground.new(@player, entities: [@door1_1, @door1_2, @door_up, @door_left, @door_down, @door_right, @lever, @pressure_switch])
+      @room1 = Room::Playground.new(@player, entities: [@door1_1, @door1_2, @door_up, @door_left, @door_down, @door_right, @lever, @pressure_switch])
 
       # House
       @door2_1 = Door::Gate.new(5, -1)
-      @room2 = Rooms::House.new(@player, entities: [@door2_1])
+      @room2 = Room::House.new(@player, entities: [@door2_1])
 
       @door3_1 = Door::Wooden.new(5, -1)
       @door3_2 = Door::Locked.new(1, -1)
-      @room3 = Rooms::DeadEnd.new(@player, entities: [@door3_1, @door3_2])
+      @room3 = Room::DeadEnd.new(@player, entities: [@door3_1, @door3_2])
 
-      @rooms = [] of Room
+      @rooms = [] of Room::Base
       @rooms = [@room1, @room2, @room3]
 
       @room = @room1

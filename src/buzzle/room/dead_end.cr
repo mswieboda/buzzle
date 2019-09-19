@@ -1,5 +1,5 @@
-module Buzzle::Rooms
-  class DeadEnd < Room
+module Buzzle::Room
+  class DeadEnd < Base
     def initialize(player, entities = [] of Entity, width = 8, height = 4)
       @entities = [] of Entity
       @entities += entities
