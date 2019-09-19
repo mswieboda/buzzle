@@ -1,5 +1,5 @@
-module Buzzle::Scenes
-  class Scene1 < Scene
+module Buzzle::Scene
+  class Scene1 < Base
     def initialize(@player)
       super(@player)
       @rooms = [] of Room::Base

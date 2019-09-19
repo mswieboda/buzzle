@@ -20,7 +20,7 @@ module Buzzle
 
       @player = Player.new
       @heads_up_display = HeadsUpDisplay.new(@player)
-      @scene_manager = SceneManager.new(@player)
+      @scene_manager = Scene::Manager.new(@player)
     end
 
     def load_sprites

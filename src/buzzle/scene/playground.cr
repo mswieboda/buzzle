@@ -1,5 +1,5 @@
-module Buzzle::Scenes
-  class Playground < Scene
+module Buzzle::Scene
+  class Playground < Base
     def initialize(@player)
       super(@player)
 

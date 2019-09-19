@@ -1,15 +1,15 @@
-module Buzzle
-  class SceneManager
-    @scene : Scene
+module Buzzle::Scene
+  class Manager
+    @scene : Base
 
     RESPAWN_TIMER = 3
 
     def initialize(@player : Player)
       @scene_index = 0
 
-      @scenes = [] of Scene.class
-      @scenes << Scenes::Scene1
-      @scenes << Scenes::Playground
+      @scenes = [] of Base.class
+      @scenes << Scene1
+      @scenes << Playground
 
       @scene = @scenes[0].new(@player)
 
@@ -40,7 +40,6 @@ module Buzzle
       @scene_index += 1
 
       if @scene_index >= @scenes.size
-        puts "via SceneManager#next_scene --- No more scenes, game over?"
         @scene_index = 0
       end
 

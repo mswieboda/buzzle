@@ -8,7 +8,7 @@ require "./buzzle/floor/*"
 require "./buzzle/*"
 
 require "./buzzle/room/*"
-require "./buzzle/scenes/*"
+require "./buzzle/scene/*"
 
 module Buzzle
   def self.run
