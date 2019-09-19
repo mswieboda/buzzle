@@ -109,6 +109,10 @@ module Buzzle::Door
       closed? || active?
     end
 
+    def directional_collision?(obj : Obj, other_direction : Direction)
+      collision?(obj) && direction.opposite == other_direction
+    end
+
     def entered?(player : Player)
       if enter_trigger?(player) && direction.opposite == player.direction
         exit

@@ -8,10 +8,22 @@ module Buzzle::Door
         y: y,
         z: z,
         direction: direction,
-        design: Door::Type::Cell,
+        design: Design::Cell,
         open: open,
         locked: locked
       )
+
+      @wall = Wall.new(
+        # TODO: fix this for directions other than Down
+        x: x,
+        y: y + 1,
+        direction: direction.opposite,
+        hidden: true
+      )
+    end
+
+    def entities
+      super + [@wall]
     end
   end
 end
