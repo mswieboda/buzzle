@@ -52,7 +52,7 @@ module Buzzle::Floor
       draw(
         screen_x: screen_x,
         screen_y: screen_y,
-        frame: z
+        frame: z == 0 ? 0 : 1
       )
     end
   end
