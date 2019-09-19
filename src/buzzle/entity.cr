@@ -1,3 +1,5 @@
+require "./obj"
+
 module Buzzle
   class Entity < Obj
     getter? lifting

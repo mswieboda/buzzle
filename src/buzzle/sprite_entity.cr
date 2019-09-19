@@ -1,3 +1,5 @@
+require "./entity"
+
 module Buzzle
   class SpriteEntity < Entity
     getter sprite : Sprite
