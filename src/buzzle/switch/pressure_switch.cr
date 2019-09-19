@@ -1,5 +1,5 @@
 module Buzzle
-  class PressureSwitch < Switch
+  class PressureSwitch < Switch::Base
     def initialize(x, y, z = 0, on = false)
       super(
         name: "switch",

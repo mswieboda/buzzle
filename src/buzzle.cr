@@ -4,6 +4,7 @@ require "./buzzle/sprite_entity"
 
 require "./buzzle/door/*"
 require "./buzzle/floor/*"
+require "./buzzle/switch/*"
 
 require "./buzzle/*"
 

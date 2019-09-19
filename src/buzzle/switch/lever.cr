@@ -1,5 +1,5 @@
 module Buzzle
-  class Lever < Switch
+  class Lever < Switch::Base
     def initialize(x, y, z = 0, on = false)
       super(
         name: "switch",

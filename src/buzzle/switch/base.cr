@@ -1,5 +1,5 @@
-module Buzzle
-  class Switch < SpriteEntity
+module Buzzle::Switch
+  class Base < SpriteEntity
     getter? on : Bool
     getter? switching : Bool
 

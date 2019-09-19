@@ -1,7 +1,7 @@
-require "../switch"
+require "../switch/base"
 
 module Buzzle::Door
-  class Base < Switch
+  class Base < Switch::Base
     getter? exiting
 
     enum Design
