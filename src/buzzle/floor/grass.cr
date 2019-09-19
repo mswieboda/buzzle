@@ -1,5 +1,5 @@
-module Buzzle::Floors
-  class Grass < Floor
+module Buzzle::Floor
+  class Grass < Base
     def initialize(x, y, z = 0)
       super(
         x: x,
@@ -10,12 +10,12 @@ module Buzzle::Floors
       @accent = nil
 
       if rand > 0.6
-        @accent = Floors::Accent.new(
+        @accent = Accent.new(
           x: x,
           y: y,
           z: z,
           direction: direction,
-          design: Floors::Accent::Design::Grass
+          design: Accent::Design::Grass
         )
 
         @accent.try(&.randomize_origin)

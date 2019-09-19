@@ -2,10 +2,11 @@ require "cray"
 
 require "./buzzle/sprite_entity"
 
+require "./buzzle/door/*"
+require "./buzzle/floor/*"
+
 require "./buzzle/*"
 
-require "./buzzle/door/*"
-require "./buzzle/floors/*"
 require "./buzzle/rooms/*"
 require "./buzzle/scenes/*"
 

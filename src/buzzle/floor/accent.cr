@@ -1,4 +1,4 @@
-module Buzzle::Floors
+module Buzzle::Floor
   class Accent < SpriteEntity
     FPS = 24
 

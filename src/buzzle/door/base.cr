@@ -1,3 +1,5 @@
+require "../switch"
+
 module Buzzle::Door
   class Base < Switch
     getter? exiting

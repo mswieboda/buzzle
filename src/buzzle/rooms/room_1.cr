@@ -13,7 +13,7 @@ module Buzzle::Rooms
       # floors
       (0..width - 1).each do |x|
         (0..height - 1).each do |y|
-          @entities << Floor.new(x, y)
+          @entities << Floor::Base.new(x, y)
         end
       end
 
@@ -28,7 +28,7 @@ module Buzzle::Rooms
       @entities << WallTorch.new(4, 0)
       @entities << WallTorch.new(2, 0)
 
-      @entities << Floors::Pit.new(4, 5)
+      @entities << Floor::Pit.new(4, 5)
 
       super(
         player: player,

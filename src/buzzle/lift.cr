@@ -1,5 +1,5 @@
 module Buzzle
-  class Lift < Floor
+  class Lift < Floor::Base
     getter? enabled
     getter? ascend
     getter? lowering

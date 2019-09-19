@@ -1,5 +1,5 @@
 module Buzzle
-  class Ladder < Floor
+  class Ladder < Floor::Base
     def initialize(x, y, z = 0, @ascend = true)
       super(
         name: "wall",

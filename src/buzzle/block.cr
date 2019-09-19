@@ -116,7 +116,7 @@ module Buzzle
       if @moving_x.abs > Game::GRID_SIZE || @moving_y.abs > Game::GRID_SIZE
         stop
 
-        ice_floors = entities.select(&.is_a?(Floor)).map(&.as(Floor)).select(&.block_slide?)
+        ice_floors = entities.select(&.is_a?(Floor::Base)).map(&.as(Floor::Base)).select(&.block_slide?)
 
         # if we're on ice, slide again
         if collision?(ice_floors)

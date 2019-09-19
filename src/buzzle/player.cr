@@ -101,7 +101,9 @@ module Buzzle
       # if attempting to move (delta != 0)
       if dx != 0 || dy != 0
         # release block if trying to pull on ice
-        @held_block = nil if pulling_block?(dx, dy) && collision?(entities.select(&.is_a?(Floors::Ice)))
+        if pulling_block?(dx, dy) && collision?(entities.select(&.is_a?(Floor::Base)).map(&.as(Floor::Base)).select(&.block_slide?))
+          @held_block = nil
+        end
 
         @x += dx * Game::GRID_SIZE
         @y += dy * Game::GRID_SIZE

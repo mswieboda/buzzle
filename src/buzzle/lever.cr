@@ -1,5 +1,3 @@
-require "./switch"
-
 module Buzzle
   class Lever < Switch
     def initialize(x, y, z = 0, on = false)

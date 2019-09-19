@@ -1,6 +1,6 @@
-module Buzzle
-  class Floor < SpriteEntity
-    @accent : Floors::Accent | Nil
+module Buzzle::Floor
+  class Base < SpriteEntity
+    @accent : Accent | Nil
 
     def initialize(x, y, z = 0, name = "floor", direction = Direction::Down, width = Game::GRID_SIZE, height = Game::GRID_SIZE, hidden = false)
       super(
@@ -17,7 +17,7 @@ module Buzzle
       @accent = nil
 
       if rand > 0.85
-        @accent = Floors::Accent.new(
+        @accent = Accent.new(
           x: x,
           y: y,
           z: z,
@@ -33,11 +33,7 @@ module Buzzle
     end
 
     def entities
-      if @accent
-        [self, @accent.as(Entity)]
-      else
-        super
-      end
+      (super + [@accent]).compact
     end
 
     def layer

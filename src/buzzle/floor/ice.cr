@@ -1,5 +1,5 @@
-module Buzzle::Floors
-  class Ice < Floor
+module Buzzle::Floor
+  class Ice < Base
     def initialize(x, y, z = 0)
       super(
         x: x,

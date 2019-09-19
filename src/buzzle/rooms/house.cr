@@ -7,7 +7,7 @@ module Buzzle::Rooms
 
       (0..width - 1).each do |x|
         (0..height - 1).each do |y|
-          @entities << Floor.new(x, y)
+          @entities << Floor::Base.new(x, y)
         end
       end
 

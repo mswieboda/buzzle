@@ -10,9 +10,9 @@ module Buzzle::Rooms
       (0..width - 1).each do |x|
         (0..height - 1).each do |y|
           if x == 5 && y == 8
-            @entities << Floors::Pit.new(x, y)
+            @entities << Floor::Pit.new(x, y)
           else
-            @entities << Floor.new(x, y)
+            @entities << Floor::Base.new(x, y)
           end
         end
       end
@@ -24,19 +24,19 @@ module Buzzle::Rooms
       @entities << Wall.new(5, 6, railing: true)
       @entities << Wall.new(5, 6, direction: Direction::Up)
       @entities << Wall.new(5, 6, 1, direction: Direction::Up)
-      @entities << Floor.new(5, 6, 1)
+      @entities << Floor::Base.new(5, 6, 1)
       @entities << Wall.new(6, 6, railing: true)
       @entities << Wall.new(6, 6, direction: Direction::Up)
       @entities << Wall.new(6, 6, 1, direction: Direction::Up)
-      @entities << Floor.new(6, 6, 1)
+      @entities << Floor::Base.new(6, 6, 1)
       @entities << WallLadder.new(7, 7)
       @entities << Ladder.new(7, 7, 1, ascend: false)
       @entities << Wall.new(7, 6, direction: Direction::Up)
       @entities << Wall.new(7, 6, 1, direction: Direction::Up)
-      @entities << Floor.new(7, 6, 1)
+      @entities << Floor::Base.new(7, 6, 1)
       @entities << Wall.new(8, 6, direction: Direction::Up)
       @entities << Wall.new(8, 6, 1, direction: Direction::Up)
-      @entities << Floor.new(8, 6, 1)
+      @entities << Floor::Base.new(8, 6, 1)
       @entities << Wall.new(8, 6, direction: Direction::Right)
 
       @lift = Lift.new(4, 7, auto: false)

@@ -1,6 +1,6 @@
-module Buzzle::Floors
-  class Pit < Floor
-    DROP_MOVEMENT = 2
+module Buzzle::Floor
+  class River < Base
+    DROP_MOVEMENT = 1
 
     def initialize(x, y, z = 0)
       super(
@@ -35,46 +35,62 @@ module Buzzle::Floors
         height: height
       )
 
-      @accent = nil
+      @accent = Accent.new(
+        x: x,
+        y: y,
+        z: z,
+        direction: direction,
+        design: Accent::Design::River
+      )
+
+      @accent.try(&.randomize_origin)
 
       @drop_blocks = [] of Block
       @drop_block_movement = 0
+
+      @bridge_floor = Base.new(x: x, y: y, z: z - 1, hidden: true)
     end
 
-    def layer
-      1
+    def entities
+      super + [@bridge_floor]
+    end
+
+    def traversable?
+      false
     end
 
     def block_slide?
       true
     end
 
+    def bridge?
+      @bridge_floor.z > z
+    end
+
     def trigger?(entity : Entity)
       @triggers.all? { |t| t.trigger?(entity) }
     end
 
-    def update(_frame_time, entities)
+    def update(frame_time, entities)
       super
 
       @triggers.each(&.update(self))
 
-      players = entities.select(&.is_a?(Player)).map(&.as(Player)).reject { |p| p.falling? || p.dead? }
-      players.select { |p| trigger?(p) }.each(&.fall)
-
-      unless @drop_blocks.any?
+      unless bridge? || @drop_blocks.any?
         @drop_blocks = entities.select(&.is_a?(Block)).select { |e| trigger?(e) }.map(&.as(Block))
       end
 
       @drop_blocks.each do |block|
         block.lift(DROP_MOVEMENT)
         @drop_block_movement += DROP_MOVEMENT
-        block.source_height = block.height - @drop_block_movement
+        block.source_height = block.height - 4 - @drop_block_movement
 
-        if @drop_block_movement >= Game::GRID_SIZE
-          block.stop
-          block.lift_stopped
-          block.source_height = nil
-          block.die
+        if @drop_block_movement >= Game::GRID_SIZE / 4
+          @bridge_floor.ascend
+          block.descend
+          descend
+          @accent.try(&.descend)
+
           @drop_blocks.clear
           @drop_block_movement = 0
         end
@@ -85,7 +101,8 @@ module Buzzle::Floors
       draw(
         screen_x: screen_x,
         screen_y: screen_y,
-        tint: LibRay::BLACK
+        frame: 0,
+        tint: LibRay::BLUE
       )
     end
   end
