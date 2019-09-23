@@ -30,8 +30,6 @@ module Buzzle::Room
         @entities << Floor::River.new(x, 3)
       end
 
-      @entities << Door::Cell.new(7, 7)
-
       # ice
       (1..width - 2).each do |x|
         (4..7).each do |y|
@@ -39,6 +37,9 @@ module Buzzle::Room
           @entities << Floor::Ice.new(x, y)
         end
       end
+
+      # spikes
+      @entities << Floor::Spikes.new(7, 7)
 
       super(
         player: player,
