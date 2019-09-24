@@ -9,7 +9,7 @@ module Buzzle::Floor
 
     def initialize(x, y, z = 0, @up = false)
       super(
-        name: "spikes",
+        name: "spike",
         x: x,
         y: y,
         z: z
@@ -68,25 +68,18 @@ module Buzzle::Floor
     end
 
     def draw(screen_x, screen_y)
-      [
-        [0, 0],
-        [1, 0],
-        [0, 1],
-        [1, 1],
-        [0, 2],
-        [1, 2],
-        [0, 3],
-        [1, 3],
-      ].each do |(dx, dy)|
-        draw(
-          screen_x: screen_x,
-          screen_y: screen_y,
-          center_x: false,
-          center_y: false,
-          x: x + sprite.width * dx,
-          y: y + sprite.height * dy,
-          frame: frame
-        )
+      4.times do |dx|
+        4.times do |dy|
+          draw(
+            screen_x: screen_x,
+            screen_y: screen_y,
+            center_x: false,
+            center_y: false,
+            x: x + sprite.width * dx,
+            y: y + sprite.height * dy,
+            frame: frame
+          )
+        end
       end
     end
   end
