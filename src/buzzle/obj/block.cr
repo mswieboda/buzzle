@@ -2,8 +2,8 @@ module Buzzle
   class Block < SpriteEntity
     getter? dead
 
-    @respawn_x : Int32
-    @respawn_y : Int32
+    @respawn_x : Int32 | Float32 | Float64
+    @respawn_y : Int32 | Float32 | Float64
     @respawn_z : Int32
 
     RESPAWN_TIMER = 3

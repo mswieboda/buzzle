@@ -9,7 +9,7 @@ module Buzzle
     @held_block : Block | Nil
     @sounds : Array(LibRay::Sound)
 
-    MOVING_AMOUNT = 2
+    MOVING_AMOUNT = 50
 
     MOVE_BLOCK_TIMER = 0.25
 
@@ -29,7 +29,8 @@ module Buzzle
         height: Game::GRID_SIZE
       )
 
-      @moving_x = @moving_y = 0_f32
+      @dir = Dir::South
+
       @moving_left_foot = false
       @frame_t = 0_f32
       @falling = false
@@ -54,13 +55,11 @@ module Buzzle
       @move_block_timer.reset if @move_block_timer.done?
       @move_block_timer.increase(frame_time) if @move_block_timer.started?
 
-      unless moving? || lifting?
+      unless lifting?
         actionable(entities) unless falling?
         movement_input(frame_time, entities) unless falling?
         transitions(frame_time)
       end
-
-      moving_transition(frame_time, entities) if moving? && !lifting?
     end
 
     def actionable(entities)
@@ -81,20 +80,49 @@ module Buzzle
     end
 
     def movement_input(frame_time, entities)
-      dx = dy = 0
+      dx = dy = 0_f32
 
-      if Keys.down?([LibRay::KEY_W, LibRay::KEY_UP])
-        dy = -1
-        @direction = Direction::Up unless @held_block
-      elsif Keys.down?([LibRay::KEY_A, LibRay::KEY_LEFT])
-        dx = -1
-        @direction = Direction::Left unless @held_block
-      elsif Keys.down?([LibRay::KEY_S, LibRay::KEY_DOWN])
-        dy = 1
-        @direction = Direction::Down unless @held_block
-      elsif Keys.down?([LibRay::KEY_D, LibRay::KEY_RIGHT])
-        dx = 1
-        @direction = Direction::Right unless @held_block
+      dy = -1_f32 if Keys.down?([LibRay::KEY_W, LibRay::KEY_UP])
+      dx = 1_f32 if Keys.down?([LibRay::KEY_D, LibRay::KEY_RIGHT])
+      dy = 1_f32 if Keys.down?([LibRay::KEY_S, LibRay::KEY_DOWN])
+      dx = -1_f32 if Keys.down?([LibRay::KEY_A, LibRay::KEY_LEFT])
+
+      if dy == -1
+        @direction = Direction::Up
+
+        if dx == 1
+          @dir = Dir::NorthEast
+          dy *= 0.5_f32
+          dx *= 0.5_f32
+        elsif dx == -1
+          @dir = Dir::NorthWest
+          dy *= 0.5_f32
+          dx *= 0.5_f32
+        else
+          @dir = Dir::North
+        end
+      elsif dy == 0
+        if dx == 1
+          @direction = Direction::Right
+          @dir = Dir::East
+        elsif dx == -1
+          @direction = Direction::Left
+          @dir = Dir::West
+        end
+      elsif dy == 1
+        @direction = Direction::Down
+
+        if dx == 1
+          @dir = Dir::SouthEast
+          dy *= 0.5_f32
+          dx *= 0.5_f32
+        elsif dx == -1
+          @dir = Dir::SouthWest
+          dy *= 0.5_f32
+          dx *= 0.5_f32
+        else
+          @dir = Dir::South
+        end
       end
 
       # if attempting to move (delta != 0)
@@ -104,26 +132,29 @@ module Buzzle
           @held_block = nil
         end
 
-        @x += dx * Game::GRID_SIZE
-        @y += dy * Game::GRID_SIZE
+        @x += dx.to_i
+        @y += dy.to_i
 
         if collision?(entities.select(&.traversable?))
-          if pushing_block?(dx, dy)
-            @held_block.try(&.move_now(dx * Game::GRID_SIZE, dy * Game::GRID_SIZE, entities)) if !@move_block_timer.started?
-          end
+          # TODO: fix
+          # if pushing_block?(dx, dy)
+          #   @held_block.try(&.move_now(dx * Game::GRID_SIZE, dy * Game::GRID_SIZE, entities)) if !@move_block_timer.started?
+          # end
 
           unless directional_collision?(entities.select(&.collidable?), pulling_block?(dx, dy) ? direction.opposite : direction)
-            move(dx: dx, dy: dy)
-            @held_block.try(&.move(dx: dx, dy: dy, amount: MOVING_AMOUNT)) if !@move_block_timer.started?
+            move(frame_time: frame_time, dx: dx, dy: dy)
+            # TODO: fix
+            # @held_block.try(&.move(dx: dx, dy: dy, amount: MOVING_AMOUNT)) if !@move_block_timer.started?
           end
         end
 
-        @x -= dx * Game::GRID_SIZE
-        @y -= dy * Game::GRID_SIZE
+        @x -= dx.to_i
+        @y -= dy.to_i
 
-        if pushing_block?(dx, dy)
-          @held_block.try(&.move_now(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, entities)) if !@move_block_timer.started?
-        end
+        # TODO: fix
+        # if pushing_block?(dx, dy)
+        #   @held_block.try(&.move_now(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, entities)) if !@move_block_timer.started?
+        # end
       end
     end
 
@@ -139,52 +170,18 @@ module Buzzle
       end
     end
 
-    def move(dx = 0, dy = 0)
-      @moving_x = dx.to_f32 * MOVING_AMOUNT
-      @moving_y = dy.to_f32 * MOVING_AMOUNT
+    def move(frame_time, dx, dy)
+      @x += dx.to_f32 * MOVING_AMOUNT * frame_time
+      @y += dy.to_f32 * MOVING_AMOUNT * frame_time
     end
 
     def moving?
       return false if falling?
       return false if lifting?
-      @moving_x.abs > 0 || @moving_y.abs > 0
-    end
-
-    def moving_transition(frame_time, entities)
-      dx = @moving_x.sign * MOVING_AMOUNT
-      dy = @moving_y.sign * MOVING_AMOUNT
-
-      if pulling_block?(dx, dy) && @move_block_timer.started?
-        # stop, and don't pull while move block timer active
-        stop
-        return
-      elsif @held_block && !pushing_block?(dx, dy) && !pulling_block?(dx, dy)
-        # trying to strafe while holding block, stop moving!
-        stop
-        return
-      end
-
-      if @moving_x == dx && @moving_y == dy
-        # alternate foot step animation frame
-        @moving_left_foot = !@moving_left_foot
-      end
-
-      @x += dx
-      @moving_x += dx
-
-      @y += dy
-      @moving_y += dy
-
-      # stop moving at next grid cell
-      if @moving_x.abs > Game::GRID_SIZE || @moving_y.abs > Game::GRID_SIZE
-        stop
-        Sound.play_random_pitch(@sounds.sample)
-      end
+      false
     end
 
     def stop
-      @moving_x = 0_f32
-      @moving_y = 0_f32
       @move_block_timer.start if @held_block && !@move_block_timer.started?
       @held_block = nil
 
@@ -217,7 +214,7 @@ module Buzzle
     end
 
     def row
-      direction.to_i
+      @dir.to_i
     end
 
     def draw(screen_x, screen_y)
@@ -256,11 +253,6 @@ module Buzzle
       @y = door.y
 
       @direction = door.direction
-
-      dx, dy = @direction.to_delta
-
-      @moving_x = dx.to_f32 * MOVING_AMOUNT
-      @moving_y = dy.to_f32 * MOVING_AMOUNT
 
       @exit_door = door
     end

@@ -1,7 +1,5 @@
 module Buzzle
   class Visibility < Obj
-    getter x : Int32
-    getter y : Int32
     delegate visible?, to: @state
     delegate shadow?, to: @state
     delegate dark?, to: @state

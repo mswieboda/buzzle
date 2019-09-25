@@ -1,7 +1,7 @@
 module Buzzle
   class Obj
-    getter x : Int32
-    getter y : Int32
+    getter x : Int32 | Float32 | Float64
+    getter y : Int32 | Float32 | Float64
     getter z : Int32
     getter width : Int32
     getter height : Int32
@@ -9,7 +9,7 @@ module Buzzle
     getter? removed
     getter? hidden
 
-    def initialize(x : Int32, y : Int32, @z = 0, @width : Int32 = 0, @height : Int32 = 0, @direction = Direction::Down, @hidden = false)
+    def initialize(x : Int32 | Float32 | Float64, y : Int32 | Float32 | Float64, @z = 0, @width : Int32 = 0, @height : Int32 = 0, @direction = Direction::Down, @hidden = false)
       @x = x * Game::GRID_SIZE
       @y = y * Game::GRID_SIZE
       @removed = false
