@@ -30,5 +30,9 @@ module Buzzle::Scene
       change_rooms(:entrance, :room_1)
       change_rooms(:room_1, :room_2)
     end
+
+    def next_scene?
+      @rooms[:room_2].doors[:exit].entered?(@player)
+    end
   end
 end

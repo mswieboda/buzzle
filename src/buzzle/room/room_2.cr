@@ -1,6 +1,6 @@
 module Buzzle::Room
   class Room2 < Base
-    def initialize(player, width = 15, height = 15)
+    def initialize(player, width = 10, height = 10)
       entities = [] of Entity
       entities << player
 
@@ -17,11 +17,20 @@ module Buzzle::Room
       end
 
       # floors
-      (0..width - 1).each do |x|
-        (0..height - 1).each do |y|
-          entities << Floor::Base.new(x, y)
+      width.times do |x|
+        height.times do |y|
+          entities << (x > 1 && x < width - 2 && y > 1 && y < height - 2 ? Floor::Ice : Floor::Base).new(x, y)
         end
       end
+
+      # blocks
+      entities << Block.new(3, 3)
+      entities << Block.new(5, 3)
+      entities << Block.new(4, 5)
+
+      # switches
+      @pressure_switch = PressureSwitch.new(5, 5)
+      entities << @pressure_switch
 
       super(
         player: player,
@@ -30,6 +39,13 @@ module Buzzle::Room
         width: width,
         height: height
       )
+    end
+
+    def update(frame_time)
+      super
+
+      doors[:exit].open if @pressure_switch.on?
+      doors[:exit].close if @pressure_switch.off?
     end
   end
 end
