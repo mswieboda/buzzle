@@ -114,7 +114,10 @@ module Buzzle
 
           unless directional_collision?(entities.select(&.collidable?), pulling_block?(dx, dy) ? direction.opposite : direction)
             move(dx: dx, dy: dy)
-            @held_block.try(&.move(dx: dx, dy: dy, amount: MOVING_AMOUNT)) if !@move_block_timer.started?
+
+            if (pushing_block?(dx, dy) || pulling_block?(dx, dy)) && !@move_block_timer.started?
+              @held_block.try(&.move(dx: dx, dy: dy, amount: MOVING_AMOUNT))
+            end
           end
         end
 
