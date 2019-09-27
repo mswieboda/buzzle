@@ -7,10 +7,10 @@ module Buzzle::Room
       doors = {
         :house    => Door::Gate.new(3, -1),
         :dead_end => Door::Wooden.new(8, 6, open: true),
-        :up       => Door::Gate.new(5, 15, direction: Direction::Up),
+        :up       => Door::Gate.new(5, height, direction: Direction::Up),
         :right    => Door::Wooden.new(-1, 3, direction: Direction::Right),
         :down     => Door::Wooden.new(5, -1),
-        :left     => Door::Wooden.new(15, 3, direction: Direction::Left),
+        :left     => Door::Wooden.new(width, 3, direction: Direction::Left),
       }
 
       @lever = Lever.new(10, 3)

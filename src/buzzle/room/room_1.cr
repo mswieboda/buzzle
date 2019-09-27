@@ -5,7 +5,7 @@ module Buzzle::Room
       entities << player
 
       doors = {
-        :entrance => Door::Gate.new(5, 10, direction: Direction::Up).as(Door::Base),
+        :entrance => Door::Gate.new(5, height, direction: Direction::Up).as(Door::Base),
         :room_2   => Door::Gate.new(3, -1).as(Door::Base),
       }
 
