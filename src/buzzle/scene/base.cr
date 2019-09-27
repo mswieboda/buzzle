@@ -3,11 +3,11 @@ module Buzzle::Scene
     getter player : Player
     getter? loaded
 
-    def initialize(@player)
-      @room = Room::Base.new(@player)
+    @rooms : Hash(Symbol, Room::Base)
 
-      @rooms = [] of Room::Base
-      @rooms << @room
+    def initialize(@player)
+      @rooms = Hash(Symbol, Room::Base).new
+      @room = Room::Base.new(@player)
 
       @loaded = false
     end
@@ -28,6 +28,10 @@ module Buzzle::Scene
 
     def draw
       @room.draw
+    end
+
+    def room?(room : Symbol)
+      @room == @rooms[room]
     end
 
     def change_room(room : Room::Base)
