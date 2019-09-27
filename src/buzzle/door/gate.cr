@@ -12,5 +12,9 @@ module Buzzle::Door
 
       @sound_start = Sound.get("gate")
     end
+
+    def actionable?
+      false
+    end
   end
 end
