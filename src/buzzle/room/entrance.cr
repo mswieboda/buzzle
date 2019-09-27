@@ -20,7 +20,7 @@ module Buzzle::Room
       end
 
       # block
-      @entities << Block.new(5, 5)
+      @entities << Block.new(7, 7)
 
       # river
       (0..width - 1).each do |x|
