@@ -73,11 +73,17 @@ module Buzzle
       end
     end
 
+    def moves_on?(entities : Array(Entity))
+      collision?(entities.select { |e| e.traversable? || (e.is_a?(Floor::Base) && e.as(Floor::Base).block_slide?) })
+    end
+
     def move_now(dx, dy, entities : Array(Entity))
+      move_direction = Direction.from_delta(dx: dx.sign, dy: dy.sign)
+
       @x += dx
       @y += dy
 
-      if !collision?(entities.select(&.traversable?)) || directional_collision?(entities.select(&.collidable?), Direction.from_delta(dx: dx.sign, dy: dy.sign))
+      if !moves_on?(entities) || directional_collision?(entities.select(&.collidable?), move_direction)
         @x -= dx
         @y -= dy
       end
