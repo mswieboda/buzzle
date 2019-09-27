@@ -13,33 +13,19 @@ module Buzzle::Room
       # floors
       (0..width - 1).each do |x|
         (0..height - 1).each do |y|
-          # skip if river or ice
-          next if y == 3 || (x > 0 && x < width - 1 && y >= 4 && y <= 7)
+          # skip if river
+          next if y == 3
           @entities << Floor::Grass.new(x, y)
         end
       end
 
-      # pit
-      @entities << Floor::Pit.new(5, 4)
-
       # block
-      @entities << Block.new(5, 7)
+      @entities << Block.new(5, 5)
 
       # river
       (0..width - 1).each do |x|
         @entities << Floor::River.new(x, 3)
       end
-
-      # ice
-      (1..width - 2).each do |x|
-        (4..7).each do |y|
-          next if x == 5 && y == 4
-          @entities << Floor::Ice.new(x, y)
-        end
-      end
-
-      # spikes
-      @entities << Floor::Spikes.new(7, 7)
 
       super(
         player: player,
