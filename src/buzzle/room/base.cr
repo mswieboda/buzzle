@@ -5,16 +5,22 @@ module Buzzle::Room
     getter y : Int32
     getter width : Int32
     getter height : Int32
+    getter doors
 
     GRID_SIZE = Game::GRID_SIZE
 
-    def initialize(@player, @entities = [] of Entity, width = 10, height = 10)
-      @entities = entities.flat_map(&.entities)
+    @entities : Array(Entity)
+    @doors : Hash(Symbol, Door::Base)
+
+    def initialize(@player, entities = [] of Entity, @doors = {} of Symbol => Door::Base, width = 10, height = 10)
       @width = width * GRID_SIZE
       @height = height * GRID_SIZE
 
       @x = Game::SCREEN_WIDTH / 2 - @width / 2
       @y = Game::SCREEN_HEIGHT / 2 - @height / 2
+
+      entities += @doors.values.to_a
+      @entities = entities.flat_map(&.entities)
     end
 
     def update(frame_time)

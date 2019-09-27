@@ -1,26 +1,32 @@
 module Buzzle::Room
   class Room2 < Base
-    def initialize(player, entities = [] of Entity, width = 15, height = 15)
-      puts "Room2#initialize"
-      @entities = [] of Entity
-      @entities += entities
-      @entities << player
+    def initialize(player, width = 15, height = 15)
+      entities = [] of Entity
+      entities << player
+
+      doors = {
+        :room_1 => Door::Gate.new(5, 10, direction: Direction::Up).as(Door::Base),
+        :exit   => Door::Gate.new(3, -1).as(Door::Base),
+      }
 
       # outer walls
-      ((0..width - 1).to_a).each do |x|
-        @entities << Wall.new(x, -1, design: rand > 0.5 ? 0 : rand(6))
+      width.times do |x|
+        y = -1
+        next if doors.values.any? { |d| d.x / Game::GRID_SIZE == x && d.y / Game::GRID_SIZE == y }
+        entities << Wall.new(x, y, design: rand > 0.5 ? 0 : rand(6))
       end
 
       # floors
       (0..width - 1).each do |x|
         (0..height - 1).each do |y|
-          @entities << Floor::Base.new(x, y)
+          entities << Floor::Base.new(x, y)
         end
       end
 
       super(
         player: player,
-        entities: @entities,
+        entities: entities,
+        doors: doors,
         width: width,
         height: height
       )

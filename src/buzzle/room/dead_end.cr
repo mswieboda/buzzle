@@ -1,36 +1,43 @@
 module Buzzle::Room
   class DeadEnd < Base
-    def initialize(player, entities = [] of Entity, width = 8, height = 4)
-      @entities = [] of Entity
-      @entities += entities
-      @entities << player
+    def initialize(player, width = 8, height = 4)
+      entities = [] of Entity
+      entities << player
 
-      @entities << Floor::Base.new(0, 0)
-      @entities << Floor::Base.new(width - 1, 0)
+      doors = {
+        :playground => Door::Wooden.new(5, -1),
+        :exit       => Door::Locked.new(1, -1),
+      }
+
+      entities << Floor::Base.new(0, 0)
+      entities << Floor::Base.new(width - 1, 0)
 
       (1..width - 2).each do |x|
         (0..height - 2).each do |y|
-          @entities << Floor::Base.new(x, y)
+          entities << Floor::Base.new(x, y)
         end
       end
 
       [0, width - 1].each do |x|
         (1..height - 1).each do |y|
-          @entities << Floor::Pit.new(x, y)
+          entities << Floor::Pit.new(x, y)
         end
       end
 
       (0..width - 1).each do |x|
-        @entities << Floor::Pit.new(x, height - 1)
+        entities << Floor::Pit.new(x, height - 1)
       end
 
-      ([0] + (2..4).to_a + (6..width - 1).to_a).each do |x|
-        @entities << Wall.new(x, -1, design: rand > 0.5 ? 0 : rand(6))
+      width.times do |x|
+        y = -1
+        next if doors.values.any? { |d| d.x / Game::GRID_SIZE == x && d.y / Game::GRID_SIZE == y }
+        entities << Wall.new(x, y, design: rand > 0.5 ? 0 : rand(6))
       end
 
       super(
         player: player,
-        entities: @entities,
+        entities: entities,
+        doors: doors,
         width: width,
         height: height
       )

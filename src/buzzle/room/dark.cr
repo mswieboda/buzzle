@@ -1,6 +1,6 @@
 module Buzzle::Room
   class Dark < Base
-    def initialize(@player, @entities = [] of Entity, width = 10, height = 10)
+    def initialize(@player, entities = [] of Entity, doors = Hash(Symbol, Door::Base).new, width = 10, height = 10)
       super
 
       @visibilities = [] of Visibility

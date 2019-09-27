@@ -34,18 +34,30 @@ module Buzzle::Scene
       @room == @rooms[room]
     end
 
-    def change_room(room : Room::Base)
-      @room = room
-    end
-
     def change_room(room : Room::Base, door : Door::Base)
-      change_room(room: room)
+      @room = room
       @player.enter(door, instant: true)
     end
 
-    def change_rooms(player : Player, door : Door::Base, room : Room::Base, next_room : Room::Base, next_door : Door::Base)
-      change_room(room: next_room, door: next_door) if door.entered?(player) if @room == room
-      change_room(room: room, door: door) if next_door.entered?(player) if @room == next_room
+    def change_rooms(from : Symbol, to : Symbol)
+      change_rooms({room: from, door: to}, {room: to, door: from})
+    end
+
+    def change_rooms(from : NamedTuple(room: Symbol, door: Symbol), to : NamedTuple(room: Symbol, door: Symbol))
+      room = @rooms[from[:room]]
+      next_room = @rooms[to[:room]]
+
+      change_rooms(
+        door: room.doors[from[:door]],
+        room: room,
+        next_room: next_room,
+        next_door: next_room.doors[to[:door]]
+      )
+    end
+
+    def change_rooms(door : Door::Base, room : Room::Base, next_room : Room::Base, next_door : Door::Base)
+      change_room(room: next_room, door: next_door) if door.entered?(@player) if @room == room
+      change_room(room: room, door: door) if next_door.entered?(@player) if @room == next_room
     end
 
     def next_scene?
