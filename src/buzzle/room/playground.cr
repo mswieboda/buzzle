@@ -11,6 +11,8 @@ module Buzzle::Room
         (0..height - 1).each do |y|
           if x == 5 && y == 8
             @entities << Floor::Pit.new(x, y)
+          elsif y >= 11 && y < height - 1 && x >= 3 && x < width - 1
+            @entities << Floor::Ice.new(x, y)
           else
             @entities << Floor::Base.new(x, y)
           end
@@ -51,6 +53,10 @@ module Buzzle::Room
       ((0..2).to_a + [4] + (6..width - 1).to_a).each do |x|
         @entities << Wall.new(x, -1, design: rand > 0.5 ? 0 : rand(6))
       end
+
+      # on ice
+      @entities << Block.new(5, 12)
+      @entities << Floor::Spikes.new(12, 12)
 
       super(
         player: player,
