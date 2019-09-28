@@ -5,8 +5,8 @@ module Buzzle::Room
 
       @visibilities = [] of Visibility
 
-      width.times do |x|
-        height.times do |y|
+      (-1..width + 1).to_a.each do |x|
+        (-1..height + 1).to_a.each do |y|
           @visibilities << Visibility.new(x, y)
         end
       end
