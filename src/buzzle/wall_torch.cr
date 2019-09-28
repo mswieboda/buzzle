@@ -1,5 +1,5 @@
 module Buzzle
-  class WallTorch < Switch::Base
+  class WallTorch < Switch
     FPS = 12
 
     def initialize(x, y, z = 0, on = true)

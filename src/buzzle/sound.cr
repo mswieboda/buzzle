@@ -9,7 +9,7 @@ module Buzzle
     def self.load(name : String, asset_file : String, volume : Float32 | Nil, pitch : Float32 | Nil)
       return if @@sounds.has_key?(name)
 
-      sound = LibRay.load_sound(File.join(__DIR__, "../../../assets/sounds/#{asset_file}.wav"))
+      sound = LibRay.load_sound(File.join(__DIR__, "../../assets/sounds/#{asset_file}.wav"))
 
       LibRay.set_sound_volume(sound, volume) if volume
       LibRay.set_sound_pitch(sound, pitch) if pitch

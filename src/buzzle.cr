@@ -1,6 +1,8 @@
 require "cray"
 
-require "./buzzle/core/**"
+require "./buzzle/sprite_entity"
+require "./buzzle/floor/base"
+require "./buzzle/switch"
 require "./buzzle/**"
 
 module Buzzle

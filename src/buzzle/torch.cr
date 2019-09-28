@@ -1,5 +1,5 @@
 module Buzzle
-  class Torch < Switch::Base
+  class Torch < Switch
     FPS = 3
 
     def initialize(x, y, z = 0, on = false)
