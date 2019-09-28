@@ -9,23 +9,6 @@ module Buzzle::Room::Dungeon
         :maze => Door::Gate.new(3, -1).as(Door::Base),
       }
 
-      # top outer walls
-      width.times do |x|
-        y = -1
-        entities << Wall.new(x, y + 1, direction: Direction::Up)
-        next if doors.values.any? { |d| d.x / Game::GRID_SIZE == x && d.y / Game::GRID_SIZE == y }
-        entities << Wall.new(x, y, design: rand > 0.5 ? 0 : rand(6))
-      end
-
-      # left/right outer walls
-      height.times do |y|
-        x = -1
-        entities << Wall.new(x, y, direction: Direction::Right)
-
-        x = width
-        entities << Wall.new(x, y, direction: Direction::Left)
-      end
-
       # floors
       width.times do |x|
         height.times do |y|
@@ -48,6 +31,8 @@ module Buzzle::Room::Dungeon
         width: width,
         height: height
       )
+
+      add_border_walls
     end
 
     def update(frame_time)

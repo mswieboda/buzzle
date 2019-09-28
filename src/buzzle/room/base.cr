@@ -34,5 +34,62 @@ module Buzzle::Room
     def draw
       @entities.each(&.draw(x, y))
     end
+
+    def add_border_walls
+      add_top_walls
+      add_left_walls
+      add_right_walls
+    end
+
+    def add_top_walls
+      walls = [] of Wall
+      width = @width / Game::GRID_SIZE
+      height = @height / Game::GRID_SIZE
+      y = -1
+
+      width.times do |x|
+        # top railing for design only (goes outside of room)
+        walls << Wall.new(x, y + 1, direction: Direction::Up)
+
+        next if door?(x: x, y: y)
+
+        # top wall
+        walls << Wall.new(x, y, design: rand > 0.5 ? 0 : rand(6))
+      end
+
+      @entities += walls.flat_map(&.entities)
+    end
+
+    def add_left_walls
+      walls = [] of Wall
+      width = @width / Game::GRID_SIZE
+      height = @height / Game::GRID_SIZE
+      x = -1
+
+      height.times do |y|
+        # left side railing
+        walls << Wall.new(x, y, direction: Direction::Right) unless door?(x: x, y: y)
+      end
+
+      @entities += walls.flat_map(&.entities)
+    end
+
+    def add_right_walls
+      walls = [] of Wall
+      width = @width / Game::GRID_SIZE
+      height = @height / Game::GRID_SIZE
+      x = width
+
+      height.times do |y|
+        # right side railing
+        walls << Wall.new(x, y, direction: Direction::Left) unless door?(x: x, y: y)
+      end
+
+      @entities += walls.flat_map(&.entities)
+    end
+
+    def door?(x, y)
+      doors.values.any? { |d| d.x / Game::GRID_SIZE == x && d.y / Game::GRID_SIZE == y }
+    end
   end
 end

@@ -28,12 +28,6 @@ module Buzzle::Room::Playground
         entities << Floor::Pit.new(x, height - 1)
       end
 
-      width.times do |x|
-        y = -1
-        next if doors.values.any? { |d| d.x / Game::GRID_SIZE == x && d.y / Game::GRID_SIZE == y }
-        entities << Wall.new(x, y, design: rand > 0.5 ? 0 : rand(6))
-      end
-
       super(
         player: player,
         entities: entities,
@@ -41,6 +35,8 @@ module Buzzle::Room::Playground
         width: width,
         height: height
       )
+
+      add_border_walls
     end
   end
 end

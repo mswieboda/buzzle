@@ -65,13 +65,6 @@ module Buzzle::Room::Playground
 
       entities << Chest.new(9, 9)
 
-      width.times do |x|
-        y = -1
-        entities << Wall.new(x, y + 1, direction: Direction::Up)
-        next if doors.values.any? { |d| d.x / Game::GRID_SIZE == x && d.y / Game::GRID_SIZE == y }
-        entities << Wall.new(x, y, design: rand > 0.5 ? 0 : rand(6))
-      end
-
       # on ice
       entities << Block.new(5, 12)
       entities << Floor::Spikes.new(12, 12)
@@ -83,6 +76,8 @@ module Buzzle::Room::Playground
         width: width,
         height: height
       )
+
+      add_border_walls
     end
 
     def update(frame_time)
