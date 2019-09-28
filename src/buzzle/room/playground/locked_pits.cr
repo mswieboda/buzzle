@@ -16,16 +16,14 @@ module Buzzle::Room::Playground
         (0..height - 2).each do |y|
           entities << Floor::Base.new(x, y)
         end
+
+        entities << Floor::Pit.new(x, height - 1)
       end
 
       [0, width - 1].each do |x|
         (1..height - 1).each do |y|
           entities << Floor::Pit.new(x, y)
         end
-      end
-
-      (0..width - 1).each do |x|
-        entities << Floor::Pit.new(x, height - 1)
       end
 
       super(
