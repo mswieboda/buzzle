@@ -12,6 +12,10 @@ module Buzzle
       )
     end
 
+    def layer
+      2
+    end
+
     def switch(instant = false, sound = !instant)
       @frame_t = (@sprite.frames - 1).to_f32 / FPS if on?
       super(instant, sound)
@@ -21,13 +25,8 @@ module Buzzle
       @actionable
     end
 
-    def action(_entity : Entity)
-      puts "wall torch action!"
-      switch
-    end
-
     def collidable?
-      actionable?
+      false
     end
 
     def light_source?
