@@ -1,7 +1,7 @@
-module Buzzle::Scene
+module Buzzle::Scenes
   class Manager
     @player : Player
-    @scene : Base
+    @scene : Scene
 
     RESPAWN_TIMER = 3
 
@@ -11,7 +11,7 @@ module Buzzle::Scene
 
       @scene_index = 0
 
-      @scenes = [] of Base.class
+      @scenes = [] of Scene.class
       @scenes << Scene1
       @scenes << Playground
 

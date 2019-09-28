@@ -1,11 +1,11 @@
-module Buzzle::Scene
-  class Playground < Base
+module Buzzle::Scenes
+  class Playground < Scene
     def initialize(@player)
       super(@player)
 
-      @rooms[:playground] = Room::Playground.new(@player)
-      @rooms[:house] = Room::House.new(@player)
-      @rooms[:dead_end] = Room::DeadEnd.new(@player)
+      @rooms[:playground] = Rooms::Main.new(@player)
+      @rooms[:house] = Rooms::House.new(@player)
+      @rooms[:dead_end] = Rooms::DeadEnd.new(@player)
 
       @room = @rooms[:playground]
     end

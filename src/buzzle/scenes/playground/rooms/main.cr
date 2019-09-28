@@ -1,5 +1,5 @@
-module Buzzle::Room
-  class Playground < Base
+module Buzzle::Scenes::Playground::Rooms
+  class Main < Room::Base
     def initialize(player, width = 15, height = 15)
       entities = [] of Entity
       entities << player

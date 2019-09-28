@@ -1,5 +1,5 @@
-module Buzzle::Scene
-  class Base
+module Buzzle::Scenes
+  class Scene
     getter player : Player
     getter? loaded
 
