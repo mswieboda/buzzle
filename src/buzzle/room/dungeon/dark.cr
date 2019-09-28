@@ -15,7 +15,7 @@ module Buzzle::Room::Dungeon
       @pressure_switch = PressureSwitch.new(5, 5)
       entities << @pressure_switch
 
-      # outer walls
+      # top outer walls
       width.times do |x|
         y = -1
         entities << Wall.new(x, y + 1, direction: Direction::Up)
@@ -23,6 +23,7 @@ module Buzzle::Room::Dungeon
         entities << Wall.new(x, y, design: rand > 0.5 ? 0 : rand(6))
       end
 
+      # left/right outer walls
       height.times do |y|
         x = -1
         entities << Wall.new(x, y, direction: Direction::Right)
