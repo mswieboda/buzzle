@@ -21,7 +21,7 @@ module Buzzle
     end
 
     def layer
-      direction.up? ? 4 : 2
+      direction.down? ? 2 : 4
     end
 
     def enable
