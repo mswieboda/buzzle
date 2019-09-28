@@ -17,10 +17,6 @@ module Buzzle
       super(instant, sound)
     end
 
-    def layer
-      2
-    end
-
     def actionable?
       false
     end

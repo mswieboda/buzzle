@@ -32,10 +32,6 @@ module Buzzle
       !enabled?
     end
 
-    def layer
-      2
-    end
-
     def x_draw
       x_draw = x
 
