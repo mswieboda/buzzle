@@ -6,7 +6,7 @@ module Buzzle::Room::Dungeon
 
       doors = {
         :dark => Door::Gate.new(5, height, direction: Direction::Up).as(Door::Base),
-        :exit => Door::Gate.new(3, -1).as(Door::Base),
+        :maze => Door::Gate.new(3, -1).as(Door::Base),
       }
 
       # outer walls
@@ -43,8 +43,8 @@ module Buzzle::Room::Dungeon
     def update(frame_time)
       super
 
-      doors[:exit].open if @pressure_switch.on?
-      doors[:exit].close if @pressure_switch.off?
+      doors[:maze].open if @pressure_switch.on?
+      doors[:maze].close if @pressure_switch.off?
     end
   end
 end
