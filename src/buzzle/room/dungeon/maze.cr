@@ -16,11 +16,45 @@ module Buzzle::Room::Dungeon
       end
 
       # maze walls
+      entities << Wall.new(1, 9, direction: Direction::Right, hidden: true)
+      entities << Wall.new(2, 9, direction: Direction::Left)
+      entities << Wall.new(0, 8, direction: Direction::Right, hidden: true)
+      entities << Wall.new(1, 8, direction: Direction::Left)
+
+      # wall torch (switch)
+      entities << WallTorch.new(0, 8, on: false, actionable: true)
+
+      # maze walls
+      y = 7
       (width - 1).times do |x|
-        y = 7
-        next if doors.values.any? { |d| d.x / Game::GRID_SIZE == x && d.y / Game::GRID_SIZE == y }
-        entities << Wall.new(x, y, design: rand > 0.5 ? 0 : rand(6))
         entities << Wall.new(x, y + 1, direction: Direction::Up)
+        entities << Wall.new(x, y, design: rand > 0.5 ? 0 : rand(6))
+      end
+
+      # maze walls
+      y = 6
+      (1..width - 1).each do |x|
+        entities << Wall.new(x, y + 1, direction: Direction::Up)
+        entities << Wall.new(x, y, design: rand > 0.5 ? 0 : rand(6))
+      end
+
+      # maze walls
+      y = 5
+      width.times do |x|
+        next if x == 7 || x == 3
+        entities << Wall.new(x, y + 1, direction: Direction::Up)
+        entities << Wall.new(x, y, design: rand > 0.5 ? 0 : rand(6))
+      end
+
+      # maze walls
+      [3, 7].each do |x|
+        [5, 4].each do |y|
+          entities << Wall.new(x - 1, y, direction: Direction::Right, hidden: true)
+          entities << Wall.new(x + 1, y, direction: Direction::Left, hidden: true)
+
+          entities << Wall.new(x, y, direction: Direction::Right)
+          entities << Wall.new(x, y, direction: Direction::Left)
+        end
       end
 
       super(

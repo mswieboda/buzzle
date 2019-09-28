@@ -2,7 +2,7 @@ module Buzzle
   class WallTorch < Switch
     FPS = 12
 
-    def initialize(x, y, z = 0, on = true)
+    def initialize(x, y, z = 0, on = true, @actionable = false)
       super(
         name: "torch",
         x: x,
@@ -18,11 +18,16 @@ module Buzzle
     end
 
     def actionable?
-      false
+      @actionable
+    end
+
+    def action(_entity : Entity)
+      puts "wall torch action!"
+      switch
     end
 
     def collidable?
-      false
+      actionable?
     end
 
     def light_source?
