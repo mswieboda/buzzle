@@ -65,6 +65,7 @@ module Buzzle
           (x >= entity.x && x < entity.x + entity.width && x + width > entity.x && x < entity.x + entity.width) &&
             (
               (y >= entity.y + entity.height && direction.up?) ||
+                (y >= entity.y && y + height <= entity.y + entity.height && direction.up?) ||
                 (y + height <= entity.y && direction.down?)
             )
         )
