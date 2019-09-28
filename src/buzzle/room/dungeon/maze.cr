@@ -93,8 +93,9 @@ module Buzzle::Room::Dungeon
       x = 6
       entities << Wall.new(x - 1, y, direction: Direction::Right)
       entities << Wall.new(x, y, direction: Direction::Left, hidden: true)
+      entities << Wall.new(x, y + 1, direction: Direction::Up, enabled: false)
       [7, 8].each do |x|
-        entities << Wall.new(x, y + 1, direction: Direction::Up, hidden: true)
+        entities << Wall.new(x, y + 1, direction: Direction::Up)
         entities << Wall.new(x, y)
       end
       x = 9

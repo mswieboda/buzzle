@@ -1,10 +1,11 @@
 module Buzzle
   class Wall < SpriteEntity
     getter? enabled
+    getter? railing
 
     @frame : Int32
 
-    def initialize(x, y, z = 0, name = "wall", design = 0, direction = Direction::Down, hidden = false, @railing = false)
+    def initialize(x, y, z = 0, name = "wall", design = 0, direction = Direction::Down, hidden = false, @railing = false, @enabled = true)
       super(
         name: name,
         x: x,
@@ -16,7 +17,6 @@ module Buzzle
         hidden: hidden
       )
 
-      @enabled = true
       @frame = design
     end
 
@@ -94,7 +94,7 @@ module Buzzle
         row: direction.to_i
       )
 
-      if direction.down? && @railing
+      if direction.down? && railing?
         draw(
           y: y_draw,
           x: x_draw,
