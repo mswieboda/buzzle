@@ -5,7 +5,10 @@ module Buzzle::Room::Dungeon
       entities << player
 
       doors = {
-        :ice => Door::Gate.new(2, height, direction: Direction::Up).as(Door::Base),
+        :ice       => Door::Gate.new(2, height, direction: Direction::Up),
+        :gate      => Door::Gate.new(6, 1, darkness: false),
+        :fake_gate => Door::Locked.new(9, 0, darkness: false),
+        :exit      => Door::Gate.new(5, -1, darkness: false),
       }
 
       # floors
@@ -22,7 +25,8 @@ module Buzzle::Room::Dungeon
       entities << Wall.new(1, 8, direction: Direction::Left)
 
       # wall torch (switch)
-      entities << WallTorch.new(0, 8, on: false, actionable: true)
+      @wall_switch = WallTorch.new(0, 8, on: false, actionable: true)
+      entities << @wall_switch
 
       # maze walls
       y = 7
@@ -57,6 +61,56 @@ module Buzzle::Room::Dungeon
         end
       end
 
+      # maze walls
+      y = 4
+      x = 1
+      entities << Wall.new(x - 1, y, direction: Direction::Right, hidden: true)
+      entities << Wall.new(x, y, direction: Direction::Left)
+      [1, 6, 7, 9].each do |x|
+        entities << Wall.new(x, y + 1, direction: Direction::Up)
+        entities << Wall.new(x, y, design: rand > 0.5 ? 0 : rand(6))
+      end
+
+      # maze walls
+      y = 3
+      [2, 4, 6, 8].each do |x|
+        entities << Wall.new(x, y + 1, direction: Direction::Up)
+        entities << Wall.new(x, y, design: rand > 0.5 ? 0 : rand(6))
+      end
+      [1, 5, 9].each do |x|
+        entities << Wall.new(x - 1, y, direction: Direction::Right, hidden: true)
+        entities << Wall.new(x, y, direction: Direction::Left)
+      end
+
+      # maze walls
+      y = 2
+      x = 1
+      entities << Wall.new(x - 1, y, direction: Direction::Right, hidden: true)
+      entities << Wall.new(x, y, direction: Direction::Left)
+
+      # maze walls
+      y = 1
+      x = 6
+      entities << Wall.new(x - 1, y, direction: Direction::Right)
+      entities << Wall.new(x, y, direction: Direction::Left, hidden: true)
+      [7, 8].each do |x|
+        entities << Wall.new(x, y + 1, direction: Direction::Up, hidden: true)
+        entities << Wall.new(x, y)
+      end
+      x = 9
+      entities << Wall.new(x - 1, y, direction: Direction::Right, hidden: true)
+      entities << Wall.new(x, y, direction: Direction::Left)
+
+      # lever
+      @lever = Lever.new(7, 1)
+      entities << @lever
+
+      # maze walls
+      y = 0
+      x = 6
+      entities << Wall.new(x - 1, y, direction: Direction::Right)
+      entities << Wall.new(x, y, direction: Direction::Left, hidden: true)
+
       super(
         player: player,
         entities: entities,
@@ -70,6 +124,12 @@ module Buzzle::Room::Dungeon
 
     def update(frame_time)
       super
+
+      doors[:gate].open if @wall_switch.on?
+      doors[:gate].close if @wall_switch.off?
+
+      doors[:exit].open if @lever.on?
+      doors[:exit].close if @lever.off?
     end
   end
 end
