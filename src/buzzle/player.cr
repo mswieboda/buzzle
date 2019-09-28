@@ -81,52 +81,54 @@ module Buzzle
     end
 
     def movement_input(frame_time, entities)
+      old_direction = @direction
       dx = dy = 0
 
       if Keys.down?([LibRay::KEY_W, LibRay::KEY_UP])
-        dy = -1
-        @direction = Direction::Up unless @held_block
+        @direction = Direction::Up
       elsif Keys.down?([LibRay::KEY_A, LibRay::KEY_LEFT])
-        dx = -1
-        @direction = Direction::Left unless @held_block
+        @direction = Direction::Left
       elsif Keys.down?([LibRay::KEY_S, LibRay::KEY_DOWN])
-        dy = 1
-        @direction = Direction::Down unless @held_block
+        @direction = Direction::Down
       elsif Keys.down?([LibRay::KEY_D, LibRay::KEY_RIGHT])
-        dx = 1
-        @direction = Direction::Right unless @held_block
+        @direction = Direction::Right
       end
 
-      # if attempting to move (delta != 0)
-      if dx != 0 || dy != 0
-        # release block if trying to pull on ice
-        if pulling_block?(dx, dy) && collision?(entities.select(&.is_a?(Floor::Base)).map(&.as(Floor::Base)).select(&.block_slide?))
-          @held_block = nil
-        end
+      return unless old_direction == direction
 
-        @x += dx * Game::GRID_SIZE
-        @y += dy * Game::GRID_SIZE
+      if Keys.down?([LibRay::KEY_W, LibRay::KEY_UP, LibRay::KEY_A, LibRay::KEY_LEFT, LibRay::KEY_S, LibRay::KEY_DOWN, LibRay::KEY_D, LibRay::KEY_RIGHT])
+        dx, dy = direction.to_delta
+      end
 
-        if collision?(entities.select(&.traversable?))
-          if pushing_block?(dx, dy)
-            @held_block.try(&.move_now(dx * Game::GRID_SIZE, dy * Game::GRID_SIZE, entities)) if !@move_block_timer.started?
-          end
+      return if dx == 0 && dy == 0
 
-          unless directional_collision?(entities.select(&.collidable?), pulling_block?(dx, dy) ? direction.opposite : direction)
-            move(dx: dx, dy: dy)
+      # release block if trying to pull on ice
+      if pulling_block?(dx, dy) && collision?(entities.select(&.is_a?(Floor::Base)).map(&.as(Floor::Base)).select(&.block_slide?))
+        @held_block = nil
+      end
 
-            if (pushing_block?(dx, dy) || pulling_block?(dx, dy)) && !@move_block_timer.started?
-              @held_block.try(&.move(dx: dx, dy: dy, amount: MOVING_AMOUNT))
-            end
-          end
-        end
+      @x += dx * Game::GRID_SIZE
+      @y += dy * Game::GRID_SIZE
 
-        @x -= dx * Game::GRID_SIZE
-        @y -= dy * Game::GRID_SIZE
-
+      if collision?(entities.select(&.traversable?))
         if pushing_block?(dx, dy)
-          @held_block.try(&.move_now(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, entities)) if !@move_block_timer.started?
+          @held_block.try(&.move_now(dx * Game::GRID_SIZE, dy * Game::GRID_SIZE, entities)) if !@move_block_timer.started?
         end
+
+        unless directional_collision?(entities.select(&.collidable?), pulling_block?(dx, dy) ? direction.opposite : direction)
+          move(dx: dx, dy: dy)
+
+          if (pushing_block?(dx, dy) || pulling_block?(dx, dy)) && !@move_block_timer.started?
+            @held_block.try(&.move(dx: dx, dy: dy, amount: MOVING_AMOUNT))
+          end
+        end
+      end
+
+      @x -= dx * Game::GRID_SIZE
+      @y -= dy * Game::GRID_SIZE
+
+      if pushing_block?(dx, dy)
+        @held_block.try(&.move_now(-dx * Game::GRID_SIZE, -dy * Game::GRID_SIZE, entities)) if !@move_block_timer.started?
       end
     end
 
