@@ -24,9 +24,8 @@ module Buzzle::Room
       end
 
       # blocks
-      entities << Block.new(3, 3)
-      entities << Block.new(5, 3)
-      entities << Block.new(4, 5)
+      entities << Block.new(1, 3)
+      entities << Block.new(3, 5)
 
       # switches
       @pressure_switch = PressureSwitch.new(5, 5)
