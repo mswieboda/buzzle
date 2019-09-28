@@ -46,7 +46,10 @@ module Buzzle
         tint: tint
       ) unless hidden?
 
-      @trigger.draw(screen_x, screen_y) if Game::DEBUG
+      super(
+        screen_x: screen_x,
+        screen_y: screen_y
+      )
     end
 
     def draw_partial(screen_x, screen_y, x = x, y = y, source_width = width, source_height = height, frame = 0, row = 0, rotation = 0, tint = LibRay::WHITE)
@@ -60,8 +63,6 @@ module Buzzle
         rotation: rotation,
         tint: tint
       ) unless hidden?
-
-      @trigger.draw(screen_x, screen_y) if Game::DEBUG
     end
   end
 end

@@ -4,12 +4,15 @@ module Buzzle
 
     def initialize(x = 0, y = 0, z = 0, @origin_x = 0, @origin_y = 0, width = 1, height = 1, @enabled = true)
       super(
-        x: x + @origin_x,
-        y: y + @origin_y,
+        x: x,
+        y: y,
         z: z,
         width: width,
         height: height
       )
+
+      @x += @origin_x
+      @y += @origin_y
     end
 
     def trigger?(entity : Entity)

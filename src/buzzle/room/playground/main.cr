@@ -7,7 +7,7 @@ module Buzzle::Room::Playground
       doors = {
         :locked_pits => Door::Gate.new(3, -1),
         :dead_end    => Door::Wooden.new(8, 6, open: true),
-        :up          => Door::Gate.new(5, height, direction: Direction::Up),
+        :up          => Door::Wooden.new(5, height, direction: Direction::Up),
         :right       => Door::Wooden.new(-1, 3, direction: Direction::Right),
         :down        => Door::Wooden.new(5, -1),
         :left        => Door::Wooden.new(width, 3, direction: Direction::Left),

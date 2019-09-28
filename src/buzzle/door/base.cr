@@ -22,12 +22,22 @@ module Buzzle::Door
       )
 
       @exiting = false
+
+      origin_x = 0
+      origin_y = 0
+
+      if direction.up?
+        origin_y = height - 1
+      elsif direction.down?
+        origin_y = 0
+      end
+
       @enter_trigger = Trigger.new(
         x: x,
         y: y,
         z: z,
-        origin_x: 0,
-        origin_y: 0,
+        origin_x: origin_x,
+        origin_y: origin_y,
         width: Game::GRID_SIZE
       )
 
@@ -36,12 +46,12 @@ module Buzzle::Door
 
       if direction.up?
         origin_y = -height / 2
-      elsif direction.left?
-        origin_x = -width / 2
       elsif direction.right?
         origin_x = width / 2
       elsif direction.down?
         origin_y = height / 2
+      elsif direction.left?
+        origin_x = -width / 2
       end
 
       @trigger = Trigger.new(
@@ -144,10 +154,10 @@ module Buzzle::Door
     def y_draw
       y_draw = y
 
-      if direction.down?
-        y_draw += height
-      elsif direction.up?
+      if direction.up?
         y_draw -= height
+      elsif direction.down?
+        y_draw += height
       end
 
       y_draw
@@ -162,6 +172,8 @@ module Buzzle::Door
         frame: frame,
         row: direction.to_i * Design.values.size + @design.to_i
       )
+
+      @enter_trigger.draw(screen_x, screen_y) if Game::DEBUG
     end
   end
 end
