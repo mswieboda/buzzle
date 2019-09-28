@@ -5,8 +5,8 @@ module Buzzle::Room::Playground
       entities << player
 
       doors = {
-        :playground => Door::Wooden.new(5, -1),
-        :exit       => Door::Locked.new(1, -1),
+        :main => Door::Wooden.new(5, -1),
+        :exit => Door::Locked.new(1, -1),
       }
 
       entities << Floor::Base.new(0, 0)

@@ -5,7 +5,7 @@ module Buzzle::Room::Playground
       entities << player
 
       doors = {
-        :playground => Door::Gate.new(3, -1).as(Door::Base),
+        :main => Door::Gate.new(3, -1).as(Door::Base),
       }
 
       (0..width - 1).each do |x|
