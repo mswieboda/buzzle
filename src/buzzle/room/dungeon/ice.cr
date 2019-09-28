@@ -1,12 +1,12 @@
-module Buzzle::Room::Scene1
-  class Room2 < Room::Base
+module Buzzle::Room::Dungeon
+  class Ice < Room::Base
     def initialize(player, width = 10, height = 10)
       entities = [] of Entity
       entities << player
 
       doors = {
-        :room_1 => Door::Gate.new(5, height, direction: Direction::Up).as(Door::Base),
-        :exit   => Door::Gate.new(3, -1).as(Door::Base),
+        :dark => Door::Gate.new(5, height, direction: Direction::Up).as(Door::Base),
+        :exit => Door::Gate.new(3, -1).as(Door::Base),
       }
 
       # outer walls

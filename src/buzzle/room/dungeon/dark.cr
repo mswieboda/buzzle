@@ -1,12 +1,12 @@
-module Buzzle::Room::Scene1
-  class Room1 < Room::Dark
+module Buzzle::Room::Dungeon
+  class Dark < Room::Dark
     def initialize(player, width = 10, height = 10)
       entities = [] of Entity
       entities << player
 
       doors = {
         :entrance => Door::Gate.new(5, height, direction: Direction::Up).as(Door::Base),
-        :room_2   => Door::Gate.new(3, -1).as(Door::Base),
+        :ice      => Door::Gate.new(3, -1).as(Door::Base),
       }
 
       @lever = Lever.new(7, 3)
@@ -52,10 +52,10 @@ module Buzzle::Room::Scene1
     def update(frame_time)
       super
 
-      doors[:room_2].open if @lever.on?
-      doors[:room_2].close if @lever.off?
+      doors[:ice].open if @lever.on?
+      doors[:ice].close if @lever.off?
 
-      unless doors[:room_2].active?
+      unless doors[:ice].active?
         @lever.switch if @pressure_switch.off? && @lever.on?
       end
     end

@@ -4,8 +4,8 @@ module Buzzle::Scene
       super(@player)
 
       @rooms[:playground] = Room::Playground::Main.new(@player)
-      @rooms[:house] = Room::Playground::House.new(@player)
       @rooms[:dead_end] = Room::Playground::DeadEnd.new(@player)
+      @rooms[:locked_pits] = Room::Playground::LockedPits.new(@player)
 
       @room = @rooms[:playground]
     end
@@ -25,15 +25,15 @@ module Buzzle::Scene
     def update(frame_time)
       super
 
-      change_rooms(:playground, :house)
       change_rooms(:playground, :dead_end)
+      change_rooms(:playground, :locked_pits)
 
       change_rooms({room: :playground, door: :up}, {room: :playground, door: :down})
       change_rooms({room: :playground, door: :right}, {room: :playground, door: :left})
     end
 
     def next_scene?
-      @rooms[:dead_end].doors[:exit].entered?(@player)
+      @rooms[:locked_pits].doors[:exit].entered?(@player)
     end
   end
 end

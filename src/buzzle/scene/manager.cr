@@ -12,7 +12,7 @@ module Buzzle::Scene
       @scene_index = 0
 
       @scenes = [] of Base.class
-      @scenes << Scene1
+      @scenes << Dungeon
       @scenes << Playground
 
       @scene = @scenes[@scene_index].new(@player)

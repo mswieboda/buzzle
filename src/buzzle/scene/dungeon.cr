@@ -1,11 +1,11 @@
 module Buzzle::Scene
-  class Scene1 < Base
+  class Dungeon < Base
     def initialize(@player)
       super(@player)
 
-      @rooms[:entrance] = Room::Scene1::Entrance.new(@player)
-      @rooms[:room_1] = Room::Scene1::Room1.new(@player)
-      @rooms[:room_2] = Room::Scene1::Room2.new(@player)
+      @rooms[:entrance] = Room::Dungeon::Entrance.new(@player)
+      @rooms[:dark] = Room::Dungeon::Dark.new(@player)
+      @rooms[:ice] = Room::Dungeon::Ice.new(@player)
 
       @room = @rooms[:entrance]
     end
@@ -27,12 +27,12 @@ module Buzzle::Scene
     def update(frame_time)
       super
 
-      change_rooms(:entrance, :room_1)
-      change_rooms(:room_1, :room_2)
+      change_rooms(:entrance, :dark)
+      change_rooms(:dark, :ice)
     end
 
     def next_scene?
-      @rooms[:room_2].doors[:exit].entered?(@player)
+      @rooms[:ice].doors[:exit].entered?(@player)
     end
   end
 end

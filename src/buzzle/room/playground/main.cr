@@ -5,12 +5,12 @@ module Buzzle::Room::Playground
       entities << player
 
       doors = {
-        :house    => Door::Gate.new(3, -1),
-        :dead_end => Door::Wooden.new(8, 6, open: true),
-        :up       => Door::Gate.new(5, height, direction: Direction::Up),
-        :right    => Door::Wooden.new(-1, 3, direction: Direction::Right),
-        :down     => Door::Wooden.new(5, -1),
-        :left     => Door::Wooden.new(width, 3, direction: Direction::Left),
+        :locked_pits => Door::Gate.new(3, -1),
+        :dead_end    => Door::Wooden.new(8, 6, open: true),
+        :up          => Door::Gate.new(5, height, direction: Direction::Up),
+        :right       => Door::Wooden.new(-1, 3, direction: Direction::Right),
+        :down        => Door::Wooden.new(5, -1),
+        :left        => Door::Wooden.new(width, 3, direction: Direction::Left),
       }
 
       @lever = Lever.new(10, 3)
@@ -87,8 +87,8 @@ module Buzzle::Room::Playground
     def update(frame_time)
       super
 
-      doors[:house].open if @lever.on?
-      doors[:house].close if @lever.off?
+      doors[:locked_pits].open if @lever.on?
+      doors[:locked_pits].close if @lever.off?
 
       doors[:dead_end].open if @pressure_switch.on?
       doors[:dead_end].close if @pressure_switch.off?
