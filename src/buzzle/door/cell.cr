@@ -10,7 +10,8 @@ module Buzzle::Door
         direction: direction,
         design: Design::Cell,
         open: open,
-        locked: locked
+        locked: locked,
+        darkness: false
       )
 
       @wall = Wall.new(

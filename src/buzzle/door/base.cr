@@ -9,7 +9,7 @@ module Buzzle::Door
       Cell
     end
 
-    def initialize(x, y, z = 0, direction = Direction::Down, @design = Design::Wooden, open = false)
+    def initialize(x, y, z = 0, direction = Direction::Down, @design = Design::Wooden, open = false, darkness = true)
       super(
         name: "door",
         x: x,
@@ -77,13 +77,14 @@ module Buzzle::Door
 
       @sound_start = Sound.get("gate") if @design == Design::Gate
 
-      @darkness = Darkness.new(x, y, z, layer: 4)
+      @darkness = nil
+      @darkness = Darkness.new(x, y, z, layer: 4) if darkness
     end
 
     def entities
       entities = [] of Entity
       entities << self
-      entities << @darkness
+      entities << @darkness.as(Darkness) if @darkness
       entities
     end
 

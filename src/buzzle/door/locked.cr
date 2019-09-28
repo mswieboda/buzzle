@@ -2,14 +2,15 @@ module Buzzle::Door
   class Locked < Base
     getter? locked
 
-    def initialize(x, y, z = 0, direction = Direction::Down, design = Design::Locked, open = false, @locked = true)
+    def initialize(x, y, z = 0, direction = Direction::Down, design = Design::Locked, open = false, @locked = true, darkness = true)
       super(
         x: x,
         y: y,
         z: z,
         direction: direction,
         design: design,
-        open: open
+        open: open,
+        darkness: darkness
       )
     end
 
