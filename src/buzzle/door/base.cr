@@ -76,6 +76,15 @@ module Buzzle::Door
       )
 
       @sound_start = Sound.get("gate") if @design == Design::Gate
+
+      @darkness = Darkness.new(x, y, z, layer: 4)
+    end
+
+    def entities
+      entities = [] of Entity
+      entities << self
+      entities << @darkness
+      entities
     end
 
     def layer

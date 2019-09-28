@@ -20,6 +20,10 @@ module Buzzle
       @frame = design
     end
 
+    def layer
+      direction.up? ? 4 : 2
+    end
+
     def enable
       @enabled = true
     end

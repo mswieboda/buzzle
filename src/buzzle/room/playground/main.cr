@@ -67,6 +67,7 @@ module Buzzle::Room::Playground
 
       width.times do |x|
         y = -1
+        entities << Wall.new(x, y + 1, direction: Direction::Up)
         next if doors.values.any? { |d| d.x / Game::GRID_SIZE == x && d.y / Game::GRID_SIZE == y }
         entities << Wall.new(x, y, design: rand > 0.5 ? 0 : rand(6))
       end

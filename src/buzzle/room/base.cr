@@ -32,59 +32,7 @@ module Buzzle::Room
     end
 
     def draw
-      draw_floor_grid if Game::DEBUG
-
       @entities.each(&.draw(x, y))
-
-      draw_room_border
-    end
-
-    def draw_floor_grid
-      (width / GRID_SIZE).times do |x|
-        (height / GRID_SIZE).times do |y|
-          LibRay.draw_rectangle_lines(
-            pos_x: @x + x * GRID_SIZE,
-            pos_y: @y + y * GRID_SIZE,
-            width: GRID_SIZE,
-            height: GRID_SIZE,
-            color: LibRay::GRAY
-          )
-        end
-      end
-    end
-
-    def draw_room_border
-      LibRay.draw_rectangle(
-        pos_x: x - GRID_SIZE,
-        pos_y: y - GRID_SIZE,
-        width: width + GRID_SIZE * 2,
-        height: GRID_SIZE,
-        color: LibRay::BLACK
-      )
-
-      LibRay.draw_rectangle(
-        pos_x: x + width,
-        pos_y: y - GRID_SIZE,
-        width: GRID_SIZE,
-        height: height + GRID_SIZE * 2,
-        color: LibRay::BLACK
-      )
-
-      LibRay.draw_rectangle(
-        pos_x: x - GRID_SIZE,
-        pos_y: y + height,
-        width: width + GRID_SIZE * 2,
-        height: GRID_SIZE,
-        color: LibRay::BLACK
-      )
-
-      LibRay.draw_rectangle(
-        pos_x: x - GRID_SIZE,
-        pos_y: y - GRID_SIZE,
-        width: GRID_SIZE,
-        height: height + GRID_SIZE * 2,
-        color: LibRay::BLACK
-      )
     end
   end
 end

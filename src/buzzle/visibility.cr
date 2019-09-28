@@ -1,7 +1,5 @@
 module Buzzle
   class Visibility < Obj
-    getter x : Int32
-    getter y : Int32
     delegate visible?, to: @state
     delegate shadow?, to: @state
     delegate dark?, to: @state
@@ -15,16 +13,10 @@ module Buzzle
     def initialize(x, y, @state = State::Shadow)
       super(
         x: x,
-        y: y
+        y: y,
+        width: Game::GRID_SIZE,
+        height: Game::GRID_SIZE
       )
-    end
-
-    def width
-      Game::GRID_SIZE
-    end
-
-    def height
-      Game::GRID_SIZE
     end
 
     def visible!
