@@ -1,4 +1,4 @@
-module Buzzle::Scenes::Playground::Rooms
+module Buzzle::Room::Playground
   class DeadEnd < Room::Base
     def initialize(player, width = 8, height = 4)
       entities = [] of Entity

@@ -18,7 +18,7 @@ module Buzzle
       load_sprites
       load_sounds
 
-      @scene_manager = Scenes::Manager.new
+      @scene_manager = Scene::Manager.new
     end
 
     def load_sprites
