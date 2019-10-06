@@ -6,7 +6,7 @@ module Buzzle
     @respawn_y : Int32
     @respawn_z : Int32
 
-    RESPAWN_TIMER = 3
+    RESPAWN_TIMER = 1
 
     def initialize(x, y, z = 0)
       super(
