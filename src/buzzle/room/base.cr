@@ -88,6 +88,34 @@ module Buzzle::Room
       @entities += walls.flat_map(&.entities)
     end
 
+    def add_up_wall(x, y)
+      entities = [] of Entity
+      entities << Wall.new(x, y, direction: Direction::Up)
+      entities << Wall.new(x, y + 1, direction: Direction::Down, hidden: true)
+      entities
+    end
+
+    def add_right_wall(x, y)
+      entities = [] of Entity
+      entities << Wall.new(x, y, direction: Direction::Right)
+      entities << Wall.new(x + 1, y, direction: Direction::Left, hidden: true)
+      entities
+    end
+
+    def add_left_wall(x, y, inner = false)
+      entities = [] of Entity
+      entities << Wall.new(x - 1, y, direction: Direction::Right, hidden: true)
+      entities << Wall.new(x, y, direction: Direction::Left)
+      entities
+    end
+
+    def add_down_wall(x, y)
+      entities = [] of Entity
+      entities << Wall.new(x, y + 1, direction: Direction::Up)
+      entities << Wall.new(x, y, direction: Direction::Down)
+      entities
+    end
+
     def door?(x, y)
       doors.values.any? { |d| d.x / Game::GRID_SIZE == x && d.y / Game::GRID_SIZE == y }
     end
