@@ -141,6 +141,11 @@ module Buzzle
       end
     end
 
+    def jump_to(x, y)
+      @x = x * Game::GRID_SIZE
+      @y = y * Game::GRID_SIZE
+    end
+
     def die
       hide
       @dead = true

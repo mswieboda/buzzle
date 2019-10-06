@@ -17,8 +17,10 @@ module Buzzle::Room::Dungeon
       end
 
       # blocks
-      entities << Block.new(1, 3)
-      entities << Block.new(3, 5)
+      @blocks = [] of Block
+      @blocks << Block.new(1, 3)
+      @blocks << Block.new(3, 5)
+      entities += @blocks
 
       # switches
       @pressure_switch = PressureSwitch.new(5, 5)
@@ -40,6 +42,13 @@ module Buzzle::Room::Dungeon
 
       doors[:maze].open if @pressure_switch.on?
       doors[:maze].close if @pressure_switch.off?
+
+      reset_blocks if doors[:dark].exiting?
+    end
+
+    def reset_blocks
+      @blocks[0].jump_to(1, 3)
+      @blocks[1].jump_to(3, 5)
     end
   end
 end
