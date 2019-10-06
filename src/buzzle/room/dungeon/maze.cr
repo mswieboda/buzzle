@@ -5,10 +5,9 @@ module Buzzle::Room::Dungeon
       entities << player
 
       doors = {
-        :ice       => Door::Gate.new(2, height, direction: Direction::Up),
-        :gate      => Door::Gate.new(6, 1, darkness: false),
-        :fake_gate => Door::Locked.new(9, 0, darkness: false),
-        :exit      => Door::Gate.new(5, -1, darkness: false),
+        :ice  => Door::Gate.new(2, height, direction: Direction::Up).as(Door::Base),
+        :gate => Door::Gate.new(6, 1, darkness: false),
+        :exit => Door::Gate.new(5, -1, darkness: false),
       }
 
       # floors
@@ -19,27 +18,21 @@ module Buzzle::Room::Dungeon
       end
 
       # maze walls
-      y = 9
-      entities += add_left_wall(2, y)
-
-      # maze walls
-      y = 8
-      entities += add_left_wall(1, y)
+      entities += add_left_wall(2, 9)
+      entities += add_left_wall(1, 8)
 
       # wall torch (switch)
-      @wall_switch = WallTorch.new(0, y, on: false, actionable: true)
+      @wall_switch = WallTorch.new(0, 8, on: false, actionable: true)
       entities << @wall_switch
 
       # maze walls
-      y = 7
       (width - 1).times do |x|
-        entities += add_down_wall(x, y)
+        entities += add_down_wall(x, 7)
       end
 
       # maze walls
-      y = 6
       (1..width - 1).each do |x|
-        entities += add_down_wall(x, y)
+        entities += add_down_wall(x, 6)
       end
 
       # maze walls
@@ -58,8 +51,7 @@ module Buzzle::Room::Dungeon
         entities += add_left_wall(x, y)
         entities += add_right_wall(x, y)
       end
-      x = 0
-      entities += add_right_wall(x, y)
+      entities += add_right_wall(0, y)
       [1, 3, 6, 9].each do |x|
         entities += add_down_wall(x, y)
       end
@@ -72,33 +64,28 @@ module Buzzle::Room::Dungeon
       [5, 9].each do |x|
         entities += add_left_wall(x, y)
       end
-      entities += add_right_wall(x, y)
+      entities += add_right_wall(0, y)
 
       # maze walls
       y = 2
-      x = 0
-      entities += add_right_wall(x, y)
+      entities += add_right_wall(0, y)
 
       # maze walls
       y = 1
-      x = 6
-      entities += add_left_wall(x, y)
-      # add disabled up wall above gate
-      entities << Wall.new(x, y + 1, direction: Direction::Up, enabled: false)
+      entities += add_right_wall(5, y)
+      entities << Wall.new(6, y + 1, direction: Direction::Up, enabled: false)
       [7, 8].each do |x|
         entities += add_down_wall(x, y)
       end
-      x = 9
-      entities += add_left_wall(x, y)
+      entities += add_left_wall(9, y)
 
       # lever
       @lever = Lever.new(7, 1)
       entities << @lever
 
       # maze walls
-      y = 0
-      x = 6
-      entities += add_left_wall(x, y)
+      entities += add_right_wall(5, 0)
+      entities += add_down_wall(9, 0)
 
       super(
         player: player,
