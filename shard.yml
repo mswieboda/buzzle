@@ -8,7 +8,7 @@ targets:
   buzzle:
     main: src/buzzle.cr
 
-crystal: 0.30.1
+crystal: 0.35.1
 
 license: MIT
 

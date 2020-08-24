@@ -26,8 +26,8 @@ module Buzzle
         x: x,
         y: y,
         z: z,
-        origin_x: -width / 2,
-        origin_y: -height / 2,
+        origin_x: (-width / 2).to_i,
+        origin_y: (-height / 2).to_i,
         width: width * 2,
         height: height * 2
       )

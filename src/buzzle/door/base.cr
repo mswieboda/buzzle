@@ -69,8 +69,8 @@ module Buzzle::Door
         x: x,
         y: y,
         z: z,
-        origin_x: origin_x,
-        origin_y: origin_y,
+        origin_x: origin_x.to_i,
+        origin_y: origin_y.to_i,
         width: width,
         height: height
       )

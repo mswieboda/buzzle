@@ -32,14 +32,14 @@ module Buzzle
         y: y,
         z: z,
         origin_x: 0,
-        origin_y: height / 2,
+        origin_y: (height / 2).to_i,
         width: width,
         height: height
       )
 
       item = item_class.new
       item.x = @x
-      item.y = @y + height / 2 - item.sprite.height
+      item.y = @y + (height / 2).to_i - item.sprite.height
       item.z = @z
       item.hide
 

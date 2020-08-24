@@ -16,8 +16,8 @@ module Buzzle::Room
       @width = width * GRID_SIZE
       @height = height * GRID_SIZE
 
-      @x = Game::SCREEN_WIDTH / 2 - @width / 2
-      @y = Game::SCREEN_HEIGHT / 2 - @height / 2
+      @x = (Game::SCREEN_WIDTH / 2 - @width / 2).to_i
+      @y = (Game::SCREEN_HEIGHT / 2 - @height / 2).to_i
 
       entities += @doors.values.to_a
       @entities = entities.flat_map(&.entities)
@@ -43,8 +43,8 @@ module Buzzle::Room
 
     def add_top_walls
       walls = [] of Wall
-      width = @width / Game::GRID_SIZE
-      height = @height / Game::GRID_SIZE
+      width = (@width / Game::GRID_SIZE).to_i
+      height = (@height / Game::GRID_SIZE).to_i
       y = -1
 
       width.times do |x|
@@ -62,8 +62,8 @@ module Buzzle::Room
 
     def add_left_walls
       walls = [] of Wall
-      width = @width / Game::GRID_SIZE
-      height = @height / Game::GRID_SIZE
+      width = (@width / Game::GRID_SIZE).to_i
+      height = (@height / Game::GRID_SIZE).to_i
       x = -1
 
       height.times do |y|
@@ -76,8 +76,8 @@ module Buzzle::Room
 
     def add_right_walls
       walls = [] of Wall
-      width = @width / Game::GRID_SIZE
-      height = @height / Game::GRID_SIZE
+      width = (@width / Game::GRID_SIZE).to_i
+      height = (@height / Game::GRID_SIZE).to_i
       x = width
 
       height.times do |y|

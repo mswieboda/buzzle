@@ -22,8 +22,8 @@ module Buzzle
 
     def get_texture
       @texture = self.class.get_texture(@asset_file)
-      @width = @texture.width / @frames
-      @height = @texture.height / @rows
+      @width = (@texture.width / @frames).to_i
+      @height = (@texture.height / @rows).to_i
     end
 
     def draw(x, y, frame = 0, row = 0, rotation = 0, tint = LibRay::WHITE)
