@@ -26,7 +26,7 @@ module Buzzle::Room::Dungeon
       end
 
       # sign post
-      entities << Sign.new(5, 5)
+      entities << Sign.new(x: 5, y: 5, messages: ["heyyy... there!", "what's goin' on, huh?"])
 
       super(
         player: player,

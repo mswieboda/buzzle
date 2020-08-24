@@ -49,7 +49,7 @@ module Buzzle
     def update(frame_time, entities : Array(Entity))
       super
 
-      return if dead? || lifting?
+      return if dead? || lifting? || Game.pause_player_input?
 
       @move_block_timer.reset if @move_block_timer.done?
       @move_block_timer.increase(frame_time) if @move_block_timer.started?

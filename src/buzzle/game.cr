@@ -10,6 +10,8 @@ module Buzzle
 
     GRID_SIZE = 32
 
+    @@pause_player_input = false
+
     def initialize
       LibRay.init_window(SCREEN_WIDTH, SCREEN_HEIGHT, "Buzzle")
       LibRay.init_audio_device
@@ -89,6 +91,14 @@ module Buzzle
       LibRay.close_audio_device
 
       LibRay.close_window
+    end
+
+    def self.pause_player_input?
+      @@pause_player_input
+    end
+
+    def self.pause_player_input=(pause)
+      @@pause_player_input = pause
     end
   end
 end

@@ -1,13 +1,14 @@
 module Buzzle::Scene
   class Manager
-    @player : Player
     @scene : Base
+    @message : Message
 
     RESPAWN_TIMER = 3
 
     def initialize
       @player = Player.new
       @heads_up_display = HeadsUpDisplay.new(@player)
+      @message = Message.init
 
       @scene_index = 0
 
@@ -23,6 +24,7 @@ module Buzzle::Scene
     def update(frame_time)
       @scene.update(frame_time)
       @heads_up_display.update(frame_time)
+      @message.update(frame_time)
 
       if @player.dead?
         @respawn_timer.increase(frame_time)
@@ -40,6 +42,7 @@ module Buzzle::Scene
     def draw
       @scene.draw
       @heads_up_display.draw
+      @message.draw
     end
 
     def next_scene

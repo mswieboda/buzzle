@@ -1,6 +1,8 @@
 module Buzzle
   class Sign < SpriteEntity
-    def initialize(x, y, z = 0)
+    property messages : Array(String)
+
+    def initialize(x, y, z = 0, @messages = [] of String)
       super(
         name: "sign",
         x: x,
@@ -36,7 +38,7 @@ module Buzzle
     end
 
     def action(_entity : Entity)
-      puts ">>> Sign.action!!!"
+      Message.show(messages)
     end
   end
 end
