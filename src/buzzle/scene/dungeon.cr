@@ -12,7 +12,7 @@ module Buzzle::Scene
     end
 
     def load
-      @room = @rooms[:maze]
+      @room = @rooms[:entrance]
 
       @player.initial_location(
         x: 5 * Game::GRID_SIZE,
