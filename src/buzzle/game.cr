@@ -37,6 +37,7 @@ module Buzzle
           {asset_file: "key", frames: 1, rows: 1},
           {asset_file: "torch", frames: 4, rows: 3},
           {asset_file: "spike", frames: 4, rows: 1},
+          {asset_file: "sign", frames: 1, rows: 1},
         ]
       )
     end

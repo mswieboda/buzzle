@@ -25,6 +25,9 @@ module Buzzle::Room::Dungeon
         entities << Floor::River.new(x, 3)
       end
 
+      # sign post
+      entities << Sign.new(5, 5)
+
       super(
         player: player,
         entities: entities,
