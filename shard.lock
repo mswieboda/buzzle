@@ -1,6 +1,10 @@
 version: 2.0
 shards:
   cray:
-    git: https://gitlab.com/zatherz/cray.git
-    version: 0.1.0+git.commit.56c4d0b3fac626625604a4a96f16e25546fb1506
+    git: https://github.com/mswieboda/cray.git
+    version: 0.1.0+git.commit.cc075b4d3c00dabf5ca8417625552588f78f15cb
+
+  game:
+    git: https://github.com/mswieboda/game.git
+    version: 0.1.0+git.commit.1f12a882d6a06635bb5cefbb444bb11f8367dd76
 

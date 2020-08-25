@@ -1,5 +1,5 @@
 module Buzzle
-  class Game
+  class Game < Game
     SCREEN_WIDTH  = 1280
     SCREEN_HEIGHT =  768
 
@@ -13,9 +13,15 @@ module Buzzle
     @@pause_player_input = false
 
     def initialize
-      LibRay.init_window(SCREEN_WIDTH, SCREEN_HEIGHT, "Buzzle")
-      LibRay.init_audio_device
-      LibRay.set_target_fps(TARGET_FPS)
+      super(
+        name: "Buzzle",
+        screen_width: SCREEN_WIDTH,
+        screen_height: SCREEN_HEIGHT,
+        target_fps: TARGET_FPS,
+        audio: true,
+        debug: DEBUG,
+        draw_fps: DEBUG
+      )
 
       load_sprites
       load_sounds
@@ -57,16 +63,6 @@ module Buzzle
       ])
     end
 
-    def run
-      while !LibRay.window_should_close?
-        frame_time = LibRay.get_frame_time
-        update(frame_time)
-        draw_wrapper
-      end
-
-      close
-    end
-
     def update(frame_time)
       @scene_manager.update(frame_time)
     end
@@ -88,9 +84,7 @@ module Buzzle
     def close
       Sound.unload_all
 
-      LibRay.close_audio_device
-
-      LibRay.close_window
+      super
     end
 
     def self.pause_player_input?

@@ -1,4 +1,4 @@
-require "cray"
+require "game"
 
 require "./buzzle/sprite_entity"
 require "./buzzle/floor/base"

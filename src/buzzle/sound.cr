@@ -9,11 +9,20 @@ module Buzzle
     def self.load(name : String, asset_file : String, volume : Float32 | Nil, pitch : Float32 | Nil)
       return if @@sounds.has_key?(name)
 
-      sound = LibRay.load_sound(File.join(__DIR__, "../../assets/sounds/#{asset_file}.wav"))
+      ###################
+      # TODO: needs fixing as of game/cray upgrade
+      ###################
 
-      LibRay.set_sound_volume(sound, volume) if volume
-      LibRay.set_sound_pitch(sound, pitch) if pitch
-
+      file_path = File.join(__DIR__, "../../assets/sounds/#{asset_file}.wav")
+      # puts ">>> Sound LibRay.load_sound #{file_path}"
+      wave = LibRay.load_wave(file_path)
+      sound = LibRay.load_sound_ex(wave)
+      LibRay.unload_wave(wave)
+      # puts ">>> Sound LibRay.set_sound_volume"
+      # LibRay.set_sound_volume(sound, volume) if volume
+      # puts ">>> Sound LibRay.set_sound_pitch"
+      # LibRay.set_sound_pitch(sound, pitch) if pitch
+      # puts ">>> Sound set hash"
       @@sounds[name] = sound
     end
 
@@ -38,33 +47,59 @@ module Buzzle
     end
 
     def self.playing?(sound)
-      LibRay.sound_playing?(sound)
+      # TODO: broken, throws invalid mem access error
+      #       see self.load above
+      # LibRay.sound_playing?(sound)
     end
 
     def self.play(sound)
-      LibRay.play_sound(sound)
+      ###################
+      # TODO: broken throws invalid mem access error,
+      #       see self.load above
+      ###################
+      # LibRay.play_sound(sound)
     end
 
     def self.stop(sound)
-      LibRay.stop_sound(sound)
+      ###################
+      # TODO: broken throws invalid mem access error,
+      #       see self.load above
+      ###################
+      # LibRay.stop_sound(sound)
     end
 
     def self.pause(sound)
-      LibRay.pause_sound(sound)
+      ###################
+      # TODO: broken throws invalid mem access error,
+      #       see self.load above
+      ###################
+      # LibRay.pause_sound(sound)
     end
 
     def self.resume(sound)
-      LibRay.resume_sound(sound)
+      ###################
+      # TODO: broken throws invalid mem access error,
+      #       see self.load above
+      ###################
+      # LibRay.resume_sound(sound)
     end
 
     def self.unload(sound)
-      LibRay.unload_sound(sound)
+      ###################
+      # TODO: broken throws invalid mem access error,
+      #       see self.load above
+      ###################
+      # LibRay.unload_sound(sound)
     end
 
     def self.play_random_pitch(sound, min = 0.5_f32)
-      pitch = (min + rand(1.0)).to_f32
-      LibRay.set_sound_pitch(sound, pitch)
-      play(sound)
+      ###################
+      # TODO: broken throws invalid mem access error,
+      #       see self.load above
+      ###################
+      # pitch = (min + rand(1.0)).to_f32
+      # LibRay.set_sound_pitch(sound, pitch)
+      # play(sound)
     end
   end
 end

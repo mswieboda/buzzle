@@ -13,5 +13,5 @@ crystal: 0.35.1
 license: MIT
 
 dependencies:
-  cray:
-    gitlab: zatherz/cray
+  game:
+    github: mswieboda/game

@@ -26,13 +26,13 @@ module Buzzle
       @shown = false
       @delay = 0_f32
 
-      @default_font = LibRay.get_default_font
+      @default_font = LibRay.get_font_default
       @text = @messages.any? ? @messages[@message_index] : ""
       @text_font_size = 33
       @text_spacing = 5
       @text_color = LibRay::WHITE
       @text_measured = LibRay.measure_text_ex(
-        sprite_font: @default_font,
+        font: @default_font,
         text: @text,
         font_size: @text_font_size,
         spacing: @text_spacing
@@ -66,7 +66,7 @@ module Buzzle
       y = Game::SCREEN_HEIGHT - @text_measured.y - MARGIN * 2
 
       LibRay.draw_text_ex(
-        sprite_font: @default_font,
+        font: @default_font,
         text: @text,
         position: LibRay::Vector2.new(
           x: x,
@@ -74,13 +74,13 @@ module Buzzle
         ),
         font_size: @text_font_size,
         spacing: @text_spacing,
-        color: @text_color
+        tint: @text_color
       )
     end
 
     def update_text_measured
       @text_measured = LibRay.measure_text_ex(
-        sprite_font: @default_font,
+        font: @default_font,
         text: @text,
         font_size: @text_font_size,
         spacing: @text_spacing
@@ -92,7 +92,7 @@ module Buzzle
       @messages = messages
       @text = @messages.any? ? @messages[@message_index] : ""
       @text_measured = LibRay.measure_text_ex(
-        sprite_font: @default_font,
+        font: @default_font,
         text: @text,
         font_size: @text_font_size,
         spacing: @text_spacing

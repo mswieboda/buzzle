@@ -6,7 +6,7 @@ module Buzzle
     KEYS_MARGIN = 8
 
     def initialize(@player : Player)
-      @default_font = LibRay.get_default_font
+      @default_font = LibRay.get_font_default
 
       @keys_text = "0"
       @keys_sprite = Sprite.get("key")
@@ -14,7 +14,7 @@ module Buzzle
       @keys_text_spacing = 3
       @keys_text_color = LibRay::WHITE
       @keys_text_measured = LibRay.measure_text_ex(
-        sprite_font: @default_font,
+        font: @default_font,
         text: @keys_text,
         font_size: @keys_text_font_size,
         spacing: @keys_text_spacing
@@ -24,7 +24,7 @@ module Buzzle
     def update(_frame_time)
       @keys_text = @player.items.count(&.is_a?(Item::Key)).to_s
       @keys_text_measured = LibRay.measure_text_ex(
-        sprite_font: @default_font,
+        font: @default_font,
         text: @keys_text,
         font_size: @keys_text_font_size,
         spacing: @keys_text_spacing
@@ -40,7 +40,7 @@ module Buzzle
       y = KEYS_MARGIN * 2
 
       LibRay.draw_text_ex(
-        sprite_font: @default_font,
+        font: @default_font,
         text: @keys_text,
         position: LibRay::Vector2.new(
           x: x,
@@ -48,7 +48,7 @@ module Buzzle
         ),
         font_size: @keys_text_font_size,
         spacing: @keys_text_spacing,
-        color: @keys_text_color
+        tint: @keys_text_color
       )
 
       @keys_sprite.draw(
