@@ -5,6 +5,7 @@ module Buzzle
     @text_color : LibRay::Color
 
     MARGIN = 13
+    MIN_DELAY = 1
 
     @@message = Message.new
 
@@ -23,6 +24,7 @@ module Buzzle
     def initialize(@messages = [] of String)
       @message_index = 0
       @shown = false
+      @delay = 0_f32
 
       @default_font = LibRay.get_default_font
       @text = @messages.any? ? @messages[@message_index] : ""
@@ -37,15 +39,20 @@ module Buzzle
       )
     end
 
-    def update(_frame_time)
+    def update(frame_time)
       return unless shown?
 
-      if Keys.pressed?([LibRay::KEY_ENTER])
+      @delay += frame_time
+
+      return if delay?
+
+      if Keys.pressed?([LibRay::KEY_LEFT_SHIFT, LibRay::KEY_RIGHT_SHIFT])
         @message_index += 1
 
         if @message_index >= @messages.size
           hide
         else
+          @delay = 0
           @text = @messages[@message_index]
           update_text_measured
         end
@@ -101,6 +108,10 @@ module Buzzle
       @text = ""
       update_text_measured
       Game.pause_player_input = false
+    end
+
+    def delay?
+      @delay < MIN_DELAY
     end
   end
 end
