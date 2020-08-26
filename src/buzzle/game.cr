@@ -71,22 +71,6 @@ module Buzzle
       @scene_manager.draw
     end
 
-    def draw_wrapper
-      LibRay.begin_drawing
-      LibRay.clear_background LibRay::BLACK
-
-      draw
-
-      LibRay.draw_fps(0, 0) if DRAW_FPS
-      LibRay.end_drawing
-    end
-
-    def close
-      Sound.unload_all
-
-      super
-    end
-
     def self.pause_player_input?
       @@pause_player_input
     end
