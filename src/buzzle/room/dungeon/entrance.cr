@@ -3,6 +3,14 @@ module Buzzle::Room::Dungeon
     def initialize(player, width = 10, height = 10)
       entities = [] of Entity
       entities << player
+      npc = Npc.new
+      entities << npc
+
+      npc.initial_location(
+        x: 3 * Game::GRID_SIZE,
+        y: 8 * Game::GRID_SIZE,
+        z: 0
+      )
 
       doors = {
         :dark => Door::Gate.new(3, -1, open: true).as(Door::Base),
