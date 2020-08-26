@@ -2,7 +2,7 @@ version: 2.0
 shards:
   cray:
     git: https://github.com/mswieboda/cray.git
-    version: 0.1.0+git.commit.cc075b4d3c00dabf5ca8417625552588f78f15cb
+    version: 0.1.0+git.commit.df871530ebc5e7c8aef431e01a2a13b3d320c643
 
   game:
     git: https://github.com/mswieboda/game.git
