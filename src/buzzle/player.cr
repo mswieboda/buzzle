@@ -7,7 +7,7 @@ module Buzzle
 
     @actionable : Entity | Nil
     @held_block : Block | Nil
-    @sounds : Array(LibRay::Sound)
+    @sounds : Array(Sound)
 
     MOVING_AMOUNT = 2
 
@@ -183,7 +183,10 @@ module Buzzle
       # stop moving at next grid cell
       if @moving_x.abs > Game::GRID_SIZE || @moving_y.abs > Game::GRID_SIZE
         stop
-        Sound.play_random_pitch(@sounds.sample)
+
+        sound = @sounds.sample
+        sound.randomize_pitch
+        sound.play
       end
     end
 

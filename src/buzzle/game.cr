@@ -52,14 +52,14 @@ module Buzzle
 
     def load_sounds
       Sound.load([
-        {name: "footstep-1", asset_file: "footstep-1", volume: 0.125_f32, pitch: nil},
-        {name: "footstep-2", asset_file: "footstep-2", volume: 0.125_f32, pitch: nil},
-        {name: "footstep-3", asset_file: "footstep-3", volume: 0.125_f32, pitch: nil},
-        {name: "footstep-4", asset_file: "footstep-4", volume: 0.125_f32, pitch: nil},
-        {name: "switch start", asset_file: "footstep-1", volume: 0.125_f32, pitch: 0.5_f32},
-        {name: "switch done", asset_file: "footstep-1", volume: 0.5_f32, pitch: 3.5_f32},
-        {name: "pressure switch", asset_file: "footstep-1", volume: 0.75_f32, pitch: 0.33_f32},
-        {name: "gate", asset_file: "footstep-1", volume: 0.75_f32, pitch: 0.75_f32},
+        {name: "footstep-1", filename: "../assets/sounds/footstep-1.wav", volume: 0.125_f32, pitch: nil},
+        {name: "footstep-2", filename: "../assets/sounds/footstep-2.wav", volume: 0.125_f32, pitch: nil},
+        {name: "footstep-3", filename: "../assets/sounds/footstep-3.wav", volume: 0.125_f32, pitch: nil},
+        {name: "footstep-4", filename: "../assets/sounds/footstep-4.wav", volume: 0.125_f32, pitch: nil},
+        {name: "switch start", filename: "../assets/sounds/footstep-1.wav", volume: 0.125_f32, pitch: 0.5_f32},
+        {name: "switch done", filename: "../assets/sounds/footstep-1.wav", volume: 0.5_f32, pitch: 3.5_f32},
+        {name: "pressure switch", filename: "../assets/sounds/footstep-1.wav", volume: 0.75_f32, pitch: 0.33_f32},
+        {name: "gate", filename: "../assets/sounds/footstep-1.wav", volume: 0.75_f32, pitch: 0.75_f32},
       ])
     end
 

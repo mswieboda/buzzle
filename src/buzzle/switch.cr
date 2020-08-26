@@ -5,8 +5,8 @@ module Buzzle
 
     FPS = 12
 
-    @sound_done : LibRay::Sound
-    @sound_start : LibRay::Sound
+    @sound_done : Sound
+    @sound_start : Sound
 
     def initialize(x, y, z = 0, name = "switch", @on = false, width = Game::GRID_SIZE, height = Game::GRID_SIZE, direction = Direction::Down, hidden = false)
       super(
@@ -93,11 +93,11 @@ module Buzzle
     end
 
     def play_sound_done
-      Sound.play(@sound_done)
+      @sound_done.play
     end
 
     def play_sound_start
-      Sound.play(@sound_start)
+      @sound_start.play
     end
 
     def actionable?
