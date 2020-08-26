@@ -3,7 +3,7 @@ module Buzzle::Room::Dungeon
     def initialize(player, width = 10, height = 10)
       entities = [] of Entity
       entities << player
-      npc = Npc.new
+      npc = Npc.new(["hey...", "what's up?", "did you need something?"])
       entities << npc
 
       npc.initial_location(
@@ -34,7 +34,7 @@ module Buzzle::Room::Dungeon
       end
 
       # sign post
-      entities << Sign.new(x: 5, y: 5, messages: ["heyyy... there!", "what's goin' on, huh?"])
+      entities << Sign.new(x: 5, y: 5, messages: ["warning!", "a creepy dungeon lies ahead..."])
 
       super(
         player: player,

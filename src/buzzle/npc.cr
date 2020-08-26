@@ -1,7 +1,9 @@
 module Buzzle
   class Npc < Character
-    def initialize
-      super
+    @messages : Array(String)
+
+    def initialize(@messages)
+      super()
 
       @trigger = Trigger.new(
         x: x,
@@ -19,7 +21,7 @@ module Buzzle
     end
 
     def action(player : Player)
-      puts ">>> talked to NPC"
+      Message.show(@messages)
     end
   end
 end

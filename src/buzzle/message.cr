@@ -5,7 +5,7 @@ module Buzzle
     @text_color : LibRay::Color
 
     MARGIN = 13
-    MIN_DELAY = 1
+    MIN_DELAY = 0.5
 
     @@message = Message.new
 
@@ -76,6 +76,25 @@ module Buzzle
         spacing: @text_spacing,
         tint: @text_color
       )
+
+      return if delay?
+
+      x = Game::SCREEN_WIDTH - MARGIN * 2
+      y = Game::SCREEN_HEIGHT - MARGIN * 2
+
+      # temp message done icon
+
+      # outer
+      rect = Square.new(size: 30, color: Color::White, filled: false)
+      rect.x = x - rect.width
+      rect.y = y - rect.height
+      rect.draw
+
+      # inner
+      rect = Square.new(size: 10, color: Color::White)
+      rect.x = x - rect.width - 10
+      rect.y = y - rect.height - 10
+      rect.draw
     end
 
     def update_text_measured
@@ -106,6 +125,7 @@ module Buzzle
       @message_index = 0
       @messages = [] of String
       @text = ""
+      @delay = 0_f32
       update_text_measured
       Game.pause_player_input = false
     end
