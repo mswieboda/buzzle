@@ -1,7 +1,7 @@
 require "./obj"
 
 module Buzzle
-  class Entity < Obj
+  abstract class Entity < Obj
     getter? lifting
 
     def initialize(x : Int32 = 0, y : Int32 = 0, z : Int32 = 0, width : Int32 = 0, height : Int32 = 0, direction = Direction::Down, hidden = false)

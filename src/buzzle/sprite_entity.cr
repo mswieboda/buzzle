@@ -1,7 +1,7 @@
 require "./entity"
 
 module Buzzle
-  class SpriteEntity < Entity
+  abstract class SpriteEntity < Entity
     getter sprite : Sprite
     property source_width : Int32 | Nil
     property source_height : Int32 | Nil

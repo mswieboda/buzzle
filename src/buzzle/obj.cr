@@ -1,5 +1,5 @@
 module Buzzle
-  class Obj
+  abstract class Obj
     getter x : Int32
     getter y : Int32
     getter z : Int32
