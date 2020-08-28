@@ -15,7 +15,7 @@ clean_if_diff:
 
 builds/buzzle_test: builds
 	@echo "compiling test build..."
-	@env LIBRARY_PATH="$(PWD)/lib_ext" crystal build src/buzzle.cr -o builds/buzzle_test
+	@env LIBRARY_PATH="$(PWD)/lib_ext" crystal build src/buzzle.cr --error-trace -o builds/buzzle_test
 
 test: clean_if_diff builds/buzzle_test
 	@env LD_LIBRARY_PATH="$(PWD)/lib_ext" ./builds/buzzle_test
