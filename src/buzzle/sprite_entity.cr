@@ -32,7 +32,7 @@ module Buzzle
       )
     end
 
-    def draw(screen_x, screen_y, x = x, y = y, center_x = true, center_y = true, frame = 0, row = 0, rotation = 0, tint = LibRay::WHITE)
+    def draw(screen_x, screen_y, x = x, y = y, center_x = true, center_y = true, frame = 0, row = 0, rotation = 0, tint = Color::White)
       draw_partial(
         screen_x: screen_x,
         screen_y: screen_y,
@@ -52,7 +52,7 @@ module Buzzle
       )
     end
 
-    def draw_partial(screen_x, screen_y, x = x, y = y, source_width = width, source_height = height, frame = 0, row = 0, rotation = 0, tint = LibRay::WHITE)
+    def draw_partial(screen_x, screen_y, x = x, y = y, source_width = width, source_height = height, frame = 0, row = 0, rotation = 0, tint = Color::White)
       sprite.draw_partial(
         x: x + screen_x,
         y: y + screen_y,

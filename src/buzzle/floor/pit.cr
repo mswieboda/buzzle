@@ -85,7 +85,7 @@ module Buzzle::Floor
       draw(
         screen_x: screen_x,
         screen_y: screen_y,
-        tint: LibRay::BLACK
+        tint: Color::Black
       )
     end
   end

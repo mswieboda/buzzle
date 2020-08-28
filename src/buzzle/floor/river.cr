@@ -102,7 +102,7 @@ module Buzzle::Floor
         screen_x: screen_x,
         screen_y: screen_y,
         frame: 0,
-        tint: LibRay::BLUE
+        tint: Color::Blue
       )
     end
   end

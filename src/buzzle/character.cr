@@ -3,8 +3,11 @@ module Buzzle
     property name : String
     property messages : Array(Array(String))
 
-    def initialize(sprite = "player", @name = "", @messages = [] of Array(String))
-      super(sprite: sprite)
+    def initialize(sprite = "player", @name = "", @messages = [] of Array(String), @tint = Color::White)
+      super(
+        sprite: sprite,
+        tint: tint
+      )
 
       @trigger = Trigger.new(
         x: x,

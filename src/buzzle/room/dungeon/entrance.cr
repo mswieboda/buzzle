@@ -6,7 +6,8 @@ module Buzzle::Room::Dungeon
       char = Character.new(
         sprite: "player",
         name: "Matt",
-        messages: [["hey...", "what's up?"], ["did you need something?"]]
+        messages: [["hey...", "what's up?"], ["did you need something?"]],
+        tint: Color::Violet
       )
       entities << char
 

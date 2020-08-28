@@ -19,7 +19,7 @@ module Buzzle
     MOVING_FRAME_LAST  = 2
     FALLING_FRAME_LAST = 5
 
-    def initialize(sprite)
+    def initialize(sprite, @tint : Color = Color::White)
       super(
         sprite: sprite,
         x: 0,
@@ -178,7 +178,8 @@ module Buzzle
         screen_x: screen_x,
         screen_y: screen_y,
         frame: frame,
-        row: row
+        row: row,
+        tint: @tint
       )
     end
 

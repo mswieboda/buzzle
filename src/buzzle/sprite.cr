@@ -26,7 +26,7 @@ module Buzzle
       @height = (@texture.height / @rows).to_i
     end
 
-    def draw(x, y, frame = 0, row = 0, rotation = 0, tint = LibRay::WHITE)
+    def draw(x, y, frame = 0, row = 0, rotation = 0, tint = Color::White)
       LibRay.draw_texture_pro(
         texture: texture,
         source_rec: LibRay::Rectangle.new(
@@ -46,11 +46,11 @@ module Buzzle
           y: height / 2
         ),
         rotation: rotation,
-        tint: tint
+        tint: tint.to_struct
       )
     end
 
-    def draw_partial(x, y, source_width = width, source_height = height, frame = 0, row = 0, rotation = 0, tint = LibRay::WHITE)
+    def draw_partial(x, y, source_width = width, source_height = height, frame = 0, row = 0, rotation = 0, tint = Color::White)
       LibRay.draw_texture_pro(
         texture: texture,
         source_rec: LibRay::Rectangle.new(
@@ -70,7 +70,7 @@ module Buzzle
           y: source_height / 2
         ),
         rotation: rotation,
-        tint: tint
+        tint: tint.to_struct
       )
     end
 
