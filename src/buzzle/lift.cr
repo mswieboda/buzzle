@@ -10,7 +10,7 @@ module Buzzle
 
     def initialize(x, y, z = 0, @ascend = true, @auto = true)
       super(
-        name: "floor",
+        sprite: "floor",
         x: x,
         y: y,
         z: ascend? ? z : z + 1

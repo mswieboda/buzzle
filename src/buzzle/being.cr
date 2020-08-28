@@ -19,9 +19,9 @@ module Buzzle
     MOVING_FRAME_LAST  = 2
     FALLING_FRAME_LAST = 5
 
-    def initialize
+    def initialize(sprite)
       super(
-        name: "player",
+        sprite: sprite,
         x: 0,
         y: 0,
         z: 0,

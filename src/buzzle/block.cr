@@ -10,7 +10,7 @@ module Buzzle
 
     def initialize(x, y, z = 0)
       super(
-        name: "block",
+        sprite: "block",
         x: x,
         y: y,
         z: z,

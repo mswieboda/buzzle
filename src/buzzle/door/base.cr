@@ -11,7 +11,7 @@ module Buzzle::Door
 
     def initialize(x, y, z = 0, direction = Direction::Down, @design = Design::Wooden, open = false, darkness = true)
       super(
-        name: "door",
+        sprite: "door",
         x: x,
         y: y,
         z: z,

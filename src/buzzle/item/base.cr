@@ -4,9 +4,9 @@ module Buzzle::Item
     property y
     property z
 
-    def initialize(x = 0, y = 0, z = 0, name = "key")
+    def initialize(x = 0, y = 0, z = 0, sprite = "key")
       super(
-        name: name,
+        sprite: sprite,
         x: x,
         y: y,
         z: z

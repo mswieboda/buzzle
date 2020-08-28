@@ -4,7 +4,7 @@ module Buzzle
 
     def initialize(x, y, z = 0, @messages = [] of String)
       super(
-        name: "sign",
+        sprite: "sign",
         x: x,
         y: y,
         z: z,

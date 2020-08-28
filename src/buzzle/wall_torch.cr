@@ -4,7 +4,7 @@ module Buzzle
 
     def initialize(x, y, z = 0, on = true, @actionable = false)
       super(
-        name: "torch",
+        sprite: "torch",
         x: x,
         y: y,
         z: z,

@@ -4,6 +4,7 @@ module Buzzle::Room::Dungeon
       entities = [] of Entity
       entities << player
       char = Character.new(
+        sprite: "player",
         name: "Matt",
         messages: [["hey...", "what's up?"], ["did you need something?"]]
       )

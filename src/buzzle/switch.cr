@@ -8,9 +8,9 @@ module Buzzle
     @sound_done : Sound
     @sound_start : Sound
 
-    def initialize(x, y, z = 0, name = "switch", @on = false, width = Game::GRID_SIZE, height = Game::GRID_SIZE, direction = Direction::Down, hidden = false)
+    def initialize(x, y, z = 0, sprite = "switch", @on = false, width = Game::GRID_SIZE, height = Game::GRID_SIZE, direction = Direction::Down, hidden = false)
       super(
-        name: name,
+        sprite: sprite,
         x: x,
         y: y,
         z: z,

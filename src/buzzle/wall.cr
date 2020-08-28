@@ -5,9 +5,9 @@ module Buzzle
 
     @frame : Int32
 
-    def initialize(x, y, z = 0, name = "wall", design = 0, direction = Direction::Down, hidden = false, @railing = false, @enabled = true)
+    def initialize(x, y, z = 0, sprite = "wall", design = 0, direction = Direction::Down, hidden = false, @railing = false, @enabled = true)
       super(
-        name: name,
+        sprite: sprite,
         x: x,
         y: y,
         z: z,

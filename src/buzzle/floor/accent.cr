@@ -26,7 +26,7 @@ module Buzzle::Floor
 
     def initialize(x, y, z = 0, direction = Direction::Down, @design = Design::Floor, @variation = -1)
       super(
-        name: "accents",
+        sprite: "accents",
         x: x,
         y: y,
         z: z,

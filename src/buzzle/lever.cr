@@ -2,7 +2,7 @@ module Buzzle
   class Lever < Switch
     def initialize(x, y, z = 0, on = false)
       super(
-        name: "switch",
+        sprite: "switch",
         x: x,
         y: y,
         z: z,

@@ -2,7 +2,7 @@ module Buzzle::Item
   class Key < Base
     def initialize(x = 0, y = 0, z = 0)
       super(
-        name: "key",
+        sprite: "key",
         x: x,
         y: y,
         z: z

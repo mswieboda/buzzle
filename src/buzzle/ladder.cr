@@ -2,7 +2,7 @@ module Buzzle
   class Ladder < Floor::Base
     def initialize(x, y, z = 0, @ascend = true)
       super(
-        name: "wall",
+        sprite: "wall",
         x: x,
         y: y,
         z: z

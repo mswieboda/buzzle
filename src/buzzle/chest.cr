@@ -16,7 +16,7 @@ module Buzzle
       @item = nil
 
       super(
-        name: "chest",
+        sprite: "chest",
         x: x,
         y: y,
         z: z,

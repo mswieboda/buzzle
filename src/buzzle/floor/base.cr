@@ -2,9 +2,9 @@ module Buzzle::Floor
   class Base < SpriteEntity
     @accent : Accent | Nil
 
-    def initialize(x, y, z = 0, name = "floor", direction = Direction::Down, width = Game::GRID_SIZE, height = Game::GRID_SIZE, hidden = false)
+    def initialize(x, y, z = 0, sprite = "floor", direction = Direction::Down, width = Game::GRID_SIZE, height = Game::GRID_SIZE, hidden = false)
       super(
-        name: name,
+        sprite: sprite,
         x: x,
         y: y,
         z: z,

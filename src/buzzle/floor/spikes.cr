@@ -9,7 +9,7 @@ module Buzzle::Floor
 
     def initialize(x, y, z = 0, @up = false)
       super(
-        name: "spike",
+        sprite: "spike",
         x: x,
         y: y,
         z: z

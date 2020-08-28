@@ -6,8 +6,8 @@ module Buzzle
     property source_width : Int32 | Nil
     property source_height : Int32 | Nil
 
-    def initialize(name, x : Int32, y : Int32, z : Int32 = 0, width = nil, height = nil, direction = Direction::Down, hidden = false)
-      @sprite = Sprite.get(name)
+    def initialize(sprite, x : Int32, y : Int32, z : Int32 = 0, width = nil, height = nil, direction = Direction::Down, hidden = false)
+      @sprite = Sprite.get(sprite)
 
       super(
         x: x,
