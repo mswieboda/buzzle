@@ -1,5 +1,5 @@
 module Buzzle
-  class Being < SpriteEntity
+  abstract class Being < SpriteEntity
     getter? falling
     getter? dead
     property exit_door : Door::Base | Nil
