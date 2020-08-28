@@ -6,7 +6,7 @@ Requires [Crystal](https://crystal-lang.org) to be installed
 $ brew install crystal
 ```
 
-Install crystal shard dependencies ([cray](https://gitlab.com/Zatherz/cray))
+Install crystal shard dependencies ([game](https://github.com/mswieboda/game) depending on [cray](https://gitlab.com/Zatherz/cray))
 
 ```
 $ shards install
