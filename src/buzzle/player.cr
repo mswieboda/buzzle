@@ -1,5 +1,5 @@
 module Buzzle
-  class Player < Character
+  class Player < Being
     def movement(frame_time, entities)
       return if Game.pause_player_input?
 
