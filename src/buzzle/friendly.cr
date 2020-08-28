@@ -1,5 +1,5 @@
 module Buzzle
-  class Npc < Character
+  class Friendly < Character
     @messages : Array(String)
 
     def initialize(@messages)
