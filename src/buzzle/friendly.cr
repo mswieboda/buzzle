@@ -1,6 +1,6 @@
 module Buzzle
   class Friendly < Character
-    @messages : Array(String)
+    @messages : Array(Array(String))
 
     def initialize(@messages)
       super()
@@ -14,6 +14,8 @@ module Buzzle
         width: width * 2,
         height: height * 2
       )
+
+      @messages_index = 0
     end
 
     def actionable?
@@ -25,8 +27,9 @@ module Buzzle
 
       face(player)
 
-      Message.show(@messages) do
+      Message.show(@messages[@messages_index]) do
         @direction = orig_dir
+        @messages_index += 1 unless @messages_index == @messages.size - 1
       end
     end
   end

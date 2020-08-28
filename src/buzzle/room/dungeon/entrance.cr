@@ -3,7 +3,7 @@ module Buzzle::Room::Dungeon
     def initialize(player, width = 10, height = 10)
       entities = [] of Entity
       entities << player
-      friendly = Friendly.new(["hey...", "what's up?", "did you need something?"])
+      friendly = Friendly.new([["hey...", "what's up?"], ["did you need something?"]])
       entities << friendly
 
       friendly.initial_location(
