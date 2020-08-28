@@ -34,10 +34,16 @@ module Buzzle
 
       face(player)
 
-      Message.show(messages[@messages_index]) do
-        @direction = orig_dir
-        @messages_index += 1 unless @messages_index == messages.size - 1
+      if name.empty?
+        Message.show(messages[@messages_index]) { message_done(orig_dir) }
+      else
+        Message.show(self, messages[@messages_index]) { message_done(orig_dir) }
       end
+    end
+
+    def message_done(orig_dir)
+      @direction = orig_dir
+      @messages_index += 1 unless @messages_index == messages.size - 1
     end
   end
 end
