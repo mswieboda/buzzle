@@ -21,7 +21,13 @@ module Buzzle
     end
 
     def action(player : Player)
-      Message.show(@messages)
+      orig_dir = direction
+
+      face(player)
+
+      Message.show(@messages) do
+        @direction = orig_dir
+      end
     end
   end
 end

@@ -71,6 +71,51 @@ module Buzzle
         )
     end
 
+    def face(entity)
+      # up/down
+      if y >= entity.y + entity.height
+        if horz_between?(entity) || vert_distance_longer?(entity)
+          @direction = Direction::Up
+          return
+        end
+      elsif y + height <= entity.y
+        if horz_between?(entity) || vert_distance_longer?(entity)
+          @direction = Direction::Down
+          return
+        end
+      end
+
+      # left/right
+      if x >= entity.x + entity.width
+        if vert_between?(entity) || horz_distance_longer?(entity)
+          @direction = Direction::Left
+        end
+      elsif x + width <= entity.x
+        if vert_between?(entity) || horz_distance_longer?(entity)
+          @direction = Direction::Right
+        end
+      end
+    end
+
+    def horz_between?(entity)
+      (x <= entity.x && x + width > entity.x) || (x <= entity.x + entity.width && x + width > entity.x)
+    end
+
+    def vert_between?(entity)
+      (y <= entity.y && y + height > entity.y) || (y <= entity.y + entity.height && y + height > entity.y)
+    end
+
+    def horz_distance_longer?(entity)
+      !vert_distance_longer?(entity)
+    end
+
+    def vert_distance_longer?(entity)
+      y_d = entity.y + entity.height - y
+      x_d = [entity.x - (x + width), x - (entity.x - entity.width)].max
+
+      y_d >= x_d
+    end
+
     def to_s(io)
       io << "#{super.to_s(io)} (#{x}, #{y}) (#{width}x#{height})"
     end

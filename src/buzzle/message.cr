@@ -21,6 +21,11 @@ module Buzzle
       @@message.show(message, pause)
     end
 
+    def self.show(message, pause = true, &block)
+      @@on_hide_callback = block
+      show(message, pause)
+    end
+
     def initialize(@messages = [] of String)
       @message_index = 0
       @shown = false
@@ -128,6 +133,10 @@ module Buzzle
       @delay = 0_f32
       update_text_measured
       Game.pause_player_input = false
+
+      if callback = @@on_hide_callback
+        callback.call
+      end
     end
 
     def delay?
