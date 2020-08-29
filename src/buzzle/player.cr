@@ -47,7 +47,7 @@ module Buzzle
         dx, dy = direction.to_delta
       end
 
-      return if dx == 0 && dy == 0
+      return if dx.zero? && dy.zero?
 
       # release block if trying to pull on ice
       if pulling_block?(dx, dy) && collision?(entities.select(&.is_a?(Floor::Base)).map(&.as(Floor::Base)).select(&.block_slide?))

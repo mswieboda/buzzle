@@ -47,6 +47,7 @@ module Buzzle
     def message_done(orig_dir)
       @direction = orig_dir
       @messages_index += 1 unless @messages_index == messages.size - 1
+      move_to(1, 3)
     end
   end
 end

@@ -30,6 +30,7 @@ module Buzzle
       )
 
       @moving_x = @moving_y = 0_f32
+      @move_to_x = @move_to_y = 0
       @moving_left_foot = false
       @frame_t = 0_f32
       @falling = false
@@ -72,7 +73,19 @@ module Buzzle
     end
 
     def movement_input(frame_time, entities)
-      # TODO: do for NPC
+      return if @move_to_x.zero? && @move_to_y.zero?
+
+      puts ">>> mv (#{x}, #{y}) to (#{@move_to_x}, #{@move_to_y})"
+
+      dx = @move_to_x - x
+      dy = @move_to_y - y
+
+      if dx.zero? && dy.zero?
+        @move_to_x = @move_to_y = 0
+        return
+      end
+
+      move(dx: dx.sign, dy: dy.sign)
     end
 
     def transitions(frame_time)
@@ -85,6 +98,11 @@ module Buzzle
           die
         end
       end
+    end
+
+    def move_to(x, y)
+      @move_to_x = x * Game::GRID_SIZE
+      @move_to_y = y * Game::GRID_SIZE
     end
 
     def move(dx = 0, dy = 0)
