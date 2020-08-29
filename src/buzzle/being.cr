@@ -218,8 +218,8 @@ module Buzzle
     end
 
     def initial_location(x = 0, y = 0, z = 0)
-      @x = x
-      @y = y
+      @x = x * Game::GRID_SIZE
+      @y = y * Game::GRID_SIZE
       @z = z
     end
 

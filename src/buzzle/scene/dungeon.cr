@@ -14,12 +14,7 @@ module Buzzle::Scene
     def load
       @room = @rooms[:entrance]
 
-      @player.initial_location(
-        x: 5 * Game::GRID_SIZE,
-        y: 8 * Game::GRID_SIZE,
-        z: 0
-      )
-
+      @player.initial_location(x: 5, y: 8, z: 0)
       @player.face(Direction::Up)
 
       super

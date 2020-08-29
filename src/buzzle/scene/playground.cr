@@ -13,11 +13,7 @@ module Buzzle::Scene
     def load
       @room = @rooms[:main]
 
-      @player.initial_location(
-        x: 3 * Game::GRID_SIZE,
-        y: 3 * Game::GRID_SIZE,
-        z: 0
-      )
+      @player.initial_location(x: 3, y: 3, z: 0)
 
       super
     end

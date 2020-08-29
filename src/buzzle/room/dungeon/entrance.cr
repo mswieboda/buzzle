@@ -11,11 +11,8 @@ module Buzzle::Room::Dungeon
       )
       entities << char
 
-      char.initial_location(
-        x: 3 * Game::GRID_SIZE,
-        y: 8 * Game::GRID_SIZE,
-        z: 0
-      )
+      char.initial_location(x: 3, y: 8, z: 0)
+      char.face(Direction::Left)
 
       doors = {
         :dark => Door::Gate.new(3, -1, open: true).as(Door::Base),
