@@ -80,6 +80,14 @@ module Buzzle
       dx = @move_to_x - x
       dy = @move_to_y - y
 
+      if dx.abs > 0
+        dy = 0
+      elsif dy.abs > 0
+        dx = 0
+      else
+        dy = 0
+      end
+
       if dx.zero? && dy.zero?
         @move_to_x = @move_to_y = 0
         return
