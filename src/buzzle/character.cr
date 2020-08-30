@@ -30,6 +30,20 @@ module Buzzle
       @messages_index = 0
     end
 
+    def message(messages = messages[@messages_index], &block)
+      if name.empty?
+        Message.show(messages) do
+          @messages_index += 1 unless @messages_index == messages.size - 1
+          block.call
+        end
+      else
+        Message.show(self, messages) do
+          @messages_index += 1 unless @messages_index == messages.size - 1
+          block.call
+        end
+      end
+    end
+
     def action(player : Player)
       return if messages.empty?
 
@@ -37,17 +51,20 @@ module Buzzle
 
       face(player)
 
-      if name.empty?
-        Message.show(messages[@messages_index]) { message_done(orig_dir) }
-      else
-        Message.show(self, messages[@messages_index]) { message_done(orig_dir) }
+      if Quest.unstarted?("dungeon_entrance_test")
+        message do
+          @direction = orig_dir
+          Quest.do("dungeon_entrance_test", "started")
+          move_to(1, 3)
+        end
+      elsif Quest.done?("dungeon_entrance_test", "started")
+        @messages = [["I'm taking a swim..."]]
+        @messages_index = 0
+        message do
+          @direction = orig_dir
+          puts "done"
+        end
       end
-    end
-
-    def message_done(orig_dir)
-      @direction = orig_dir
-      @messages_index += 1 unless @messages_index == messages.size - 1
-      move_to(1, 3)
     end
   end
 end
