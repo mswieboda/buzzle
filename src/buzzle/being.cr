@@ -75,8 +75,6 @@ module Buzzle
     def movement_input(frame_time, entities)
       return if @move_to_x.zero? && @move_to_y.zero?
 
-      puts ">>> mv (#{x}, #{y}) to (#{@move_to_x}, #{@move_to_y})"
-
       dx = @move_to_x - x
       dy = @move_to_y - y
 
@@ -93,7 +91,12 @@ module Buzzle
         return
       end
 
-      move(dx: dx.sign, dy: dy.sign)
+      dx = dx.sign
+      dy = dy.sign
+
+      @direction = Direction.from_delta(dx, dy)
+
+      move(dx: dx, dy: dy)
     end
 
     def transitions(frame_time)
