@@ -2,8 +2,11 @@ module Buzzle
   class Character < Being
     property name : String
     property messages : Array(Array(String))
+    property quest_actions : Array(QuestAction)
+    property direction_temp : Direction
+    setter direction : Direction
 
-    def initialize(sprite = "player", @name = "", @messages = [] of Array(String), @tint = Color::White)
+    def initialize(sprite = "player", @name = "", @messages = [] of Array(String), @tint = Color::White, @quest_actions = [] of QuestAction)
       super(
         sprite: sprite,
         tint: tint
@@ -20,6 +23,8 @@ module Buzzle
       )
 
       @messages_index = 0
+      @quest_actions_index = 0
+      @direction_temp = direction
     end
 
     def actionable?
@@ -30,39 +35,33 @@ module Buzzle
       @messages_index = 0
     end
 
-    def message(messages = messages[@messages_index], &block)
+    def message(&block)
+      return if @messages.empty?
+
       if name.empty?
-        Message.show(messages) do
-          @messages_index += 1 unless @messages_index == messages.size - 1
+        Message.show(messages[@messages_index]) do
           block.call
         end
       else
-        Message.show(self, messages) do
-          @messages_index += 1 unless @messages_index == messages.size - 1
+        Message.show(self, messages[@messages_index]) do
           block.call
         end
       end
+
+      @messages_index += 1 unless @messages_index >= messages.size - 1
     end
 
     def action(player : Player)
-      return if messages.empty?
+      if quest_actions.any?
+        quest_actions[@quest_actions_index].action(player)
+        @quest_actions_index += 1 unless @quest_actions_index >= quest_actions.size - 1
+      elsif messages.any?
+        @direction_temp = direction
 
-      orig_dir = direction
+        face(player)
 
-      face(player)
-
-      if Quest.unstarted?("dungeon_entrance_test")
         message do
-          @direction = orig_dir
-          Quest.do("dungeon_entrance_test", "started")
-          move_to(1, 3)
-        end
-      elsif Quest.done?("dungeon_entrance_test", "started")
-        @messages = [["I'm taking a swim..."]]
-        @messages_index = 0
-        message do
-          @direction = orig_dir
-          puts "done"
+          @direction = @direction_temp
         end
       end
     end

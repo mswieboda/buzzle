@@ -3,13 +3,41 @@ module Buzzle::Room::Dungeon
     def initialize(player, width = 10, height = 10)
       entities = [] of Entity
       entities << player
+
+      # character --- start
       char = Character.new(
         sprite: "player",
         name: "Matt",
-        messages: [["hey...", "what's up?"], ["did you need something?"]],
+        messages: [["default message..."]],
         tint: Color::Violet
       )
+
+      char.quest_actions = [
+        QuestAction.new(
+          quest: "welcome",
+          step: "hey",
+          messages: ["hey...", "what's up?"],
+          character: char,
+          before: ->() { char.face(player) },
+          after: ->() { char.move_to(1, 3) }
+        ),
+        QuestAction.new(
+          quest: "welcome",
+          step: "river",
+          messages: ["did you need something?"],
+          character: char,
+          before: ->() do
+            char.direction_temp = char.direction
+            char.face(player)
+          end,
+          after: ->() do
+            char.direction = char.direction_temp
+          end
+        )
+      ]
+
       entities << char
+      # character --- end
 
       char.initial_location(x: 3, y: 8, z: 0)
       char.face(Direction::Left)
