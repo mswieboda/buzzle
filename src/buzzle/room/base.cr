@@ -11,6 +11,7 @@ module Buzzle::Room
 
     @entities : Array(Entity)
     @doors : Hash(Symbol, Door::Base)
+    @quests = {} of String => Hash(String, Bool)
 
     def initialize(@player, entities = [] of Entity, @doors = {} of Symbol => Door::Base, width = 10, height = 10)
       @width = width * GRID_SIZE
@@ -118,6 +119,19 @@ module Buzzle::Room
 
     def door?(x, y)
       doors.values.any? { |d| d.x / Game::GRID_SIZE == x && d.y / Game::GRID_SIZE == y }
+    end
+
+    def quest_step?(quest, step)
+      return false unless Quest.done?(quest, step)
+
+      if @quests[quest]? && @quests[quest][step]?
+        return false
+      end
+
+      @quests[quest] ||= {} of String => Bool
+      @quests[quest][step] ||= true
+
+      true
     end
   end
 end

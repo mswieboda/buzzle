@@ -43,7 +43,7 @@ module Buzzle::Room::Dungeon
       char.face(Direction::Left)
 
       doors = {
-        :dark => Door::Gate.new(3, -1, open: true).as(Door::Base),
+        :dark => Door::Gate.new(3, -1, open: false).as(Door::Base),
       }
 
       # floors
@@ -75,6 +75,21 @@ module Buzzle::Room::Dungeon
       )
 
       add_top_walls
+    end
+
+    def update(_frame_time)
+      super
+
+      if quest_step?("welcome", "hey")
+        puts "hey done!"
+        # raise gate
+        doors[:dark].open
+      end
+
+      if quest_step?("welcome", "river")
+        puts "river done!"
+        # do something crazy?
+      end
     end
   end
 end
