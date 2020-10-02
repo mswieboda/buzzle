@@ -79,6 +79,7 @@ module Buzzle
     def draw
       return unless shown?
 
+      draw_background
       draw_border
 
       if character = @character
@@ -86,6 +87,22 @@ module Buzzle
       else
         draw_message
       end
+    end
+
+    def draw_background
+      width = Game.screen_width - MARGIN * 2
+      height = @text_measured.y + PADDING * 2
+
+      x = MARGIN
+      y = Game.screen_height - MARGIN - BORDER_SIZE - height - BORDER_SIZE
+
+      Rectangle.new(
+        x: x,
+        y: y,
+        width: width,
+        height: height + BORDER_SIZE * 2,
+        color: Color::Black.alpha(0.6_f32)
+      ).draw
     end
 
     def draw_border
