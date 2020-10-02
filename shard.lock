@@ -6,5 +6,5 @@ shards:
 
   game:
     git: https://github.com/mswieboda/game.git
-    version: 0.1.0+git.commit.1d6da238b8959299843e86422f0225594d3e6e62
+    version: 0.1.1
 

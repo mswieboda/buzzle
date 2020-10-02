@@ -15,8 +15,6 @@ module Buzzle
     def initialize
       super(
         name: "Buzzle",
-        screen_width: SCREEN_WIDTH,
-        screen_height: SCREEN_HEIGHT,
         target_fps: TARGET_FPS,
         audio: true,
         debug: DEBUG,
