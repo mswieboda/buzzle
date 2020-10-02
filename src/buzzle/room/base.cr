@@ -1,8 +1,10 @@
+require "../scene/view"
+
 module Buzzle::Room
   class Base
     getter player : Player
-    getter x : Int32
-    getter y : Int32
+    property x : Int32 | Float32
+    property y : Int32 | Float32
     getter width : Int32
     getter height : Int32
     getter doors
@@ -17,8 +19,8 @@ module Buzzle::Room
       @width = width * GRID_SIZE
       @height = height * GRID_SIZE
 
-      @x = (Game::SCREEN_WIDTH / 2 - @width / 2).to_i
-      @y = (Game::SCREEN_HEIGHT / 2 - @height / 2).to_i
+      @x = 0
+      @y = 0
 
       entities += @doors.values.to_a
       @entities = entities.flat_map(&.entities)
@@ -32,8 +34,9 @@ module Buzzle::Room
       @entities.sort! { |e1, e2| e1.draw_sort(e2) }
     end
 
-    def draw
-      @entities.each(&.draw(x, y))
+    def draw(view : Scene::View)
+      entities = @entities.select { |e| view.viewable?(e) }
+      entities.each(&.draw(view.screen_x, view.screen_y))
     end
 
     def add_border_walls

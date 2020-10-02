@@ -2,18 +2,22 @@ module Buzzle::Scene
   class Base
     getter player : Player
     getter? loaded
+    getter view : View
 
+    @room : Room::Base
     @rooms : Hash(Symbol, Room::Base)
 
     def initialize(@player)
       @rooms = Hash(Symbol, Room::Base).new
       @room = Room::Base.new(@player)
+      @view = View.new(player: player, room: @room)
 
       @loaded = false
     end
 
     def load
       @loaded = true
+      @view.room = @room
     end
 
     def unload
@@ -24,10 +28,12 @@ module Buzzle::Scene
       load unless loaded?
 
       @room.update(frame_time)
+      view.update(frame_time)
     end
 
     def draw
-      @room.draw
+      @room.draw(view)
+      view.draw
     end
 
     def room?(room : Symbol)
@@ -36,6 +42,7 @@ module Buzzle::Scene
 
     def change_room(room : Room::Base, door : Door::Base)
       @room = room
+      @view.room = @room
       @player.enter(door, instant: true)
     end
 
