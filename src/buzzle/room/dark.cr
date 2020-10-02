@@ -19,10 +19,10 @@ module Buzzle::Room
       @entities.select(&.light_source?).each(&.update_visibility(@visibilities))
     end
 
-    def draw
-      super
+    def draw(view : Scene::View)
+      super(view)
 
-      @visibilities.each(&.draw(x, y))
+      @visibilities.each(&.draw(view.screen_x, view.screen_y))
     end
   end
 end

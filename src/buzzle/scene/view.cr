@@ -20,10 +20,8 @@ module Buzzle::Scene
     end
 
     def update(frame_time)
-      # not sure if this will work, but it's close
+      # TODO: this should grab movement speed from player directly
       movement = Being::MOVING_AMOUNT
-
-      puts "Scene::View update room: #{room.class.name}"
 
       if player.x - room.x <= Game::GRID_SIZE * THRESHOLD && room.x - movement >= 0 - Game::GRID_SIZE
         @room.x -= movement
