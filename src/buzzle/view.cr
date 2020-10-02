@@ -10,8 +10,8 @@ module Buzzle
 
     def viewable?(obj : Obj, view_x, view_y)
       viewable?(
-        x: obj.x,
-        y: obj.y,
+        x: obj.x_draw,
+        y: obj.y_draw,
         width: obj.width,
         height: obj.height,
         view_x: view_x,

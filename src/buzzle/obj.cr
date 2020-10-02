@@ -25,6 +25,14 @@ module Buzzle
     def draw(_screen_x, _screen_y)
     end
 
+    def x_draw
+      x
+    end
+
+    def y_draw
+      y
+    end
+
     def draw_sort(obj : Obj)
       z_test = z <=> obj.z
       return z_test unless z_test.zero?

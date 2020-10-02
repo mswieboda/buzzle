@@ -1,6 +1,6 @@
 module Buzzle::Room::Dungeon
   class Entrance < Room::Base
-    def initialize(player, width = 50, height = 50)
+    def initialize(player, width = 50, height = 30)
       entities = [] of Entity
       entities << player
 
