@@ -89,11 +89,11 @@ module Buzzle
     end
 
     def draw_border
-      width = Game::SCREEN_WIDTH - MARGIN * 2
+      width = Game.screen_width - MARGIN * 2
       height = @text_measured.y + PADDING * 2
 
       x = MARGIN
-      y = Game::SCREEN_HEIGHT - MARGIN - BORDER_SIZE - height - BORDER_SIZE
+      y = Game.screen_height - MARGIN - BORDER_SIZE - height - BORDER_SIZE
 
       BORDER_SIZE.times do |n|
         Rectangle.new(
@@ -116,7 +116,7 @@ module Buzzle
       )
 
       x = MARGIN + BORDER_SIZE + PADDING
-      y = Game::SCREEN_HEIGHT - MARGIN - PADDING - measured.y
+      y = Game.screen_height - MARGIN - PADDING - measured.y
 
       LibRay.draw_text_ex(
         font: @default_font,
@@ -138,7 +138,7 @@ module Buzzle
           start_x: line_x + n,
           start_y: (y - PADDING).to_i,
           end_x: line_x + n,
-          end_y: Game::SCREEN_HEIGHT - MARGIN,
+          end_y: Game.screen_height - MARGIN,
           color: Color::White
         ).draw
       end
@@ -148,7 +148,7 @@ module Buzzle
 
     def draw_message(x_start = MARGIN + BORDER_SIZE)
       x = x_start + PADDING
-      y = Game::SCREEN_HEIGHT - MARGIN - BORDER_SIZE - PADDING - @text_measured.y
+      y = Game.screen_height - MARGIN - BORDER_SIZE - PADDING - @text_measured.y
 
       LibRay.draw_text_ex(
         font: @default_font,
@@ -164,8 +164,8 @@ module Buzzle
 
       return if delay?
 
-      x = x_start + Game::SCREEN_WIDTH - x_start - MARGIN - BORDER_SIZE - PADDING
-      y = Game::SCREEN_HEIGHT - MARGIN - BORDER_SIZE - PADDING
+      x = x_start + Game.screen_width - x_start - MARGIN - BORDER_SIZE - PADDING
+      y = Game.screen_height - MARGIN - BORDER_SIZE - PADDING
 
       # temp message done icon
 

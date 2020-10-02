@@ -1,8 +1,5 @@
 module Buzzle
   class Game < Game
-    SCREEN_WIDTH  = 1280
-    SCREEN_HEIGHT =  768
-
     DEBUG = false
 
     TARGET_FPS = 60

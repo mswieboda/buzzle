@@ -9,14 +9,11 @@ module Buzzle::Scene
     THRESHOLD = 1.5_f32
 
     def initialize(@player, @room)
-      width = Game::SCREEN_WIDTH
-      height = Game::SCREEN_HEIGHT
-
       super(
-        x: (Game::SCREEN_WIDTH / 2 - width / 2).to_i,
-        y: (Game::SCREEN_HEIGHT / 2 - height / 2).to_i,
-        width: width,
-        height: height
+        x: 0,
+        y: 0,
+        width: Game.screen_width,
+        height: Game.screen_height
       )
     end
 
