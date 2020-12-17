@@ -1,17 +1,28 @@
 module Buzzle
-  class Enemy < SpriteEntity
+  abstract class Enemy < SpriteEntity
     getter? dead
 
     FPS = 12
 
-    def initialize(sprite, @tint : Color = Color::White)
+    def initialize(sprite, x = 0, y = 0, z = 0, direction = Direction::Down, @tint : Color = Color::White)
       super(
         sprite: sprite,
-        x: 0,
-        y: 0,
-        z: 0,
+        x: x,
+        y: y,
+        z: z,
+        direction: direction,
         width: Game::GRID_SIZE,
         height: Game::GRID_SIZE
+      )
+
+      @trigger = Trigger.new(
+        x: x,
+        y: y,
+        z: z,
+        origin_x: (-width / 2).to_i,
+        origin_y: (-height / 2).to_i,
+        width: width * 2,
+        height: height * 2
       )
 
       @moving_left_foot = false
@@ -46,11 +57,7 @@ module Buzzle
     end
 
     def fps
-      if falling?
-        FALLING_FPS
-      else
-        FPS
-      end
+      FPS
     end
 
     def row
@@ -69,10 +76,14 @@ module Buzzle
       )
     end
 
-    def initial_location(x = 0, y = 0, z = 0)
-      @x = x * Game::GRID_SIZE
-      @y = y * Game::GRID_SIZE
-      @z = z
+    def actionable?
+      true
+    end
+
+    def action(player : Player)
+      face(player)
+
+      # TODO: turn based fight sequence
     end
 
     def die

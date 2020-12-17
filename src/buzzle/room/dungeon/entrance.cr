@@ -67,13 +67,8 @@ module Buzzle::Room::Dungeon
       entities << Sign.new(x: 5, y: 5, messages: ["warning!", "a creepy dungeon lies ahead..."])
 
       # enemies
-      enemy = Enemy.new(
-        sprite: "player",
-        tint: Color::Red
-      )
-      enemy.initial_location(x: 13, y: 7)
-      enemy.face(Direction::Right)
-      entities << enemy
+      demon = Demon.new(x: 13, y: 7, direction: Direction::Right)
+      entities << demon
 
       super(
         player: player,
