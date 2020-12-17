@@ -36,11 +36,11 @@ module Buzzle::Room::Dungeon
         )
       ]
 
+      char.initial_location(x: 3, y: 8)
+      char.face(Direction::Left)
+
       entities << char
       # character --- end
-
-      char.initial_location(x: 3, y: 8, z: 0)
-      char.face(Direction::Left)
 
       doors = {
         :dark => Door::Gate.new(3, -1, open: false).as(Door::Base),
@@ -65,6 +65,15 @@ module Buzzle::Room::Dungeon
 
       # sign post
       entities << Sign.new(x: 5, y: 5, messages: ["warning!", "a creepy dungeon lies ahead..."])
+
+      # enemies
+      enemy = Enemy.new(
+        sprite: "player",
+        tint: Color::Red
+      )
+      enemy.initial_location(x: 13, y: 7)
+      enemy.face(Direction::Right)
+      entities << enemy
 
       super(
         player: player,
