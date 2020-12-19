@@ -1,18 +1,15 @@
 module Buzzle
-  abstract class Enemy < SpriteEntity
-    getter? dead
-
+  abstract class Enemy < Being
     FPS = 12
 
-    def initialize(sprite, x = 0, y = 0, z = 0, direction = Direction::Down, @tint : Color = Color::White)
+    def initialize(sprite, x = 0, y = 0, z = 0, direction = Direction::Down, tint : Color = Color::White)
       super(
         sprite: sprite,
         x: x,
         y: y,
         z: z,
         direction: direction,
-        width: Game::GRID_SIZE,
-        height: Game::GRID_SIZE
+        tint: tint
       )
 
       @trigger = Trigger.new(
@@ -64,18 +61,6 @@ module Buzzle
       direction.to_i
     end
 
-    def draw(screen_x, screen_y)
-      return if dead?
-
-      draw(
-        screen_x: screen_x,
-        screen_y: screen_y,
-        frame: frame,
-        row: row,
-        tint: @tint
-      )
-    end
-
     def actionable?
       true
     end
@@ -84,18 +69,6 @@ module Buzzle
       face(player)
 
       # TODO: turn based fight sequence
-    end
-
-    def die
-      @dead = true
-    end
-
-    def revive
-      @dead = false
-    end
-
-    def face(direction : Direction)
-      @direction = direction
     end
   end
 end

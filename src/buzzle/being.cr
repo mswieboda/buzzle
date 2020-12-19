@@ -19,12 +19,13 @@ module Buzzle
     MOVING_FRAME_LAST  = 2
     FALLING_FRAME_LAST = 5
 
-    def initialize(sprite, @tint : Color = Color::White)
+    def initialize(sprite, x = 0, y = 0, z = 0, direction = Direction::Down, @tint : Color = Color::White)
       super(
         sprite: sprite,
-        x: 0,
-        y: 0,
-        z: 0,
+        x: x,
+        y: y,
+        z: z,
+        direction: direction,
         width: Game::GRID_SIZE,
         height: Game::GRID_SIZE
       )
