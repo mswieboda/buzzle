@@ -28,6 +28,11 @@ module Buzzle
     end
 
     def movement_input(frame_time, entities)
+      super
+
+      return unless @move_to_x.zero? || @move_to_y.zero?
+      return if fight
+
       old_direction = @direction
       dx = dy = 0
 

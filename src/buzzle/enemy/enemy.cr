@@ -33,14 +33,6 @@ module Buzzle
       movement(frame_time, entities)
     end
 
-    def movement(frame_time, entities)
-      return if dead?
-    end
-
-    def moving?
-      false
-    end
-
     def frame
       if moving?
         @moving_left_foot ? 1 : 2
@@ -68,7 +60,10 @@ module Buzzle
     def action(player : Player)
       face(player)
 
-      # TODO: turn based fight sequence
+      fight = Fight.new(initiator: player, other: self)
+      player.fight = fight
+      @fight = fight
+      fight.start
     end
   end
 end

@@ -2,12 +2,17 @@ module Buzzle
   abstract class Being < SpriteEntity
     getter? falling
     getter? dead
-    property exit_door : Door::Base | Nil
+    getter? attacking
     getter items
+    property exit_door : Door::Base | Nil
+    property fight : Fight | Nil
 
     @actionable : Entity | Nil
     @held_block : Block | Nil
     @sounds : Array(Sound)
+    @attacking_t : Float32
+    @max_hit_points : Int32
+    @hit_points : Int32
 
     MOVING_AMOUNT = 2
 
@@ -18,6 +23,11 @@ module Buzzle
 
     MOVING_FRAME_LAST  = 2
     FALLING_FRAME_LAST = 5
+
+    MAX_HIT_POINTS = 100
+
+    HIT_POINT_BAR_HEIGHT = 5
+    HIT_POINT_BAR_MARGIN = 3
 
     def initialize(sprite, x = 0, y = 0, z = 0, direction = Direction::Down, @tint : Color = Color::White)
       super(
@@ -37,6 +47,10 @@ module Buzzle
       @falling = false
       @dead = false
       @move_block_timer = Timer.new(MOVE_BLOCK_TIMER)
+      @attacking = false
+      @attacking_t = 0_f32
+      @max_hit_points = MAX_HIT_POINTS
+      @hit_points = @max_hit_points
 
       @sounds = [
         Sound.get("footstep-1"),
@@ -50,6 +64,13 @@ module Buzzle
 
     def update(frame_time, entities : Array(Entity))
       super
+
+      if fight = @fight
+        unless fight.ended?
+          attacking(frame_time) if attacking?
+          fight.update(frame_time) if fight.attacker == self
+        end
+      end
 
       movement(frame_time, entities)
     end
@@ -104,11 +125,7 @@ module Buzzle
       if falling?
         @frame_t += frame_time
 
-        if frame >= FALLING_FRAME_LAST + 1
-          @falling = false
-          @frame_t = 0_f32
-          die
-        end
+        die if frame >= FALLING_FRAME_LAST + 1
       end
     end
 
@@ -211,6 +228,30 @@ module Buzzle
         row: row,
         tint: @tint
       )
+
+      draw_hit_points(screen_x, screen_y)
+    end
+
+    def draw_hit_points(screen_x, screen_y)
+      return if @hit_points >= @max_hit_points
+
+      width = Game::GRID_SIZE - HIT_POINT_BAR_MARGIN * 2
+
+      Rectangle.new(
+        x: x_draw + screen_x + HIT_POINT_BAR_MARGIN,
+        y: y_draw + screen_y - HIT_POINT_BAR_MARGIN * 2,
+        width: width,
+        height: HIT_POINT_BAR_HEIGHT,
+        color: Color::Red
+      ).draw
+
+      Rectangle.new(
+        x: x_draw + screen_x + HIT_POINT_BAR_MARGIN,
+        y: y_draw + screen_y - HIT_POINT_BAR_MARGIN * 2,
+        width: (@hit_points / @max_hit_points * width).to_f32,
+        height: HIT_POINT_BAR_HEIGHT,
+        color: Color::Green
+      ).draw
     end
 
     def pushing_block?(dx, dy)
@@ -277,6 +318,13 @@ module Buzzle
 
     def die
       @dead = true
+      @falling = false
+      @frame_t = 0_f32
+
+      if fight = @fight
+        fight.end
+        @fight = nil
+      end
     end
 
     def revive
@@ -285,6 +333,81 @@ module Buzzle
 
     def face(direction : Direction)
       @direction = direction
+    end
+
+    def initiate_attack(other : Being)
+      @attacking = true
+      @attacking_t = 0
+
+      # would consider stats, weapon damage, (in)effectiveness against other, etc
+      if other.is_a?(Demon)
+        15
+      else
+        1
+      end
+    end
+
+    def attacking(frame_time)
+      action_time = 0_f32
+      actions = [{
+        type: :wait,
+        time: 0.1_f32
+      }, {
+        type: :back_up,
+        time: 0.05_f32
+      }, {
+        type: :forward,
+        time: 0.05_f32
+      }, {
+        type: :wait,
+        time: 0.1_f32
+      }]
+
+      actions.each do |action|
+        action_time += action[:time]
+
+        next if @attacking_t > action_time
+
+        case action[:type]
+        when :wait
+          puts ">>> wait"
+          # pause for a sec
+        when :back_up
+          puts ">>> back_up"
+          dx, dy = direction.opposite.to_delta
+          @x += dx * MOVING_AMOUNT
+          @y += dy * MOVING_AMOUNT
+        when :forward
+          puts ">>> forward"
+          dx, dy = direction.to_delta
+          @x += dx * MOVING_AMOUNT
+          @y += dy * MOVING_AMOUNT
+        end
+
+        # we did an action, stop the loop
+        break
+      end
+
+      if @attacking_t > action_time
+        @attacking = false
+      end
+
+      @attacking_t += frame_time
+    end
+
+    def take_damage(damage)
+      @hit_points -= damage
+
+      if @hit_points <= 0
+        @hit_points = 0
+        die
+      end
+    end
+
+    def end_fight
+      if fight = @fight
+        @fight = nil
+      end
     end
   end
 end
